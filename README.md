@@ -43,7 +43,7 @@ The whole system architecture is very simple. Admins can upload the resources th
 <img width="200" alt="" src="https://github.com/user-attachments/assets/a9b5a5f3-cb9d-47e8-88e1-e427bfc07fc1">
 <img width="200" alt="" src="https://github.com/user-attachments/assets/b382a888-48b2-4ce3-96ac-6c5fc418ba0c">
 <img width="200" alt="" src="https://github.com/user-attachments/assets/af6d3494-b164-4665-b504-f8a8143f3757">
-<img width="190" alt="" src="https://github.com/user-attachments/assets/cbbbbe8c-6e4b-40a0-81a4-b15d592506f0">
+<img width="190" align="center" alt="" src="https://github.com/user-attachments/assets/cbbbbe8c-6e4b-40a0-81a4-b15d592506f0">
 
 
 <b>Web module navigation planning:</b>
