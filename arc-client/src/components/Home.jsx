@@ -20,7 +20,6 @@ const Home = () => {
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
-            const navbar = document.querySelector('.navbar');
             if (scrollTop > 50) {
                 setNavbarScrolled(true);
             } else {
@@ -115,7 +114,7 @@ const Home = () => {
 
                 <div className="relative z-10 text-left px-4 md:px-8 ml-10 md:ml-48">
                     <h1 className="text-5xl md:text-8xl text-orange-400 font-bold mt-52">Arcedemy</h1>
-                    <p className="text-2xl md:text-4xl mt-4 text-white">Arcedemy is a community to.</p>
+                    <p className="text-2xl md:text-4xl mt-4 text-white">Arcedemy is a community to</p>
                     <p className="text-2xl md:text-5xl font-bold mt-4 text-white">
                         <Typewriter 
                             options={{
