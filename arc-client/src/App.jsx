@@ -1,14 +1,17 @@
+import { Route,Routes } from "react-router-dom";
+import Landing from "./pages/Landing";
+import "./App.css";
 
-import Button from '@mui/material/Button';
 
 function App() {
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <Button variant="contained" color="warning">
-        Material UI Button
-      </Button>
-    </div>
-  );
+  <Routes>
+    <Route path="/" element={<Landing />} />
+    {/* <Route path="/login" element={<Login />} />
+    <Route path="/dashboard" element={<Dashboard />} /> */}
+  </Routes>
+  )
 }
 
 export default App;
