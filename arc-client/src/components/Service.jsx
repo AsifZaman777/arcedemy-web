@@ -66,12 +66,22 @@ const cardVariants = {
   visible: {
     opacity: 1,
     scale: 1,
+    y: 0,
     transition: {
       type: 'spring',
       stiffness: 300,
       damping: 30,
     },
   },
+};
+
+const textVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.4, duration: 0.7 },
+  }),
 };
 
 const Service = () => {
@@ -82,15 +92,23 @@ const Service = () => {
   return (
     <div id="service" className="py-20 bg-gray-100">
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center text-orange-500 mb-12">
-          OUR SERVICES
-        </h2>
+        
+        <motion.h2
+          className="text-4xl font-bold text-center text-orange-500 mb-12"
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={textVariants}
+          custom={0}
+        >
+          Our Services
+        </motion.h2>
 
         <motion.div
           className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
           variants={containerVariants}
           initial="hidden"
-          animate={inView ? "visible" : "hidden"} // Trigger animation based on visibility
+          animate={inView ? "visible" : "hidden"} 
+          custom={1}
           ref={ref} // Attach the ref to the container
         >
           {services.map((service, index) => (

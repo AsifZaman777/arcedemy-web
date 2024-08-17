@@ -4,7 +4,6 @@ import {
   FaRegLightbulb,
   FaUsers,
   FaBook,
-  FaArrowAltCircleRight,
   FaArrowRight,
 } from "react-icons/fa";
 import study from "../assets/images/study.jpg";
@@ -14,7 +13,7 @@ const textVariants = {
   visible: (i) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.4, duration: 0.7 },
+    transition: { delay: i * 0.5, duration: 0.7 },
   }),
 };
 
@@ -62,7 +61,7 @@ const About = () => {
           variants={textVariants}
           custom={0}
         >
-          ABOUT US
+          About Us
         </motion.h2>
 
         <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 items-start">
