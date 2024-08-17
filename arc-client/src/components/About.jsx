@@ -1,13 +1,19 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { FaRegLightbulb, FaUsers, FaBook } from "react-icons/fa"; // Importing icons
+import {
+  FaRegLightbulb,
+  FaUsers,
+  FaBook,
+  FaArrowAltCircleRight,
+  FaArrowRight,
+} from "react-icons/fa";
 import study from "../assets/images/study.jpg";
 
 const textVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i) => ({
     opacity: 1,
-    y: 50,
+    y: 0,
     transition: { delay: i * 0.4, duration: 0.7 },
   }),
 };
@@ -19,7 +25,21 @@ const iconVariants = {
 
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5 } },
+};
+
+const buttonVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.5 },
+  },
+  hover: {
+    scale: 1.1,
+    transition: { duration: 0.3, yoyo: Infinity },
+  },
 };
 
 const About = () => {
@@ -75,7 +95,6 @@ const About = () => {
               your learning journey!
             </p>
 
-            {/* Icons and Additional Text */}
             <motion.div
               initial="hidden"
               animate={contentInView ? "visible" : "hidden"}
@@ -109,8 +128,24 @@ const About = () => {
                 Comprehensive Resources
               </p>
             </motion.div>
+
+            <motion.div
+              initial="hidden"
+              animate={contentInView ? "visible" : "hidden"}
+              variants={buttonVariants}
+              className="flex items-center mt-20 space-x-4 animate-bounce"
+            >
+              <p className="text-gray-800 font-medium text-xl">Watch videos</p>
+              <motion.button
+                whileHover="hover"
+                variants={buttonVariants}
+                className="bg-orange-500 border border-orange-300 text-white font-bold py-2 px-3 rounded-sm hover:bg-orange-600 hover:border-orange-400 focus:outline-none focus:ring-opacity-50 transition-colors duration-300 flex justify-center items-center"
+              >
+                <FaArrowRight className="text-xl" />
+              </motion.button>
+            </motion.div>
           </motion.div>
-          
+
           <motion.div
             ref={contentRef}
             initial="hidden"
@@ -132,8 +167,6 @@ const About = () => {
               </p>
             </div>
           </motion.div>
-
-          
         </div>
       </div>
     </div>
