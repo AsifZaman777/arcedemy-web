@@ -104,6 +104,11 @@ const Home = () => {
                 </a>
               </li>
               <li>
+                <a href="#ourteam" className="text-lg">
+                    Our Team
+                </a>
+                </li>
+              <li>
                 <a href="#contact" className="text-lg">
                   Contact
                 </a>
@@ -163,6 +168,11 @@ const Home = () => {
                 FAQ
               </a>
             </li>
+            <li>
+                <a href="#ourteam" className="hover:bg-orange-600 transition-colors duration-300">
+                    Our Team
+                </a>
+                </li>
             <li>
               <a
                 href="#contact"
