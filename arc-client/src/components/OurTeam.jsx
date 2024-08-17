@@ -18,7 +18,7 @@ const OurTeam = () => {
         Arcedemy Team
       </h2>
       <section
-        className="relative grid min-h-screen w-full place-content-center overflow-hidden bg-neutral-900 py-20"
+        className="relative grid min-h-screen w-full place-content-center overflow-hidden bg-neutral-900 py-10"
       >
         <hr className="absolute z-0 w-1/2 h-6 bg-gradient-to-r from-orange-100 to-orange-500 rounded-sm top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
         <h2 className="relative z-0 text-[10vw] font-black text-neutral-100 md:text-[120px]">
@@ -67,8 +67,8 @@ const Cards = () => {
         top="20%"
         left="40%"
         className="w-36 md:w-56 text-lg text-orange-400"
-        name="Asif"
-        designation="Co-founder"
+        name="Asif Zaman"
+        designation="Software Engineer"
       />
 
       <Card
@@ -79,8 +79,8 @@ const Cards = () => {
         top="50%"
         left="30%"
         className="w-36 md:w-56 text-lg text-orange-400"
-        name="Adir"
-        designation="Co-founder"
+        name="Sharafat Ali Adir"
+        designation="Software Engineer"
       />
 
       <Card
@@ -125,7 +125,8 @@ const Card = ({
         zIndex,
       }}
       className={twMerge(
-        "drag-elements absolute bg-neutral-200 p-4 rounded-lg shadow-lg",
+        "drag-elements absolute bg-neutral-200 p-2 sm:p-4 rounded-lg shadow-lg",
+        "w-28 sm:w-36 md:w-56", // Adjusted width for mobile responsiveness
         className
       )}
       drag
@@ -136,26 +137,27 @@ const Card = ({
       <img
         src={src}
         alt={alt}
-        className="h-72 w-full object-cover rounded-lg mb-4"
+        className="h-40 sm:h-60 md:h-72 w-full object-cover rounded-lg mb-2 sm:mb-4" // Adjusted height for mobile responsiveness
       />
       <div className="text-center">
-        <h3 className="text-lg font-bold">{name}</h3>
-        <p className="text-sm text-gray-500">{designation}</p>
-        <div className="flex justify-center mt-2 space-x-3 text-gray-700">
+        <h3 className="text-sm sm:text-lg font-bold">{name}</h3>
+        <p className="text-xs sm:text-sm text-gray-500">{designation}</p>
+        <div className="flex justify-center mt-2 space-x-2 sm:space-x-3 text-gray-700">
           <a href="#">
-            <FaFacebook />
+            <FaFacebook className="text-xs sm:text-sm" />
           </a>
           <a href="#">
-            <FaInstagram />
+            <FaInstagram className="text-xs sm:text-sm" />
           </a>
           <a href="#">
-            <FaTwitter />
+            <FaTwitter className="text-xs sm:text-sm" />
           </a>
         </div>
       </div>
     </motion.div>
   );
 };
+
 
 // PropTypes validation
 Card.propTypes = {
