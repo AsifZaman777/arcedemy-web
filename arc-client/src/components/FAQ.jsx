@@ -52,7 +52,7 @@ const VerticalAccordion = () => {
   
 
   return (
-    <div className="bg-neutral-900 py-20">
+    <div id='faq' className="bg-neutral-900 py-20">
       <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center text-orange-500 mb-8 md:mb-12">
         Frequently Asked Questions
       </h2>
