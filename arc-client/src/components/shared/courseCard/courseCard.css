@@ -1,0 +1,94 @@
+:root {
+    --surface-color: #d58308;
+    --curve: 40;
+    --card-width: 400px; /* Adjust width as needed */
+    --card-height: 600px; /* Adjust height as needed */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    position: relative;
+    display: block;
+    width: var(--card-width); /* Set card width */
+    height: var(--card-height); /* Set card height */
+    border-radius: calc(var(--curve) * 0.2px);
+    overflow: hidden;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+.card__image {
+    width: 100%;
+    height: 100%; /* Ensure the image fills the card */
+    object-fit: cover; /* Maintain aspect ratio and cover the card */
+    object-position: center; /* Center the image */
+}
+
+.card__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    border-radius: calc(var(--curve) * 0.2px);
+    background-color: var(--surface-color);
+    transform: translateY(100%);
+    transition: 0.2s ease-in-out;
+}
+
+.card__icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 1em;
+}
+
+.card:hover .card__overlay {
+    transform: translateY(0);
+}
+
+.card__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    padding: 2em;
+    border-radius: calc(var(--curve) * 1px) 0 0 0;
+    background-color: var(--surface-color);
+    transform: translateY(-100%);
+    transition: 0.2s ease-in-out;
+}
+
+.card:hover .card__header {
+    transform: translateY(0);
+}
+
+.card:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+}
+
+.card__arc {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    z-index: 1;
+}
+
+.card__description {
+    padding: 0 2em 2em;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

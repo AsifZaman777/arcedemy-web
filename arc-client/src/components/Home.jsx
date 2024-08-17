@@ -94,7 +94,7 @@ const Home = () => {
                 </a>
               </li>
               <li>
-                <a href="#courses" className="text-lg">
+                <a href="#course" className="text-lg">
                   Courses
                 </a>
               </li>
@@ -154,7 +154,7 @@ const Home = () => {
             </li>
             <li>
               <a
-                href="#courses"
+                href="#course"
                 className="hover:bg-orange-600 transition-colors duration-300"
               >
                 Courses

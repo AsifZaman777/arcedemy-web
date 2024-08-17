@@ -13,8 +13,10 @@ import adir from "../assets/images/adir.jpg";
 const OurTeam = () => {
  
   return (
-    <div id="ourteam" className="py-20 bg-gray-100">
-
+    <div id="ourteam" className="py-0 bg-neutral-900">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center text-orange-500 mb-8 md:mb-12">
+        Arcedemy Team
+      </h2>
       <section
         className="relative grid min-h-screen w-full place-content-center overflow-hidden bg-neutral-900 py-20"
       >

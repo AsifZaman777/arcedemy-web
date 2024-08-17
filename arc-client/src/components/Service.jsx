@@ -1,7 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { FaRegLightbulb, FaUsers, FaGamepad, FaChalkboardTeacher, FaArrowCircleUp, FaFlushed } from 'react-icons/fa';
-import ServiceCard from '../components/shared/ServiceCard'; // Adjust the path if necessary
+import ServiceCard from './shared/serviceCard/ServiceCard'; // Adjust the path if necessary
 import { useInView } from 'react-intersection-observer';
 
 const services = [
