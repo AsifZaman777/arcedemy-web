@@ -51,7 +51,7 @@ const Home = () => {
         className={`navbar py-1 shadow-lg fixed w-full top-0 left-0 z-20 transition-colors duration-300 ${
           navbarScrolled
             ? "bg-slate-100 bg-opacity-50 backdrop-blur-xl text-black font-medium"
-            : "bg-slate-500 bg-opacity-10 backdrop-blur-lg text-white font-medium"
+            : "bg-slate-100 bg-opacity-10 backdrop-blur-lg text-white font-medium"
         }`}
       >
         <div className="navbar-start flex items-center">
@@ -74,9 +74,11 @@ const Home = () => {
             </div>
             <ul
               tabIndex={0}
-              className={`menu menu-lg font-bold dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow text-lg ${
-                navbarScrolled ? "text-white" : "text-white"
-              }`}
+              className={`menu menu-lg backdrop-blur-lg font-semibold dropdown-content rounded-box z-[1] mt-3 w-52 p-2 shadow text-lg ${
+    navbarScrolled
+      ? "bg-slate-200 bg-opacity-95  text-orange-500 font-medium shadow-lg"
+      : "bg-slate-100 bg-opacity-95  text-orange-500 font-medium shadow-lg"
+  }`}
             >
               <li>
                 <a href="#home" className="text-lg">
@@ -105,9 +107,9 @@ const Home = () => {
               </li>
               <li>
                 <a href="#ourteam" className="text-lg">
-                    Our Team
+                  Our Team
                 </a>
-                </li>
+              </li>
               <li>
                 <a href="#contact" className="text-lg">
                   Contact
@@ -122,7 +124,7 @@ const Home = () => {
             alt="Arcedemy"
           />
           <div className="btn btn-ghost text-3xl animate-pulse animate-ease-linear ml-2">
-            <a className="text-orange-300 px-0 py-0 rounded-lg">Arcedemy</a>
+            <a href="#home" className="text-orange-300 px-0 py-0 rounded-lg">Arcedemy</a>
           </div>
         </div>
 
@@ -131,7 +133,7 @@ const Home = () => {
             <li>
               <a
                 href="#home"
-                className="hover:bg-orange-600 transition-colors duration-300"
+                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
                 Home
               </a>
@@ -139,7 +141,7 @@ const Home = () => {
             <li>
               <a
                 href="#about"
-                className="hover:bg-orange-600 transition-colors duration-300"
+                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
                 About
               </a>
@@ -147,7 +149,7 @@ const Home = () => {
             <li>
               <a
                 href="#service"
-                className="hover:bg-orange-600 transition-colors duration-300"
+                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
                 Service
               </a>
@@ -155,7 +157,7 @@ const Home = () => {
             <li>
               <a
                 href="#course"
-                className="hover:bg-orange-600 transition-colors duration-300"
+                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
                 Courses
               </a>
@@ -163,20 +165,23 @@ const Home = () => {
             <li>
               <a
                 href="#faq"
-                className="hover:bg-orange-600 transition-colors duration-300"
+                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
                 FAQ
               </a>
             </li>
             <li>
-                <a href="#ourteam" className="hover:bg-orange-600 transition-colors duration-300">
-                    Our Team
-                </a>
-                </li>
+              <a
+                href="#ourteam"
+                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
+              >
+                Our Team
+              </a>
+            </li>
             <li>
               <a
                 href="#contact"
-                className="hover:bg-orange-600 transition-colors duration-300"
+                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
                 Contact
               </a>
@@ -187,7 +192,7 @@ const Home = () => {
           <motion.button
             whileHover="hover"
             variants={buttonVariants}
-            className="flex px-6 py-2 border-2 mr-10 gap-2 bg-transparent hover:bg-orange-600 transition-colors duration-300"
+            className="flex px-6 py-2 border-2 mr-10 gap-2 bg-transparent text-black hover:text-white hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
           >
             <FaUser className="text-orange-500" /> Admin Panel
           </motion.button>
