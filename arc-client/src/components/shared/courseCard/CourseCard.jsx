@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import './CourseCard.css';
+import './courseCard.css';
 
 const CourseCard = ({ image, title, description, Icon }) => {
     return (
