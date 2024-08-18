@@ -1,63 +1,90 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight, FaFacebook, FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa';
 
 const textVariants = {
-  hidden: { opacity: 0, x: -50 }, // Start off-screen to the left
+  hidden: { opacity: 0, x: -100 }, 
   visible: (i) => ({
     opacity: 1,
-    x: 0, // Slide in to the final position
+    x: 0,
     transition: { delay: i * 0.4, duration: 0.7 },
   }),
 };
 
 const cardVariants = {
-  hidden: { opacity: 1, x: 0, scale: 0.8 }, // Start off-screen to the left with smaller scale
+  hidden: { opacity: 1, x: 0, scale: 0.9 }, 
   visible: { 
     opacity: 1, 
-    x: 0, // Slide in to the final position
+    x: 0,
     scale: 1,
     transition: { duration: 0.6, ease: "easeInOut" },
   },
 };
 
+const iconVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.9 },
+  visible: (i) => ({
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 30,
+      delay: i * 0.2, // Staggered animation based on index
+    },
+  }),
+};
+
 const Contact = () => {
-  const { ref, inView } = useInView({
-    threshold: 0.3, 
+  // Separate references for card and icons
+  const { ref: textRef, inView: textInView } = useInView({
+    threshold: 0.5, 
   });
 
-  return (
-    <div id='contact' className="bg-gray-50 min-h-screen flex items-center justify-center py-20">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 gap-8">
+  const { ref: iconRef, inView: iconInView } = useInView({
+    threshold: 0.5,
+  });
 
+  const icons = [
+    { Component: FaFacebook, key: 'facebook' },
+    { Component: FaTwitter, key: 'twitter' },
+    { Component: FaLinkedin, key: 'linkedin' },
+    { Component: FaWhatsapp, key: 'whatsapp' },
+  ];
+
+  return (
+    <div id='contact' className="bg-gray-50 min-h-screen flex items-center justify-center py-10 px-4 md:py-20">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 gap-8">
         {/* Heading */}
         <motion.h2
-          className="text-4xl font-bold text-center text-orange-500 mb-12"
+          className="text-3xl md:text-4xl font-bold text-center text-orange-500 mb-8 md:mb-12"
           initial="hidden"
-          animate={inView ? "visible" : "hidden"}
+          animate={textInView ? "visible" : "hidden"}
           variants={textVariants}
           custom={0}
-          ref={ref}
+          ref={textRef}
         >
           Our Contact
         </motion.h2>
         
         {/* Form */}
         <motion.div
-          className="bg-white p-8 md:p-16 rounded-md shadow-lg"
+          className="bg-white p-6 md:p-8 lg:p-16 rounded-md shadow-lg -mt-10 mb-12 md:mb-20"
           initial="hidden"
-          animate={inView ? "visible" : "hidden"}
+          animate={textInView ? "visible" : "hidden"}
           variants={cardVariants}
+          ref={textRef}
         >
-          <h2 className="text-3xl font-bold text-orange-500 mb-6 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-orange-500 mb-4 md:mb-6 text-center">
             Let’s Get In Touch.
           </h2>
-          <p className="text-orange-600 mb-8 animate-bounce text-center">
+          <p className="text-orange-600 mb-6 md:mb-8 animate-bounce text-center">
             Or just send a query to <a href="mailto:arcedemy@gmail.com" className="text-neutral-950 font-semibold">arcedemy@gmail.com</a>.
           </p>
 
           <form action="#" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-orange-500">First Name</label>
                 <input
@@ -111,6 +138,22 @@ const Contact = () => {
               Send Message <FaArrowRight className="inline-block" />
             </button>
           </form>
+
+          <div className="flex justify-center mt-8 md:mt-10 space-x-6 flex-wrap">
+            {icons.map((icon, index) => (
+              <motion.div
+                key={icon.key}
+                initial="hidden"
+                animate={iconInView ? "visible" : "hidden"}
+                variants={iconVariants}
+                custom={index}
+                ref={iconRef}
+                className="flex items-center justify-center"
+              >
+                <icon.Component className="text-orange-500 text-3xl md:text-4xl" />
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </div>

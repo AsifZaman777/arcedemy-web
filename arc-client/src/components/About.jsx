@@ -9,7 +9,7 @@ import {
 import study from "../assets/images/study.jpg";
 
 const textVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 1, y: 20 },
   visible: (i) => ({
     opacity: 1,
     y: 0,
@@ -23,7 +23,7 @@ const iconVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
+  hidden: { opacity: 1, scale: 0.8 },
   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5 } },
 };
 

@@ -15,24 +15,24 @@ const Footer = () => {
             ></path>
           </svg>
           <p>
-            ACME Industries Ltd.
+            Arcedemy
             <br />
-            Providing reliable tech since 1992
+            Providing reliable ed-tech since 2024
           </p>
         </aside>
         <nav>
           <h6 className="footer-title">Services</h6>
-          <a className="link link-hover">Branding</a>
-          <a className="link link-hover">Design</a>
-          <a className="link link-hover">Marketing</a>
-          <a className="link link-hover">Advertisement</a>
+          <a href="#service" className="link link-hover">Courses</a>
+          <a href="#service" className="link link-hover">Resources</a>
+          <a href="#service" className="link link-hover">Gamified Learning</a>
+          <a href="#service" className="link link-hover">Tech support</a>
         </nav>
         <nav>
           <h6 className="footer-title">Company</h6>
-          <a className="link link-hover">About us</a>
-          <a className="link link-hover">Contact</a>
-          <a className="link link-hover">Jobs</a>
-          <a className="link link-hover">Press kit</a>
+          <a href="#about" className="link link-hover">About us</a>
+          <a href="#contact" className="link link-hover">Contact</a>
+          <a href="#about" className="link link-hover">Mission</a>
+          <a href="#ourteam" className="link link-hover">Team</a>
         </nav>
         <nav>
           <h6 className="footer-title">Legal</h6>
