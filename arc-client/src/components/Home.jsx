@@ -47,7 +47,7 @@ const Home = () => {
   }, []);
 
   const handleAdminClick = () => {
-    navigate("/admin"); // Navigate to /admin route
+    navigate("/admin"); 
   };
 
   return (
@@ -200,7 +200,7 @@ const Home = () => {
           <motion.button
             whileHover="hover"
             variants={buttonVariants}
-            onClick={handleAdminClick} // Navigate to admin when clicked
+            onClick={handleAdminClick} 
             className="flex px-6 py-2 border-2 mr-10 gap-2 bg-transparent text-black hover:text-white hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
           >
             <FaUser className="text-orange-500" /> Admin Panel
@@ -223,7 +223,7 @@ const Home = () => {
               className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
                 currentImage === index ? "opacity-100" : "opacity-0"
               }`}
-              style={{ height: "100vh" }} // Adjust height here
+              style={{ height: "100vh" }} 
             />
           ))}
         </div>
