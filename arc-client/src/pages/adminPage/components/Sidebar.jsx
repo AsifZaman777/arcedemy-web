@@ -1,57 +1,127 @@
-import PropTypes from 'prop-types';
-import { FaTachometerAlt, FaSun, FaMoon, FaUser, FaCaretDown, FaEllipsisV, FaGraduationCap, FaHandHolding, FaHandHoldingUsd, FaSchool, FaBook, FaBookMedical, FaNotesMedical, FaFile, FaPlay, FaBookOpen, FaQuestion, FaFolderPlus } from 'react-icons/fa';
-import { useState } from 'react';
-import logo from '../../../assets/images/arc-logo.png';
+import PropTypes from "prop-types";
+import {
+  FaTachometerAlt,
+  FaSun,
+  FaMoon,
+  FaUser,
+  FaCaretDown,
+  FaEllipsisV,
+  FaGraduationCap,
+  FaHandHoldingUsd,
+  FaSchool,
+  FaBook,
+  FaFile,
+  FaPlay,
+  FaBookOpen,
+  FaQuestion,
+  FaFolderPlus,
+  FaLayerGroup,
+} from "react-icons/fa";
+import { useState } from "react";
+import logo from "../../../assets/images/arc-logo.png";
 
 const menuItems = [
   {
-    title: 'Dashboard',
+    title: "Dashboard",
     icon: <FaTachometerAlt className="w-5 h-5" />,
-    href: '#',
-    bgColor: 'bg-orange-500',
-    hoverColor: 'hover:bg-orange-600',
+    href: "#",
+    bgColor: "bg-orange-500",
+    hoverColor: "hover:bg-orange-600",
   },
   {
-    title: 'Users',
+    title: "Users",
     icon: <FaUser className="w-5 h-5" />,
-    href: '#',
-    bgColor: 'bg-orange-500',
-    hoverColor: 'hover:bg-orange-600',
+    href: "#",
+    bgColor: "bg-orange-500",
+    hoverColor: "hover:bg-orange-600",
     subItems: [
-      { title: 'Students List', href: '#', icon: <FaGraduationCap className="w-5 h-5" />, bgColor: 'bg-orange-600', hoverColor: 'hover:bg-orange-700' },
-      { title: 'Enrolled Students', href: '#', icon: <FaHandHoldingUsd className="w-5 h-5" />, bgColor: 'bg-orange-600', hoverColor: 'hover:bg-orange-700' },
+      {
+        title: "Students List",
+        href: "#",
+        icon: <FaGraduationCap className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
+      {
+        title: "Enrolled Students",
+        href: "#",
+        icon: <FaHandHoldingUsd className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
     ],
   },
 
   //add item Academics and subitems curriculum subjects chapters
   {
-    title: 'Academics',
+    title: "Academics",
     icon: <FaGraduationCap className="w-5 h-5" />,
-    href: '#',
-    bgColor: 'bg-orange-500',
-    hoverColor: 'hover:bg-orange-600',
+    href: "#",
+    bgColor: "bg-orange-500",
+    hoverColor: "hover:bg-orange-600",
     subItems: [
-      { title: 'Curriculum', href: '#', icon: <FaSchool className="w-5 h-5" />, bgColor: 'bg-orange-600', hoverColor: 'hover:bg-orange-700' },
-      { title: 'Subjects', href: '#', icon: <FaBook className="w-5 h-5" />, bgColor: 'bg-orange-600', hoverColor: 'hover:bg-orange-700' },
-      { title: 'Chapters', href: '#', icon: <FaFile className="w-5 h-5" />, bgColor: 'bg-orange-600', hoverColor: 'hover:bg-orange-700' },
+      {
+        title: "Curriculum",
+        href: "#",
+        icon: <FaSchool className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
+      {
+        title: "Subjects",
+        href: "#",
+        icon: <FaBook className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
+      {
+        title: "Chapters",
+        href: "#",
+        icon: <FaFile className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
     ],
   },
 
   //add item Manage library and subitems recorded videos, notes, previous questions, create paper
   {
-    title: 'Manage Library',
-    icon: <FaBookMedical className="w-5 h-5" />,
-    href: '#',
-    bgColor: 'bg-orange-500',
-    hoverColor: 'hover:bg-orange-600',
+    title: "Manage Library",
+    icon: <FaLayerGroup className="w-5 h-5" />,
+    href: "#",
+    bgColor: "bg-orange-500",
+    hoverColor: "hover:bg-orange-600",
     subItems: [
-      { title: 'Recorded Videos', href: '#', icon: <FaPlay className="w-5 h-5" />, bgColor: 'bg-orange-600', hoverColor: 'hover:bg-orange-700' },
-      { title: 'Notes', href: '#', icon: <FaBookOpen className="w-5 h-5" />, bgColor: 'bg-orange-600', hoverColor: 'hover:bg-orange-700' },
-      { title: 'Previous Questions', href: '#', icon: <FaQuestion className="w-5 h-5" />, bgColor: 'bg-orange-600', hoverColor: 'hover:bg-orange-700' },
-      { title: 'Create Paper', href: '#', icon: <FaFolderPlus className="w-5 h-5" />, bgColor: 'bg-orange-600', hoverColor: 'hover:bg-orange-700' },
+      {
+        title: "Recorded Videos",
+        href: "#",
+        icon: <FaPlay className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
+      {
+        title: "Notes",
+        href: "#",
+        icon: <FaBookOpen className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
+      {
+        title: "Previous Questions",
+        href: "#",
+        icon: <FaQuestion className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
+      {
+        title: "Create Paper",
+        href: "#",
+        icon: <FaFolderPlus className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
     ],
   },
- 
 ];
 
 const Sidebar = ({ isDarkMode, toggleTheme }) => {
@@ -72,7 +142,7 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
       <div className="fixed top-4 left-4 z-50">
         <button
           className={`text-white p-3 rounded-full transform transition-transform duration-300 ease-in-out ${
-            isOpen ? 'translate-x-64' : 'translate-x-0'
+            isOpen ? "translate-x-64" : "translate-x-0"
           }`}
           type="button"
           onClick={toggleDrawer}
@@ -85,8 +155,8 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
       <div
         id="drawer-navigation"
         className={`fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform duration-300 shadow-lg shadow-orange-500 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } ${isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"}`}
         aria-labelledby="drawer-navigation-label"
         aria-hidden={!isOpen}
       >
@@ -94,7 +164,7 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
           <h5
             id="drawer-navigation-label"
             className={`text-base font-semibold uppercase flex items-center ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-500'
+              isDarkMode ? "text-gray-400" : "text-gray-500"
             }`}
           >
             <img src={logo} alt="logo" className="w-10 h-10" />
@@ -113,11 +183,17 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
                     >
                       {item.icon}
                       <span className="ms-4 text-xl">{item.title}</span>
-                      <FaCaretDown className={`ms-auto w-5 h-5 transform transition-transform duration-200 ${openDropdownIndex === index ? 'rotate-180' : 'rotate-0'}`} />
+                      <FaCaretDown
+                        className={`ms-auto w-5 h-5 transform transition-transform duration-200 ${
+                          openDropdownIndex === index
+                            ? "rotate-180"
+                            : "rotate-0"
+                        }`}
+                      />
                     </button>
                     <div
                       className={`overflow-hidden transition-max-height duration-300 ease-in-out ${
-                        openDropdownIndex === index ? 'max-h-60' : 'max-h-0'
+                        openDropdownIndex === index ? "max-h-60" : "max-h-0"
                       }`}
                     >
                       <ul className="mt-1 space-y-2 p-1 bg-orange-600 rounded-lg">
@@ -159,7 +235,9 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
                 ) : (
                   <FaSun className="w-6 h-6 text-yellow-500" />
                 )}
-                <span className="label-text">{isDarkMode ? 'Dark mode' : 'Light mode'}</span>
+                <span className="label-text">
+                  {isDarkMode ? "Dark mode" : "Light mode"}
+                </span>
               </label>
             </li>
           </ul>
