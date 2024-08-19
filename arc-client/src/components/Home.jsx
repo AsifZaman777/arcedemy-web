@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import goody1 from "../assets/images/image1.jpg";
 import goody2 from "../assets/images/image2.jpg";
 import Typewriter from "typewriter-effect";
@@ -20,6 +21,7 @@ const Home = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
   const images = [goody1, goody2];
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,6 +45,10 @@ const Home = () => {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleAdminClick = () => {
+    navigate("/admin"); // Navigate to /admin route
+  };
 
   return (
     <div>
@@ -75,10 +81,10 @@ const Home = () => {
             <ul
               tabIndex={0}
               className={`menu menu-lg backdrop-blur-lg font-semibold dropdown-content rounded-box z-[1] mt-3 w-52 p-2 shadow text-lg ${
-    navbarScrolled
-      ? "bg-slate-200 bg-opacity-95  text-orange-500 font-medium shadow-lg"
-      : "bg-slate-100 bg-opacity-95  text-orange-500 font-medium shadow-lg"
-  }`}
+                navbarScrolled
+                  ? "bg-slate-200 bg-opacity-95  text-orange-500 font-medium shadow-lg"
+                  : "bg-slate-100 bg-opacity-95  text-orange-500 font-medium shadow-lg"
+              }`}
             >
               <li>
                 <a href="#home" className="text-lg">
@@ -124,7 +130,9 @@ const Home = () => {
             alt="Arcedemy"
           />
           <div className="btn btn-ghost text-3xl animate-pulse animate-ease-linear ml-2">
-            <a href="#home" className="text-orange-300 px-0 py-0 rounded-lg">Arcedemy</a>
+            <a href="#home" className="text-orange-300 px-0 py-0 rounded-lg">
+              Arcedemy
+            </a>
           </div>
         </div>
 
@@ -192,6 +200,7 @@ const Home = () => {
           <motion.button
             whileHover="hover"
             variants={buttonVariants}
+            onClick={handleAdminClick} // Navigate to admin when clicked
             className="flex px-6 py-2 border-2 mr-10 gap-2 bg-transparent text-black hover:text-white hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
           >
             <FaUser className="text-orange-500" /> Admin Panel
@@ -235,7 +244,6 @@ const Home = () => {
                 strings: ["Learn...", "Grow...", "Play..."],
                 autoStart: true,
                 loop: true,
-                delay: 100,
               }}
             />
           </p>
