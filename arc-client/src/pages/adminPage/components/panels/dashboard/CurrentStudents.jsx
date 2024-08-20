@@ -203,11 +203,11 @@ const CurrentStudents = ({ isDarkMode }) => {
 
   return (
     <div
-      className={`p-4 ${
-        isDarkMode ? "bg-gray-800 text-white" : "bg-white text-black"
+      className={`p-4 rounded-2xl ${
+        isDarkMode ? "bg-orange-500 text-white" : "bg-orange-200 text-black"
       }`}
     >
-      <h2 className="text-2xl font-semibold mb-4">Current Students</h2>
+      <h2 className="text-3xl font-semibold mb-4 text-center">Current Students</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full border">
           <thead>
@@ -276,7 +276,7 @@ const CurrentStudents = ({ isDarkMode }) => {
                 <td className="px-4 py-2 border text-center">
                   <button
                     onClick={() => handleEdit(student.id)}
-                    className="bg-blue-500 text-white px-2 py-1 rounded"
+                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700 "
                   >
                     Edit
                   </button>
@@ -284,7 +284,7 @@ const CurrentStudents = ({ isDarkMode }) => {
                 <td className="px-4 py-2 border text-center">
                   <button
                     onClick={() => handleDelete(student.id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded"
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
                     Delete
                   </button>

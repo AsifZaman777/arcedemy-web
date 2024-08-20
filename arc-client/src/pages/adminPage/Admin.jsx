@@ -7,12 +7,13 @@ import CurrentStudents from "./components/panels/dashboard/CurrentStudents";
 
 const Layout = ({ isDarkMode, toggleTheme }) => {
   return (
-    <div>
+    <div className={` min-h-screen ${isDarkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
       <Sidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-      <TopPanel isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-      <div className="p-0">
-        {/* Container for routed content */}
-        <Outlet /> {/* This is where routed content will be rendered */}
+      <div className=" ">
+        <TopPanel isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+        <div className="p-4 mt-4"> {/* Added mt-4 for margin-top */}
+          <Outlet /> {/* This is where routed content will be rendered */}
+        </div>
       </div>
     </div>
   );
@@ -37,11 +38,10 @@ const Admin = () => {
       <Route
         element={<Layout isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
       >
-        {/* Wrapping Dashboard and CurrentStudents in a single parent element */}
         <Route
           path="/"
           element={
-            <div>
+            <div className="space-y-4">
               <Dashboard isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
               <CurrentStudents isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
             </div>
