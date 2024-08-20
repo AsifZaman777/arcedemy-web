@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';  // Import PropTypes
+import PropTypes from 'prop-types'; // Import PropTypes
 import { useNavigate } from 'react-router-dom';
 
-const TopPanel = ({ isDarkMode}) => {
+const TopPanel = ({ isDarkMode }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -10,19 +10,33 @@ const TopPanel = ({ isDarkMode}) => {
   };
 
   return (
-    <div className={`flex justify-between items-center p-4 shadow-md ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800'}`}>
-      {/* Admin Panel Title */}
-      <div className="flex-1 text-lg font-semibold text-center">
-        Admin Panel
+    <div
+      className={`flex flex-col py-4 px-6 shadow-md ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'}`}
+      style={{ zIndex: 50 }}
+    >
+      {/* Top Row: Title */}
+      <div className="flex justify-between items-center w-full">
+        {/* Left Spacer */}
+        <div className="w-1/3"></div>
+        
+        {/* Admin Panel Title */}
+        <div className="text-3xl font-semibold text-center flex-1">
+          Admin Panel
+        </div>
+
+        {/* Logout Button */}
+        <div className="w-1/3 flex justify-end">
+          <button
+            onClick={handleLogout}
+            className={`py-2 px-6 rounded ${isDarkMode ? 'bg-red-700 hover:bg-red-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'}`}
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
-      {/* Logout Button */}
-      <button
-        onClick={handleLogout}
-        className={`py-2 px-4 rounded ${isDarkMode ? 'bg-red-700 hover:bg-red-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'}`}
-      >
-        Logout
-      </button>
+      {/* Horizontal Line */}
+      
     </div>
   );
 };

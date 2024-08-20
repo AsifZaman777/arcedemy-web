@@ -125,7 +125,7 @@ const menuItems = [
 ];
 
 const Sidebar = ({ isDarkMode, toggleTheme }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 
   const toggleDrawer = () => {
