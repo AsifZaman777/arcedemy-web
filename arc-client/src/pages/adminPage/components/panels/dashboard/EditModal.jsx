@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 const EditModal = ({ student, onClose, isDarkMode }) => {
@@ -18,7 +18,7 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
   return (
     <dialog id="edit_modal" className="modal fixed inset-0 z-50 flex items-center justify-center" open>
       <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className={`modal-box z-10 ${isDarkMode ? "bg-gray-900" : "bg-white"}`}>
+      <div className={`modal-box z-10 ${isDarkMode ? "bg-gray-900 border-cyan-600 border-2" : "bg-white border-gray-700 border-2"}`}>
         <h3 className="font-bold text-2xl mb-4">Edit Student</h3>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -91,10 +91,10 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
             </div>
           </div>
           <div className="modal-action mt-4">
-            <button type="submit" className="btn btn-primary text-lg p-2">
+            <button type="submit" className="btn bg-orange-500 text-xl font-normal text-slate-200 hover:bg-orange-600 p-2">
               Save
             </button>
-            <button type="button" onClick={onClose} className="btn text-lg p-2">
+            <button type="button" onClick={onClose} className="btn bg-red-500 text-xl font-normal text-slate-200 hover:bg-red-600 p-2">
               Close
             </button>
           </div>
