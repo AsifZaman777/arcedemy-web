@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from 'prop-types';
+import EditModal from './EditModal';
 
 const CurrentStudents = ({ isDarkMode }) => {
   const [students, setStudents] = useState([
@@ -185,20 +186,24 @@ const CurrentStudents = ({ isDarkMode }) => {
     },
   ]);
 
-  const handleEnrollmentChange = (id, status) => {
-    const updatedStudents = students.map((student) =>
-      student.id === id ? { ...student, enrollmentStatus: status } : student
-    );
-    setStudents(updatedStudents);
-  };
+  
 
-  const handleEdit = (id) => {
-    alert(`Edit student with ID: ${id}`);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
+  const handleEdit = (student) => {
+    setSelectedStudent(student);
+    setIsModalOpen(true);
   };
 
   const handleDelete = (id) => {
     const updatedStudents = students.filter((student) => student.id !== id);
     setStudents(updatedStudents);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedStudent(null);
   };
 
   return (
@@ -241,7 +246,7 @@ const CurrentStudents = ({ isDarkMode }) => {
                     : isDarkMode
                     ? "bg-gray-800"
                     : "bg-white"
-                } hover:bg-orange-300`} 
+                } hover:bg-orange-300`}
               >
                 <td className="px-4 py-2 border text-center">{student.id}</td>
                 <td className="px-4 py-2 border text-center">{student.name}</td>
@@ -258,25 +263,12 @@ const CurrentStudents = ({ isDarkMode }) => {
                   {student.createdDate}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  <select
-                    value={student.enrollmentStatus}
-                    onChange={(e) =>
-                      handleEnrollmentChange(student.id, e.target.value)
-                    }
-                    className={`p-1 border rounded ${
-                      isDarkMode
-                        ? "bg-gray-700 text-white"
-                        : "bg-white text-black"
-                    }`}
-                  >
-                    <option value="Enrolled">Enrolled</option>
-                    <option value="Unenrolled">Unenrolled</option>
-                  </select>
+                  {student.enrollmentStatus}
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleEdit(student.id)}
-                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700 "
+                    onClick={() => handleEdit(student)}
+                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700"
                   >
                     Edit
                   </button>
@@ -294,6 +286,15 @@ const CurrentStudents = ({ isDarkMode }) => {
           </tbody>
         </table>
       </div>
+
+      {/* Edit Modal */}
+      {isModalOpen && selectedStudent && (
+        <EditModal
+          student={selectedStudent}
+          onClose={handleModalClose}
+          isDarkMode={isDarkMode}
+        />
+      )}
     </div>
   );
 };
