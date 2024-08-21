@@ -47,7 +47,7 @@ const Home = () => {
   }, []);
 
   const handleAdminClick = () => {
-    navigate("/admin"); 
+    navigate("/dashboard"); 
   };
 
   return (

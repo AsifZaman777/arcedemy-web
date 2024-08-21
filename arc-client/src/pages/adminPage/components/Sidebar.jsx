@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaSun,
@@ -24,98 +25,96 @@ const menuItems = [
   {
     title: "Dashboard",
     icon: <FaTachometerAlt className="w-5 h-5" />,
-    href: "#",
+    path: "/dashboard",
     bgColor: "bg-orange-500",
     hoverColor: "hover:bg-orange-600",
   },
   {
     title: "Users",
     icon: <FaUser className="w-5 h-5" />,
-    href: "#",
+    path: "#",
     bgColor: "bg-orange-500",
     hoverColor: "hover:bg-orange-600",
     subItems: [
       {
         title: "Students List",
-        href: "#",
+        path: "students",
         icon: <FaGraduationCap className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
         title: "Enrolled Students",
-        href: "#",
+        path: "/users/enrolled",
         icon: <FaHandHoldingUsd className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
     ],
   },
-
-  //add item Academics and subitems curriculum subjects chapters
+  // Academics with subitems
   {
     title: "Academics",
     icon: <FaGraduationCap className="w-5 h-5" />,
-    href: "#",
+    path: "#",
     bgColor: "bg-orange-500",
     hoverColor: "hover:bg-orange-600",
     subItems: [
       {
         title: "Curriculum",
-        href: "#",
+        path: "/academics/curriculum",
         icon: <FaSchool className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
         title: "Subjects",
-        href: "#",
+        path: "/academics/subjects",
         icon: <FaBook className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
         title: "Chapters",
-        href: "#",
+        path: "/academics/chapters",
         icon: <FaFile className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
     ],
   },
-
-  //add item Manage library and subitems recorded videos, notes, previous questions, create paper
+  // Manage Library with subitems
   {
     title: "Manage Library",
     icon: <FaLayerGroup className="w-5 h-5" />,
-    href: "#",
+    path: "#",
     bgColor: "bg-orange-500",
     hoverColor: "hover:bg-orange-600",
     subItems: [
       {
         title: "Recorded Videos",
-        href: "#",
+        path: "/library/videos",
         icon: <FaPlay className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
         title: "Notes",
-        href: "#",
+        path: "/library/notes",
         icon: <FaBookOpen className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
         title: "Previous Questions",
-        href: "#",
+        path: "/library/questions",
         icon: <FaQuestion className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
         title: "Create Paper",
-        href: "#",
+        path: "/library/create-paper",
         icon: <FaFolderPlus className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
@@ -127,6 +126,7 @@ const menuItems = [
 const Sidebar = ({ isDarkMode, toggleTheme }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
+  const navigate = useNavigate();
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
@@ -134,6 +134,11 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
 
   const toggleDropdown = (index) => {
     setOpenDropdownIndex(openDropdownIndex === index ? null : index);
+  };
+
+  const handleNavigation = (path) => {
+    console.log(`Navigating to: ${path}`); // Debug log
+    navigate(path);
   };
 
   return (
@@ -185,9 +190,7 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
                       <span className="ms-4 text-xl">{item.title}</span>
                       <FaCaretDown
                         className={`ms-auto w-5 h-5 transform transition-transform duration-200 ${
-                          openDropdownIndex === index
-                            ? "rotate-180"
-                            : "rotate-0"
+                          openDropdownIndex === index ? "rotate-180" : "rotate-0"
                         }`}
                       />
                     </button>
@@ -199,29 +202,30 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
                       <ul className="mt-1 space-y-2 p-1 bg-orange-600 rounded-lg">
                         {item.subItems.map((subItem, subIndex) => (
                           <li key={subIndex}>
-                            <a
-                              href={subItem.href}
-                              className={`flex items-center p-2 rounded-lg ${subItem.bgColor} text-white ${subItem.hoverColor} transition-colors duration-200`}
+                            <button
+                              onClick={() => handleNavigation(subItem.path)}
+                              className={`flex items-center p-2 rounded-lg w-full ${subItem.bgColor} text-white ${subItem.hoverColor} transition-colors duration-200`}
                             >
                               {subItem.icon}
                               <span className="ms-4">{subItem.title}</span>
-                            </a>
+                            </button>
                           </li>
                         ))}
                       </ul>
                     </div>
                   </>
                 ) : (
-                  <a
-                    href={item.href}
-                    className={`flex items-center p-2 rounded-lg ${item.bgColor} text-white ${item.hoverColor} transition-colors duration-200`}
+                  <button
+                    onClick={() => handleNavigation(item.path)}
+                    className={`flex items-center p-2 rounded-lg w-full ${item.bgColor} text-white ${item.hoverColor} transition-colors duration-200`}
                   >
                     {item.icon}
                     <span className="ms-4 text-xl">{item.title}</span>
-                  </a>
+                  </button>
                 )}
               </li>
             ))}
+            {/* Dark mode toggle */}
             <li>
               <label className="flex items-center cursor-pointer gap-2 mt-4">
                 <input
