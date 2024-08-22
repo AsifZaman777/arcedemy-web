@@ -11,10 +11,10 @@ const Layout = ({ isDarkMode, toggleTheme }) => {
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
       <Sidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-      <div className="ml-64">
+      <div className="ml-0">
         <TopPanel isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
         <div className="p-4 mt-4">
-          <Outlet /> {/* This is where routed content will be rendered */}
+          <Outlet />
         </div>
       </div>
     </div>

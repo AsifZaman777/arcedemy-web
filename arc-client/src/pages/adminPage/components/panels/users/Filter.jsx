@@ -1,6 +1,7 @@
 import { FaPlus, FaFilter, FaSearch, FaSearchPlus } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 
-const Filter = ({ isDarkMode, toggleTheme }) => {
+const Filter = ({ isDarkMode}) => {
   return (
     <div
       className={`flex flex-col items-center p-10 px-10 border-2 border-slate-600 rounded-lg ${
@@ -100,6 +101,12 @@ const Filter = ({ isDarkMode, toggleTheme }) => {
       </div>
     </div>
   );
+};
+
+//props validation
+Filter.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
+  toggleTheme: PropTypes.func.isRequired,
 };
 
 export default Filter;

@@ -43,13 +43,6 @@ const menuItems = [
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
-      {
-        title: "Enrolled Students",
-        path: "/users/enrolled",
-        icon: <FaHandHoldingUsd className="w-5 h-5" />,
-        bgColor: "bg-orange-600",
-        hoverColor: "hover:bg-orange-700",
-      },
     ],
   },
   // Academics with subitems

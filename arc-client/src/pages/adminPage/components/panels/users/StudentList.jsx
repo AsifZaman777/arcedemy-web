@@ -212,7 +212,7 @@ const CurrentStudents = ({ isDarkMode }) => {
         isDarkMode ? "bg-orange-500 text-white" : "bg-orange-200 text-black"
       }`}
     >
-      <h2 className="text-3xl font-semibold mb-4 text-center">Current Students</h2>
+      <h2 className="text-3xl font-semibold mb-4 text-center">Students list</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full border">
           <thead>
