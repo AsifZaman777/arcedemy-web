@@ -6,6 +6,7 @@ import Typewriter from "typewriter-effect";
 import arcLogo from "../assets/images/arc-logo.png";
 import { motion } from "framer-motion";
 import { FaUser } from "react-icons/fa";
+import SignupModal from "./SignupModal";
 
 const buttonVariants = {
   hover: {
@@ -50,9 +51,24 @@ const Home = () => {
     navigate("/dashboard"); 
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isDarkMode = false; // Or fetch this from your application's state/context
+
+//handleSignup function
+  const handleSignup = () => {
+    setIsModalOpen(true); 
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
   return (
+    
     <div>
       {/* Navbar */}
+      {isModalOpen && (
+        <SignupModal onClose={handleModalClose} isDarkMode={isDarkMode} />
+      )}
       <div
         className={`navbar py-1 shadow-lg fixed w-full top-0 left-0 z-20 transition-colors duration-300 ${
           navbarScrolled
@@ -196,6 +212,18 @@ const Home = () => {
             </li>
           </ul>
         </div>
+        {/* signup with modal */}
+        <div className="navbar-end hidden lg:flex">
+          <motion.button
+            whileHover="hover"
+            variants={buttonVariants}
+            onClick={() => handleSignup()}
+            className="flex px-6 py-2 border-2 mr-10 gap-2 bg-transparent text-black hover:text-white hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
+          >
+            <FaUser className="text-orange-500" /> Sign Up
+          </motion.button>
+        </div>
+        
         <div className="navbar-end hidden lg:flex">
           <motion.button
             whileHover="hover"
@@ -227,7 +255,7 @@ const Home = () => {
             />
           ))}
         </div>
-
+        
         {/* Dark overlay */}
         <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50"></div>
 
