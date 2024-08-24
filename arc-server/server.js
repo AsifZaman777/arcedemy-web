@@ -34,7 +34,11 @@ async function run() {
     //post student data
     app.post('/api/register', async (req, res) => {
         const student = req.body;
-        console.log("data : ",student);
+        //check phone number already exists or not
+        const userPhone = await users.findOne({ phoneNumber: student.phoneNumber });
+        if (userPhone) {
+            return res.status(400).json({ message: "Phone number already exists" });
+        }
         //CreatedAt
         student.createdAt = new Date();
         student.EnrollmentStatus = "Enrolled";
@@ -62,14 +66,21 @@ async function run() {
         const { phoneNumber, password } = req.body;
         const user = await users.findOne({ phoneNumber });
         if (user && user.password === password) {
-            const token = jwt.sign({ phoneNumber: user.phoneNumber }, process.env.ACCESS_TOKEN_SECRET);
-            res.json({ token });
+          //login time
+          const filter = { phoneNumber: phoneNumber };
+          const updatedDoc = {
+              $set: { lastLogin: new Date() }
+          };
+          const options = { upsert: true };
+          console.log(updatedDoc);
+          const result = await users.updateOne(filter, updatedDoc, options);  
+          const token = jwt.sign({ phoneNumber: user.phoneNumber }, process.env.ACCESS_TOKEN_SECRET);
+            res.json({ token,result });
         }
         else {
             res.status(401).json({ message: "Invalid email or password" });
         }
     });
-
     //update student data by id
     app.put('/api/students/:id', async (req, res) => {
       const id = req.params.id;
@@ -90,6 +101,24 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const result = await users.deleteOne(query);
       res.send(result);
+  });
+
+  //forgot password
+  app.put('/api/forgotpassword', async (req, res) => {
+    const { phoneNumber, password } = req.body;
+    const user = await users.findOne({ phoneNumber });
+    if (user) {
+        const filter = { phoneNumber: phoneNumber };
+        const updatedDoc = {
+            $set: { password: password , passwordChangedAt: new Date() }
+        };
+        const options = { upsert: true };
+        const result = await users.updateOne(filter, updatedDoc, options);
+        res.send(result);
+    }
+    else {
+        res.status(401).json({ message: "Invalid phone number" });
+    }
   });
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
