@@ -220,7 +220,7 @@ const Home = () => {
             onClick={() => handleSignup()}
             className="flex px-6 py-2 border-2 mr-10 gap-2 bg-transparent text-black hover:text-white hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
           >
-            <FaUser className="text-orange-500" /> Sign Up
+            <FaUser className="text-orange-500" /> 
           </motion.button>
         </div>
         
