@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
+const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 5000;
 
 //dotenv
@@ -39,6 +40,15 @@ run().catch(console.dir);
 
 app.get('/', (req, res) => {
   res.send('Arcedemy server is running!');
+});
+
+//authentication using jwt
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    const user = { username: username };
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,{expiresIn: '1h'});
+    res.json({ accessToken: accessToken });
+
 });
 
 app.listen(port, () => {
