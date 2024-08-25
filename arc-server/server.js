@@ -216,12 +216,89 @@ const saveFileMetadata = async (fileMetadata) => {
     }
 };
 
+app.put("/api/update/:id", upload.any(), async (req, res) => {
+  const id = req.params.id;  
+  const { subject, chapter } = req.body;  
+  const { files } = req; 
+
+  try {
+      
+      const note = await notes.findOne({ _id: new ObjectId(id) });
+      if (!note) {
+          return res.status(404).send("Note not found");
+      }
+
+      let updatedFileData;
+
+      
+      if (files && files.length > 0) {
+          updatedFileData = await updateFile(files[0], note.fileId);  
+      }
+
+      // Update the document fields in MongoDB
+      const updateFields = {
+          subject: subject || note.subject,  
+          chapter: chapter || note.chapter,  
+          uploadedAt: new Date()  
+      };
+
+      if (updatedFileData) {
+          updateFields.fileName = updatedFileData.name;
+          updateFields.fileId = updatedFileData.id;
+          updateFields.filePath = `https://drive.google.com/file/d/${updatedFileData.id}/view?usp=sharing`;
+      }
+
+     
+      const result = await notes.updateOne(
+          { _id: new ObjectId(id) },  
+          { $set: updateFields }  
+      );
+
+      console.log("Note updated in MongoDB:", result);
+      res.status(200).send("Note updated successfully");
+
+  } catch (error) {
+      console.error("Error updating note:", error);
+      res.status(500).send(error.message);
+  }
+});
+
+// Function to update a file on Google Drive
+const updateFile = async (fileObject, fileId) => {
+  const bufferStream = new stream.PassThrough();
+  bufferStream.end(fileObject.buffer);
+
+  // Update the file on Google Drive
+  const { data } = await google.drive({ version: "v3", auth }).files.update({
+      fileId: fileId,  // Existing Google Drive file ID
+      media: {
+          mimeType: fileObject.mimetype,
+          body: bufferStream,
+      },
+      fields: "id, name",
+  });
+
+  console.log(`Updated file ${data.name} ${data.id}`);
+  return data;
+};
+
+
     //get all notes
     app.get('/api/notes', async (req, res) => {
       const cursor = notes.find({});
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    //delete note by id
+    app.delete('/api/notes/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await notes.deleteOne(query);
+      res.send(result);
+    });
+
+
 
   /*
     Notes API END
