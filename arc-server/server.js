@@ -169,8 +169,8 @@ const auth = new google.auth.GoogleAuth({
             
             // Construct the document to be stored in MongoDB
             const fileMetadata = {
-                subject: "Maths",
-                chapter: "Algebra",
+                subject: subject,
+                chapter: chapter,
                 fileName: uploadedFile.name,
                 fileId: uploadedFile.id,
                 filePath: `https://drive.google.com/file/d/${uploadedFile.id}/view?usp=sharing`,  // Example Google Drive path
@@ -215,6 +215,13 @@ const saveFileMetadata = async (fileMetadata) => {
         console.error("Error saving file metadata to MongoDB:", error);
     }
 };
+
+    //get all notes
+    app.get('/api/notes', async (req, res) => {
+      const cursor = notes.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
   /*
     Notes API END
