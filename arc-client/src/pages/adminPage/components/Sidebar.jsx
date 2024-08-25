@@ -54,7 +54,7 @@ const menuItems = [
     subItems: [
       {
         title: "Curriculum",
-        path: "/academics/curriculum",
+        path: "curriculum",
         icon: <FaSchool className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",

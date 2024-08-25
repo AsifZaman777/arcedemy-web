@@ -16,12 +16,10 @@ const TopPanel = ({ isDarkMode }) => {
     >
       {/* Top Row: Title */}
       <div className="flex justify-between items-center w-full">
-        {/* Left Spacer */}
-        <div className="w-1/3"></div>
         
         {/* Admin Panel Title */}
-        <div className="text-3xl font-semibold text-center flex-1">
-          Admin Panel
+        <div className="text-3xl font-semibold text-left ms-10 text-orange-500">
+          Sadman mithun (Super Admin)
         </div>
 
         {/* Logout Button */}
