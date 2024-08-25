@@ -8,6 +8,10 @@ const CurrentStudents = ({ isDarkMode }) => {
       id: 1,
       name: "John Doe",
       email: "john@example.com",
+      mobile: "+1 123-456-7890",
+      country: "United States",
+      countryCode: "us",
+      city: "New York",
       curriculum: "Cambridge",
       level: "A-Level",
       createdDate: "2024-08-01",
@@ -17,6 +21,10 @@ const CurrentStudents = ({ isDarkMode }) => {
       id: 2,
       name: "Jane Smith",
       email: "jane@example.com",
+      mobile: "+44 20-1234-5678",
+      country: "United Kingdom",
+      countryCode: "gb",
+      city: "London",
       curriculum: "Edexcel",
       level: "IGCSE",
       createdDate: "2024-08-02",
@@ -24,8 +32,12 @@ const CurrentStudents = ({ isDarkMode }) => {
     },
     {
       id: 3,
-      name: "Mike Johnson",
-      email: "mike@example.com",
+      name: "Carlos Gomez",
+      email: "carlos@example.com",
+      mobile: "+34 654-321-987",
+      country: "Spain",
+      countryCode: "es",
+      city: "Madrid",
       curriculum: "Cambridge",
       level: "O-Level",
       createdDate: "2024-08-03",
@@ -33,8 +45,12 @@ const CurrentStudents = ({ isDarkMode }) => {
     },
     {
       id: 4,
-      name: "Emily Brown",
-      email: "emily@example.com",
+      name: "Akira Tanaka",
+      email: "akira@example.com",
+      mobile: "+81 3-1234-5678",
+      country: "Japan",
+      countryCode: "jp",
+      city: "Tokyo",
       curriculum: "Edexcel",
       level: "AS-Level",
       createdDate: "2024-08-04",
@@ -42,8 +58,12 @@ const CurrentStudents = ({ isDarkMode }) => {
     },
     {
       id: 5,
-      name: "William Green",
-      email: "william@example.com",
+      name: "Anna Müller",
+      email: "anna@example.com",
+      mobile: "+49 30-1234-5678",
+      country: "Germany",
+      countryCode: "de",
+      city: "Berlin",
       curriculum: "Cambridge",
       level: "IGCSE",
       createdDate: "2024-08-05",
@@ -51,17 +71,25 @@ const CurrentStudents = ({ isDarkMode }) => {
     },
     {
       id: 6,
-      name: "Sophia White",
-      email: "sophia@example.com",
+      name: "Ravi Patel",
+      email: "ravi@example.com",
+      mobile: "+91 98765-43210",
+      country: "India",
+      countryCode: "in",
+      city: "Mumbai",
       curriculum: "Edexcel",
-      level: "IGCSE",
+      level: "A-Level",
       createdDate: "2024-08-06",
       enrollmentStatus: "Unenrolled",
     },
     {
       id: 7,
-      name: "Liam Black",
-      email: "liam@example.com",
+      name: "Sofia Rossi",
+      email: "sofia@example.com",
+      mobile: "+39 06-1234-5678",
+      country: "Italy",
+      countryCode: "it",
+      city: "Rome",
       curriculum: "Cambridge",
       level: "O-Level",
       createdDate: "2024-08-07",
@@ -69,8 +97,12 @@ const CurrentStudents = ({ isDarkMode }) => {
     },
     {
       id: 8,
-      name: "Olivia Blue",
-      email: "olivia@example.com",
+      name: "Chen Wei",
+      email: "chen@example.com",
+      mobile: "+86 10-1234-5678",
+      country: "China",
+      countryCode: "cn",
+      city: "Beijing",
       curriculum: "Edexcel",
       level: "AS-Level",
       createdDate: "2024-08-08",
@@ -78,26 +110,38 @@ const CurrentStudents = ({ isDarkMode }) => {
     },
     {
       id: 9,
-      name: "Ethan Gray",
-      email: "ethan@example.com",
+      name: "Maria Silva",
+      email: "maria@example.com",
+      mobile: "+55 21-1234-5678",
+      country: "Brazil",
+      countryCode: "br",
+      city: "Rio de Janeiro",
       curriculum: "Cambridge",
-      level: "A-Level",
+      level: "IGCSE",
       createdDate: "2024-08-09",
       enrollmentStatus: "Enrolled",
     },
     {
       id: 10,
-      name: "Ava Green",
-      email: "ava@example.com",
+      name: "David Johnson",
+      email: "david@example.com",
+      mobile: "+61 2-9876-5432",
+      country: "Australia",
+      countryCode: "au",
+      city: "Sydney",
       curriculum: "Edexcel",
-      level: "IGCSE",
+      level: "A-Level",
       createdDate: "2024-08-10",
       enrollmentStatus: "Unenrolled",
     },
     {
       id: 11,
-      name: "James Taylor",
-      email: "james@example.com",
+      name: "Amina Ahmed",
+      email: "amina@example.com",
+      mobile: "+971 50-123-4567",
+      country: "United Arab Emirates",
+      countryCode: "ae",
+      city: "Dubai",
       curriculum: "Cambridge",
       level: "O-Level",
       createdDate: "2024-08-11",
@@ -105,87 +149,18 @@ const CurrentStudents = ({ isDarkMode }) => {
     },
     {
       id: 12,
-      name: "Mia Johnson",
-      email: "mia@example.com",
+      name: "Pierre Dupont",
+      email: "pierre@example.com",
+      mobile: "+33 1-2345-6789",
+      country: "France",
+      countryCode: "fr",
+      city: "Paris",
       curriculum: "Edexcel",
-      level: "AS-Level",
+      level: "IGCSE",
       createdDate: "2024-08-12",
       enrollmentStatus: "Unenrolled",
-    },
-    {
-      id: 13,
-      name: "Alexander Lee",
-      email: "alexander@example.com",
-      curriculum: "Cambridge",
-      level: "IGCSE",
-      createdDate: "2024-08-13",
-      enrollmentStatus: "Enrolled",
-    },
-    {
-      id: 14,
-      name: "Isabella Martinez",
-      email: "isabella@example.com",
-      curriculum: "Edexcel",
-      level: "A-Level",
-      createdDate: "2024-08-14",
-      enrollmentStatus: "Unenrolled",
-    },
-    {
-      id: 15,
-      name: "Benjamin Wilson",
-      email: "benjamin@example.com",
-      curriculum: "Cambridge",
-      level: "O-Level",
-      createdDate: "2024-08-15",
-      enrollmentStatus: "Enrolled",
-    },
-    {
-      id: 16,
-      name: "Charlotte Brown",
-      email: "charlotte@example.com",
-      curriculum: "Edexcel",
-      level: "IGCSE",
-      createdDate: "2024-08-16",
-      enrollmentStatus: "Unenrolled",
-    },
-    {
-      id: 17,
-      name: "Daniel King",
-      email: "daniel@example.com",
-      curriculum: "Cambridge",
-      level: "A-Level",
-      createdDate: "2024-08-17",
-      enrollmentStatus: "Enrolled",
-    },
-    {
-      id: 18,
-      name: "Amelia Scott",
-      email: "amelia@example.com",
-      curriculum: "Edexcel",
-      level: "AS-Level",
-      createdDate: "2024-08-18",
-      enrollmentStatus: "Unenrolled",
-    },
-    {
-      id: 19,
-      name: "Matthew Davis",
-      email: "matthew@example.com",
-      curriculum: "Cambridge",
-      level: "IGCSE",
-      createdDate: "2024-08-19",
-      enrollmentStatus: "Enrolled",
-    },
-    {
-      id: 20,
-      name: "Harper Allen",
-      email: "harper@example.com",
-      curriculum: "Edexcel",
-      level: "O-Level",
-      createdDate: "2024-08-20",
-      enrollmentStatus: "Unenrolled",
-    },
+    }
   ]);
-
   
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -208,11 +183,11 @@ const CurrentStudents = ({ isDarkMode }) => {
 
   return (
     <div
-      className={`p-4 rounded-2xl ${
+      className={`p-4 m-20 rounded-2xl ${
         isDarkMode ? "bg-orange-500 text-white" : "bg-orange-200 text-black"
       }`}
     >
-      <h2 className="text-3xl font-semibold mb-4 text-center">Current Students</h2>
+      <h2 className="text-3xl font-semibold mb-4 text-center">Current students</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full border">
           <thead>
@@ -226,6 +201,9 @@ const CurrentStudents = ({ isDarkMode }) => {
               <th className="px-4 py-2 border">ID</th>
               <th className="px-4 py-2 border">Name</th>
               <th className="px-4 py-2 border">Email</th>
+              <th className="px-4 py-2 border">Mobile</th>
+              <th className="px-4 py-2 border">Country</th>
+              <th className="px-4 py-2 border">City</th>
               <th className="px-4 py-2 border">Curriculum</th>
               <th className="px-4 py-2 border">Level</th>
               <th className="px-4 py-2 border">Created Date</th>
@@ -253,6 +231,18 @@ const CurrentStudents = ({ isDarkMode }) => {
                 <td className="px-4 py-2 border text-center">
                   {student.email}
                 </td>
+                <td className="px-4 py-2 border text-center">
+                  {student.mobile}
+                </td>
+                <td className="px-4 py-2 border text-center">
+                  <img
+                    src={`https://flagcdn.com/16x12/${student.countryCode}.png`}
+                    alt={`${student.country} flag`}
+                    className="inline-block mr-2"
+                  />
+                  {student.country}
+                </td>
+                <td className="px-4 py-2 border text-center">{student.city}</td>
                 <td className="px-4 py-2 border text-center">
                   {student.curriculum}
                 </td>

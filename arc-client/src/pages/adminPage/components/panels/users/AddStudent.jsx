@@ -2,37 +2,19 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import countryData from "../../../../../data/countryCode"; // Import your country data
 
-const EditModal = ({ student, onClose, isDarkMode }) => {
+const AddStudent = ({ student, onClose, isDarkMode }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    countryCode: "",
-    country: "",
-    city: "",
-    curriculum: "",
-    level: "",
-    createdDate: "",
-    enrollmentStatus: "",
+    name: "", // Initialize to empty string
+    email: "", // Initialize to empty string
+    mobileNumber: "", // Initialize to empty string
+    countryCode: "", // Initialize to empty string
+    country: "", // Initialize to empty string
+    city: "", // Initialize to empty string
+    curriculum: "", // Initialize to empty string
+    level: "", // Initialize to empty string
+    createdDate: "", // Initialize to empty string
+    enrollmentStatus: "", // Initialize to empty string
   });
-
-  // Prefill form data when student prop changes
-  useEffect(() => {
-    if (student) {
-      setFormData({
-        name: student.name || "",
-        email: student.email || "",
-        mobile: student.mobile || "",
-        countryCode: student.countryCode || "",
-        country: student.country || "",
-        city: student.city || "",
-        curriculum: student.curriculum || "",
-        level: student.level || "",
-        createdDate: student.createdDate || "",
-        enrollmentStatus: student.enrollmentStatus || "",
-      });
-    }
-  }, [student]);
 
   // Update countryCode when country changes
   useEffect(() => {
@@ -101,22 +83,6 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
               />
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Country:</label>
-              <select
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                className="select select-bordered w-full text-lg p-2"
-              >
-                <option value="">Select a country</option>
-                {countryData.map((country) => (
-                  <option key={country.code} value={country.name}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="py-4">
               <label className="block text-lg mb-2">Mobile Number:</label>
               <div className="flex items-center">
                 {selectedCountry && (
@@ -131,29 +97,34 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
                       name="countryCode"
                       value={selectedCountry.dial_code || ""}
                       readOnly
-                      className="input rounded-lg w-16 bg-transparent text-lg text-black px-0 mr-2"
-                    />
-                    <input
-                      type="tel"
-                      name="mobile"
-                      value={formData.mobile}
-                      onChange={handleChange}
-                      className="input input-bordered w-36  -ml-5 text-lg p-1"
-                      placeholder="Enter mobile number"
+                      className="input rounded-lg w-16 bg-transparent text-lg text-black px-2 mr-0"
                     />
                   </>
                 )}
-                {!selectedCountry && (
-                  <input
-                    type="tel"
-                    name="mobile"
-                    value={formData.mobile}
-                    onChange={handleChange}
-                    className="input input-bordered w-full text-lg p-2"
-                    placeholder="Enter mobile number"
-                  />
-                )}
+                <input
+                  type="tel"
+                  name="mobileNumber"
+                  value={formData.mobileNumber}
+                  onChange={handleChange}
+                  className="input input-bordered w-full text-lg p-2"
+                />
               </div>
+            </div>
+            <div className="py-4">
+              <label className="block text-lg mb-2">Country:</label>
+              <select
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                className="select select-bordered w-full text-lg p-2"
+              >
+                <option value="">Select a country</option>
+                {countryData.map((country) => (
+                  <option key={country.code} value={country.name}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="py-4">
               <label className="block text-lg mb-2">City:</label>
@@ -186,6 +157,7 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
                 onChange={handleChange}
                 className="select select-bordered w-full text-lg p-2"
               >
+                <option value="">Select a level</option>
                 <option value="IGCSE">IGCSE</option>
                 <option value="A level">A level</option>
                 <option value="O level">O level</option>
@@ -209,6 +181,7 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
                 onChange={handleChange}
                 className="select select-bordered w-full text-lg p-2"
               >
+                <option value="">Select status</option>
                 <option value="enrolled">Enrolled</option>
                 <option value="unenrolled">Unenrolled</option>
               </select>
@@ -236,11 +209,11 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
 };
 
 // Props validation
-EditModal.propTypes = {
+AddStudent.propTypes = {
   student: PropTypes.shape({
     name: PropTypes.string,
     email: PropTypes.string,
-    mobile: PropTypes.string,
+    mobileNumber: PropTypes.string,
     countryCode: PropTypes.string,
     country: PropTypes.string,
     city: PropTypes.string,
@@ -253,4 +226,4 @@ EditModal.propTypes = {
   isDarkMode: PropTypes.bool.isRequired,
 };
 
-export default EditModal;
+export default AddStudent;

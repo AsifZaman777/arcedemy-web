@@ -8,7 +8,6 @@ import {
   FaCaretDown,
   FaEllipsisV,
   FaGraduationCap,
-  FaHandHoldingUsd,
   FaSchool,
   FaBook,
   FaFile,
