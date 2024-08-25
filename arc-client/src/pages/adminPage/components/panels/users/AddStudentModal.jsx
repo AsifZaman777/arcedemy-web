@@ -2,19 +2,37 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import countryData from "../../../../../data/countryCode"; // Import your country data
 
-const AddStudent = ({ student, onClose, isDarkMode }) => {
+const AddStudentModal = ({ student, onClose, isDarkMode }) => {
   const [formData, setFormData] = useState({
-    name: "", // Initialize to empty string
-    email: "", // Initialize to empty string
-    mobileNumber: "", // Initialize to empty string
-    countryCode: "", // Initialize to empty string
-    country: "", // Initialize to empty string
-    city: "", // Initialize to empty string
-    curriculum: "", // Initialize to empty string
-    level: "", // Initialize to empty string
-    createdDate: "", // Initialize to empty string
-    enrollmentStatus: "", // Initialize to empty string
+    name: "",
+    email: "",
+    mobile: "",
+    countryCode: "",
+    country: "",
+    city: "",
+    curriculum: "",
+    level: "",
+    createdDate: "",
+    enrollmentStatus: "",
   });
+
+  // Prefill form data when student prop changes
+  useEffect(() => {
+    if (student) {
+      setFormData({
+        name: student.name || "",
+        email: student.email || "",
+        mobile: student.mobile || "",
+        countryCode: student.countryCode || "",
+        country: student.country || "",
+        city: student.city || "",
+        curriculum: student.curriculum || "",
+        level: student.level || "",
+        createdDate: student.createdDate || "",
+        enrollmentStatus: student.enrollmentStatus || "",
+      });
+    }
+  }, [student]);
 
   // Update countryCode when country changes
   useEffect(() => {
@@ -83,34 +101,6 @@ const AddStudent = ({ student, onClose, isDarkMode }) => {
               />
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Mobile Number:</label>
-              <div className="flex items-center">
-                {selectedCountry && (
-                  <>
-                    <img
-                      src={`https://flagcdn.com/16x12/${selectedCountry.flag}.png`}
-                      alt={`${selectedCountry.name} flag`}
-                      className="inline-block mr-2"
-                    />
-                    <input
-                      type="text"
-                      name="countryCode"
-                      value={selectedCountry.dial_code || ""}
-                      readOnly
-                      className="input rounded-lg w-16 bg-transparent text-lg text-black px-2 mr-0"
-                    />
-                  </>
-                )}
-                <input
-                  type="tel"
-                  name="mobileNumber"
-                  value={formData.mobileNumber}
-                  onChange={handleChange}
-                  className="input input-bordered w-full text-lg p-2"
-                />
-              </div>
-            </div>
-            <div className="py-4">
               <label className="block text-lg mb-2">Country:</label>
               <select
                 name="country"
@@ -125,6 +115,45 @@ const AddStudent = ({ student, onClose, isDarkMode }) => {
                   </option>
                 ))}
               </select>
+            </div>
+            <div className="py-4">
+              <label className="block text-lg mb-2">Mobile Number:</label>
+              <div className="flex items-center">
+                {selectedCountry && (
+                  <>
+                    <img
+                      src={`https://flagcdn.com/16x12/${selectedCountry.flag}.png`}
+                      alt={`${selectedCountry.name} flag`}
+                      className="inline-block mr-2"
+                    />
+                    <input
+                      type="text"
+                      name="countryCode"
+                      value={selectedCountry.dial_code || ""}
+                      readOnly
+                      className="input rounded-lg w-16 bg-transparent text-lg text-black px-0 mr-2"
+                    />
+                    <input
+                      type="tel"
+                      name="mobile"
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      className="input input-bordered w-36  -ml-5 text-lg p-1"
+                      placeholder="Enter mobile"
+                    />
+                  </>
+                )}
+                {!selectedCountry && (
+                  <input
+                    type="tel"
+                    name="mobile"
+                    value={formData.mobile}
+                    onChange={handleChange}
+                    className="input input-bordered w-full text-lg p-2"
+                    placeholder="Enter mobile"
+                  />
+                )}
+              </div>
             </div>
             <div className="py-4">
               <label className="block text-lg mb-2">City:</label>
@@ -179,9 +208,9 @@ const AddStudent = ({ student, onClose, isDarkMode }) => {
                 name="enrollmentStatus"
                 value={formData.enrollmentStatus}
                 onChange={handleChange}
-                className="select select-bordered w-full text-lg p-2"
+                className="select select-bordered w-60 text-lg p-2"
               >
-                <option value="">Select status</option>
+                <option value="">Select enrollment status</option>
                 <option value="enrolled">Enrolled</option>
                 <option value="unenrolled">Unenrolled</option>
               </select>
@@ -209,11 +238,11 @@ const AddStudent = ({ student, onClose, isDarkMode }) => {
 };
 
 // Props validation
-AddStudent.propTypes = {
+AddStudentModal.propTypes = {
   student: PropTypes.shape({
     name: PropTypes.string,
     email: PropTypes.string,
-    mobileNumber: PropTypes.string,
+    mobile: PropTypes.string,
     countryCode: PropTypes.string,
     country: PropTypes.string,
     city: PropTypes.string,
@@ -226,4 +255,4 @@ AddStudent.propTypes = {
   isDarkMode: PropTypes.bool.isRequired,
 };
 
-export default AddStudent;
+export default AddStudentModal;

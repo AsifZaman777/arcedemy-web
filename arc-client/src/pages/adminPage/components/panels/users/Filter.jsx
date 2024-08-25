@@ -1,7 +1,19 @@
+import { useState } from 'react';
 import { FaPlus, FaFilter, FaSearch, FaSearchPlus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
+import AddStudentModal from './AddStudentModal';
 
-const Filter = ({ isDarkMode}) => {
+const Filter = ({ isDarkMode }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div
       className={`flex flex-col items-center p-10 px-10 border-2 border-slate-600 rounded-lg ${
@@ -13,6 +25,7 @@ const Filter = ({ isDarkMode}) => {
         {/* Add Student Section */}
         <div className="flex items-center space-x-6">
           <button
+            onClick={handleOpenModal}
             className={`flex items-center px-6 py-3 ${
               isDarkMode ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-blue-600 text-white hover:bg-blue-700'
             } rounded-lg text-lg font-medium`}
@@ -99,14 +112,22 @@ const Filter = ({ isDarkMode}) => {
           </button>
         </div>
       </div>
+
+      {/* AddStudentModal */}
+      {isModalOpen && (
+        <AddStudentModal
+          student={null} // Pass the student data if available
+          onClose={handleCloseModal}
+          isDarkMode={isDarkMode}
+        />
+      )}
     </div>
   );
 };
 
-//props validation
+// Props validation
 Filter.propTypes = {
   isDarkMode: PropTypes.bool.isRequired,
-  toggleTheme: PropTypes.func.isRequired,
 };
 
 export default Filter;
