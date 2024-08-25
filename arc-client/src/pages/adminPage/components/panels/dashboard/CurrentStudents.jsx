@@ -183,7 +183,7 @@ const CurrentStudents = ({ isDarkMode }) => {
 
   return (
     <div
-      className={`p-4 m-20 rounded-2xl ${
+      className={`p-4 rounded-2xl ${
         isDarkMode ? "bg-orange-500 text-white" : "bg-orange-200 text-black"
       }`}
     >

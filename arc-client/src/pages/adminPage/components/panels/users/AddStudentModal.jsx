@@ -77,7 +77,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
             : "bg-white border-gray-700 border-2"
         }`}
       >
-        <h3 className="font-bold text-2xl mb-4">Edit Student</h3>
+        <h3 className="font-bold text-2xl mb-4">Add new student</h3>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="py-4">

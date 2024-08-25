@@ -52,12 +52,26 @@ const Filter = ({ isDarkMode }) => {
               }`}
             >
               <option value="">Select Curriculum</option>
+              <option value="cambridge">Cambridge</option>
               <option value="edexcel">Edexcel</option>
-              <option value="a-level">A Level</option>
-              <option value="o-level">O Level</option>
-              <option value="as-level">AS Level</option>
             </select>
           </div>
+
+          {/* Level Select */}
+          <div className="flex items-center space-x-3">
+            <label htmlFor="level" className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}>
+              Level:
+            </label>
+            <select id="level" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
+              <option value="">Select Level</option>
+              <option value="igcse">IGCSE</option>
+              <option value="a-level">A level</option>
+              <option value="o-level">O level</option>
+            </select>
+          </div>
+
+          
+
 
           {/* Enrollment Status Select */}
           <div className="flex items-center space-x-3">
