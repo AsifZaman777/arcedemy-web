@@ -3,6 +3,11 @@ const cors = require('cors');
 const { MongoClient, ServerApiVersion,ObjectId } = require('mongodb');
 const app = express();
 const jwt = require('jsonwebtoken');
+const stream = require("stream");
+const multer = require("multer");
+const path = require("path");
+const { google } = require("googleapis");
+const upload = multer();
 const port = process.env.PORT || 5000;
 
 //dotenv
@@ -12,6 +17,7 @@ require('dotenv').config();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@arcedemy.iv97u.mongodb.net/?retryWrites=true&w=majority&appName=Arcedemy`;
 
@@ -30,6 +36,7 @@ async function run() {
     await client.connect();
     const database = client.db("arcedemy");
     const users = database.collection("students");
+    const notes = database.collection("notes");
     
     //post student data
     app.post('/api/register', async (req, res) => {
@@ -120,6 +127,99 @@ async function run() {
         res.status(401).json({ message: "Invalid phone number" });
     }
   });
+
+  /*
+  
+  Notes API using Google Drive API
+  
+  */
+
+  //google drive api
+ // Google service account configuration using environment variables
+const serviceAccount = {
+  type: "service_account",
+  project_id: process.env.GOOGLE_PROJECT_ID,
+  private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+  private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'), // Replacing \\n with actual newline character
+  client_email: process.env.GOOGLE_CLIENT_EMAIL,
+  client_id: process.env.GOOGLE_CLIENT_ID,
+  auth_uri: process.env.GOOGLE_AUTH_URI,
+  token_uri: process.env.GOOGLE_TOKEN_URI,
+  auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_CERT_URL,
+  client_x509_cert_url: process.env.GOOGLE_CLIENT_CERT_URL,
+};
+
+const SCOPES = ["https://www.googleapis.com/auth/drive"];
+
+const auth = new google.auth.GoogleAuth({
+  credentials: serviceAccount,  // Use the service account object instead of keyFile
+  scopes: SCOPES,
+});
+  
+  
+  app.post("/api/upload", upload.any(), async (req, res) => {
+    try {
+        console.log(req.body);
+        console.log(req.files);
+        const { subject, chapter } = req.body;  // Get additional data from req.body
+        const { files } = req;
+
+        for (let f = 0; f < files.length; f += 1) {
+            const uploadedFile = await uploadFile(files[f]);
+            
+            // Construct the document to be stored in MongoDB
+            const fileMetadata = {
+                subject: "Maths",
+                chapter: "Algebra",
+                fileName: uploadedFile.name,
+                fileId: uploadedFile.id,
+                filePath: `https://drive.google.com/file/d/${uploadedFile.id}/view?usp=sharing`,  // Example Google Drive path
+                uploadedAt: new Date()
+            };
+            await saveFileMetadata(fileMetadata);
+        }
+
+        res.status(200).send("Form Submitted");
+        console.log("Form Submitted");
+    } catch (f) {
+        console.error(f);
+        res.status(500).send(f.message);
+    }
+});
+
+const uploadFile = async (fileObject) => {
+    const bufferStream = new stream.PassThrough();
+    bufferStream.end(fileObject.buffer);
+
+    const { data } = await google.drive({ version: "v3", auth }).files.create({
+        media: {
+            mimeType: fileObject.mimeType,
+            body: bufferStream,
+        },
+        requestBody: {
+            name: fileObject.originalname,
+            parents: ["1dvrIKRBWkUDE5C-h8Df-LG55Qqr-QgHL"],
+        },
+        fields: "id,name",
+    });
+
+    console.log(`Uploaded file ${data.name} ${data.id}`);
+    return data;  
+};
+
+const saveFileMetadata = async (fileMetadata) => {
+    try {
+        const result = await notes.insertOne(fileMetadata);
+        console.log("File metadata saved to MongoDB:", result.insertedId);
+    } catch (error) {
+        console.error("Error saving file metadata to MongoDB:", error);
+    }
+};
+
+  /*
+    Notes API END
+
+  */ 
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
