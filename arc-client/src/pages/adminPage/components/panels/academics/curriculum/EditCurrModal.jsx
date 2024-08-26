@@ -100,7 +100,7 @@ const EditCurrModal = ({ curr, onClose, isDarkMode }) => {
             />
           </div>
           <div className="py-4">
-            <label className="block text-lg mb-2">Level:</label>
+            <label className="block text-lg mb-2">Levels:</label>
             {levels.length > 0 ? (
               levels.map((level, index) => (
                 <div key={index} className="flex items-center mb-2">

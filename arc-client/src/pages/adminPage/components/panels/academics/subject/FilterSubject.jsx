@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FaPlus, FaFilter, FaSearch, FaSearchPlus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
-import AddCurrModal from './AddCurrModal';
+import AddSubjectModal from './AddSubjectModal';
 
-const FilterCurr = ({ isDarkMode }) => {
+const FilterSubject = ({ isDarkMode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -32,7 +32,7 @@ const FilterCurr = ({ isDarkMode }) => {
             } rounded-lg text-lg font-medium`}
           >
             <FaPlus className="mr-2" />
-            Create Curriculum
+            Create subject
           </button>
 
          
@@ -40,7 +40,7 @@ const FilterCurr = ({ isDarkMode }) => {
 
         {/* Select Filters */}
         <div className="flex items-center space-x-6 -ms-40 mb-10">
-          {/* Curriculum Select */}
+          {/* Subject Select */}
           <div className="flex items-center space-x-3">
             <label
               htmlFor="curriculum"
@@ -76,9 +76,24 @@ const FilterCurr = ({ isDarkMode }) => {
             </select>
           </div>
 
+
+          <div className="flex items-center space-x-3">
+            <label htmlFor="level" className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}>
+              Subjects:
+            </label>
+            <select id="level" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
+              <option value="">Select Level</option>
+              <option value="math">Math</option>]
+              <option value="physics">Physics</option>
+              <option value="chemistry">Chemistry</option>
+              <option value="accounting">Accounting</option>
+              <option value="Economics">Economics</option>
+            </select>
+          </div>
+
         </div>
 
-        {/* FilterCurr Button */}
+        {/* FilterSubject Button */}
         <button
           className={`flex items-center px-6 py-3 ${
             isDarkMode ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-green-600 text-white hover:bg-green-700'
@@ -111,9 +126,9 @@ const FilterCurr = ({ isDarkMode }) => {
         </div>
       </div>
 
-      {/* AddCurrModal */}
+      {/* AddSubjectModal */}
       {isModalOpen && (
-        <AddCurrModal
+        <AddSubjectModal
           student={null} // Pass the student data if available
           onClose={handleCloseModal}
           isDarkMode={isDarkMode}
@@ -124,8 +139,8 @@ const FilterCurr = ({ isDarkMode }) => {
 };
 
 // Props validation
-FilterCurr.propTypes = {
+FilterSubject.propTypes = {
   isDarkMode: PropTypes.bool.isRequired,
 };
 
-export default FilterCurr;
+export default FilterSubject;

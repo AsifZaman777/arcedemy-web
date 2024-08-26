@@ -61,13 +61,13 @@ const menuItems = [
       },
       {
         title: "Subjects",
-        path: "/academics/subjects",
+        path: "subject",
         icon: <FaBook className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
-        title: "Chapters",
+        title: "chapter",
         path: "/academics/chapters",
         icon: <FaFile className="w-5 h-5" />,
         bgColor: "bg-orange-600",

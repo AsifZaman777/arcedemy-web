@@ -1,0 +1,199 @@
+[
+    {
+      "id": 1,
+      "curriculum": "Cambridge",
+      "createdBy": "Admin",
+      "modifiedBy": "Sadman Sakib",
+      "levels": [
+        {
+          "id": 1,
+          "level": "AS-Level",
+          "subjects": [
+            {
+              "id": 1,
+              "subject": "Mathematics",
+              "chapters": [
+                { "id": 1, "chapter": "Algebra" },
+                { "id": 2, "chapter": "Calculus" }
+              ]
+            },
+            {
+              "id": 2,
+              "subject": "Physics",
+              "chapters": [
+                { "id": 3, "chapter": "Mechanics" },
+                { "id": 4, "chapter": "Optics" }
+              ]
+            },
+            {
+              "id": 3,
+              "subject": "Chemistry",
+              "chapters": [
+                { "id": 5, "chapter": "Organic Chemistry" },
+                { "id": 6, "chapter": "Inorganic Chemistry" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "level": "A2-Level",
+          "subjects": [
+            {
+              "id": 4,
+              "subject": "Mathematics",
+              "chapters": [
+                { "id": 7, "chapter": "Differential Equations" },
+                { "id": 8, "chapter": "Statistics" }
+              ]
+            },
+            {
+              "id": 5,
+              "subject": "Physics",
+              "chapters": [
+                { "id": 9, "chapter": "Electromagnetism" },
+                { "id": 10, "chapter": "Thermodynamics" }
+              ]
+            },
+            {
+              "id": 6,
+              "subject": "Chemistry",
+              "chapters": [
+                { "id": 11, "chapter": "Physical Chemistry" },
+                { "id": 12, "chapter": "Biochemistry" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "level": "O-Level",
+          "subjects": [
+            {
+              "id": 7,
+              "subject": "Mathematics",
+              "chapters": [
+                { "id": 13, "chapter": "Geometry" },
+                { "id": 14, "chapter": "Trigonometry" }
+              ]
+            },
+            {
+              "id": 8,
+              "subject": "Physics",
+              "chapters": [
+                { "id": 15, "chapter": "Kinematics" },
+                { "id": 16, "chapter": "Electricity" }
+              ]
+            },
+            {
+              "id": 9,
+              "subject": "Chemistry",
+              "chapters": [
+                { "id": 17, "chapter": "Chemical Reactions" },
+                { "id": 18, "chapter": "Periodic Table" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "curriculum": "Edexcel",
+      "createdBy": "Super Admin",
+      "modifiedBy": "Zafri",
+      "levels": [
+        {
+          "id": 4,
+          "level": "IGCSE",
+          "subjects": [
+            {
+              "id": 10,
+              "subject": "Mathematics",
+              "chapters": [
+                { "id": 19, "chapter": "Algebra" },
+                { "id": 20, "chapter": "Geometry" }
+              ]
+            },
+            {
+              "id": 11,
+              "subject": "Physics",
+              "chapters": [
+                { "id": 21, "chapter": "Forces" },
+                { "id": 22, "chapter": "Energy" }
+              ]
+            },
+            {
+              "id": 12,
+              "subject": "Chemistry",
+              "chapters": [
+                { "id": 23, "chapter": "Acids and Bases" },
+                { "id": 24, "chapter": "Chemical Bonding" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "level": "IAL",
+          "subjects": [
+            {
+              "id": 13,
+              "subject": "Mathematics",
+              "chapters": [
+                { "id": 25, "chapter": "Calculus" },
+                { "id": 26, "chapter": "Probability" }
+              ]
+            },
+            {
+              "id": 14,
+              "subject": "Physics",
+              "chapters": [
+                { "id": 27, "chapter": "Waves" },
+                { "id": 28, "chapter": "Thermal Physics" }
+              ]
+            },
+            {
+              "id": 15,
+              "subject": "Chemistry",
+              "chapters": [
+                { "id": 29, "chapter": "Organic Chemistry" },
+                { "id": 30, "chapter": "Inorganic Chemistry" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "level": "IAS",
+          "subjects": [
+            {
+              "id": 16,
+              "subject": "Mathematics",
+              "chapters": [
+                { "id": 31, "chapter": "Differential Equations" },
+                { "id": 32, "chapter": "Statistics" }
+              ]
+            },
+            {
+              "id": 17,
+              "subject": "Physics",
+              "chapters": [
+                { "id": 33, "chapter": "Quantum Physics" },
+                { "id": 34, "chapter": "Relativity" }
+              ]
+            },
+            {
+              "id": 18,
+              "subject": "Chemistry",
+              "chapters": [
+                { "id": 35, "chapter": "Physical Chemistry" },
+                { "id": 36, "chapter": "Biochemistry" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+  
