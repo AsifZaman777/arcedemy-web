@@ -246,7 +246,7 @@ const SubjectList = ({ isDarkMode }) => {
       {isModalOpen && selectedSubject && (
         <EditSubjectModal
           isDarkMode={isDarkMode}
-          subject={selectedSubject}
+          subjectData={selectedSubject}
           onClose={handleModalClose}
         />
       )}
