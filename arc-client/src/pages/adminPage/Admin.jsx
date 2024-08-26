@@ -14,6 +14,8 @@ import FilterCurr from "./components/panels/academics/curriculum/FilterCurr";
 import CurrList from "./components/panels/academics/curriculum/CurrList";
 import FilterSubject from "./components/panels/academics/subject/FilterSubject";
 import SubjectList from "./components/panels/academics/subject/SubjectList";
+import FilterChapter from "./components/panels/academics/chapter/FilterChapter";
+import ChapterList from "./components/panels/academics/chapter/ChapterList";
 
 const Layout = ({ isDarkMode, toggleTheme }) => {
   return (
@@ -106,6 +108,21 @@ const Admin = () => {
             </div>
           }
         />
+       
+       <Route
+          path="chapter"
+          element={
+            <div className="space-y-4">
+              <h2 className="text-3xl font-semibold text-center underline mb-10">
+                Subject Panel
+              </h2>
+                <FilterChapter  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+                <ChapterList  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            </div>
+          }
+        />
+       
+
       </Route>
     </Routes>
   );
