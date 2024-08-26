@@ -114,7 +114,7 @@ const Admin = () => {
           element={
             <div className="space-y-4">
               <h2 className="text-3xl font-semibold text-center underline mb-10">
-                Subject Panel
+                Chapter panel
               </h2>
                 <FilterChapter  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
                 <ChapterList  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
