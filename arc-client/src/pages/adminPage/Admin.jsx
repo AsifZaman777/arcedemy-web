@@ -26,7 +26,7 @@ const Layout = ({ isDarkMode, toggleTheme }) => {
       <div className="ml-0">
         <TopPanel isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
         <div className="p-4 mt-4">
-          <Outlet />
+          <Outlet /> {/* Nested routes */}
         </div>
       </div>
     </div>
