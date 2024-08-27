@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import countryData from "../../../../../data/countryCode"; // Import your country data
 
-const EditModal = ({ student, onClose, isDarkMode }) => {
+const AddStudentModal = ({ student, onClose, isDarkMode }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -77,7 +77,7 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
             : "bg-white border-gray-700 border-2"
         }`}
       >
-        <h3 className="font-bold text-2xl mb-4">Edit Student</h3>
+        <h3 className="font-bold text-2xl mb-4">Add new student</h3>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="py-4">
@@ -139,7 +139,7 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
                       value={formData.mobile}
                       onChange={handleChange}
                       className="input input-bordered w-36  -ml-5 text-lg p-1"
-                      placeholder="Enter mobile number"
+                      placeholder="Enter mobile"
                     />
                   </>
                 )}
@@ -150,7 +150,7 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
                     value={formData.mobile}
                     onChange={handleChange}
                     className="input input-bordered w-full text-lg p-2"
-                    placeholder="Enter mobile number"
+                    placeholder="Enter mobile"
                   />
                 )}
               </div>
@@ -186,6 +186,7 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
                 onChange={handleChange}
                 className="select select-bordered w-full text-lg p-2"
               >
+                <option value="">Select a level</option>
                 <option value="IGCSE">IGCSE</option>
                 <option value="A level">A level</option>
                 <option value="O level">O level</option>
@@ -207,8 +208,9 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
                 name="enrollmentStatus"
                 value={formData.enrollmentStatus}
                 onChange={handleChange}
-                className="select select-bordered w-full text-lg p-2"
+                className="select select-bordered w-60 text-lg p-2"
               >
+                <option value="">Select enrollment status</option>
                 <option value="enrolled">Enrolled</option>
                 <option value="unenrolled">Unenrolled</option>
               </select>
@@ -236,7 +238,7 @@ const EditModal = ({ student, onClose, isDarkMode }) => {
 };
 
 // Props validation
-EditModal.propTypes = {
+AddStudentModal.propTypes = {
   student: PropTypes.shape({
     name: PropTypes.string,
     email: PropTypes.string,
@@ -253,4 +255,4 @@ EditModal.propTypes = {
   isDarkMode: PropTypes.bool.isRequired,
 };
 
-export default EditModal;
+export default AddStudentModal;

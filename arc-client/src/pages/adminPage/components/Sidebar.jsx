@@ -8,7 +8,6 @@ import {
   FaCaretDown,
   FaEllipsisV,
   FaGraduationCap,
-  FaHandHoldingUsd,
   FaSchool,
   FaBook,
   FaFile,
@@ -55,21 +54,21 @@ const menuItems = [
     subItems: [
       {
         title: "Curriculum",
-        path: "/academics/curriculum",
+        path: "curriculum",
         icon: <FaSchool className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
         title: "Subjects",
-        path: "/academics/subjects",
+        path: "subject",
         icon: <FaBook className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
-        title: "Chapters",
-        path: "/academics/chapters",
+        title: "chapter",
+        path: "chapter",
         icon: <FaFile className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
@@ -129,6 +128,16 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
     setOpenDropdownIndex(openDropdownIndex === index ? null : index);
   };
 
+  //if drawer is open, body ml-64, else ml-0
+  if (isOpen) {
+    document.body.classList.add("ml-64");
+    document.body.style.transition = "margin-left 0.3s ease-in-out";
+  } else {
+    document.body.classList.remove("ml-64");
+    document.body.style.transition = "margin-left 0.3s ease-in-out";
+  }
+
+
   const handleNavigation = (path) => {
     console.log(`Navigating to: ${path}`); // Debug log
     navigate(path);
@@ -143,7 +152,9 @@ const Sidebar = ({ isDarkMode, toggleTheme }) => {
             isOpen ? "translate-x-64" : "translate-x-0"
           }`}
           type="button"
-          onClick={toggleDrawer}
+          onClick={
+            toggleDrawer
+          }
         >
           <FaEllipsisV className="-ms-5 w-6 h-6 text-orange-500" />
         </button>

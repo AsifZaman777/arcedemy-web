@@ -1,30 +1,46 @@
+import { useState } from 'react';
 import { FaPlus, FaFilter, FaSearch, FaSearchPlus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
+import AddSubjectModal from './AddSubjectModal';
 
-const Filter = ({ isDarkMode}) => {
+const FilterSubject = ({ isDarkMode }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div
       className={`flex flex-col items-center p-10 px-10 border-2 border-slate-600 rounded-lg ${
         isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-300 bg-gray-200'
       }`}
     >
+    
       {/* Main Row */}
-      <div className="flex items-center justify-between w-full mb-6">
-        {/* Add Student Section */}
-        <div className="flex items-center space-x-6">
+      <div className="flex items-center justify-between w-full ">
+        {/* Add Student Curriculum */}
+        <div className="grid items-center">
           <button
+            onClick={handleOpenModal}
             className={`flex items-center px-6 py-3 ${
               isDarkMode ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-blue-600 text-white hover:bg-blue-700'
             } rounded-lg text-lg font-medium`}
           >
             <FaPlus className="mr-2" />
-            Add New Student
+            Create subject
           </button>
+
+         
         </div>
 
         {/* Select Filters */}
-        <div className="flex items-center space-x-6">
-          {/* Curriculum Select */}
+        <div className="flex items-center space-x-6 -ms-40 mb-10">
+          {/* Subject Select */}
           <div className="flex items-center space-x-3">
             <label
               htmlFor="curriculum"
@@ -39,35 +55,45 @@ const Filter = ({ isDarkMode}) => {
               }`}
             >
               <option value="">Select Curriculum</option>
+              <option value="cambridge">Cambridge</option>
               <option value="edexcel">Edexcel</option>
-              <option value="a-level">A Level</option>
-              <option value="o-level">O Level</option>
-              <option value="as-level">AS Level</option>
             </select>
           </div>
 
-          {/* Enrollment Status Select */}
+          {/* Level Select */}
           <div className="flex items-center space-x-3">
-            <label
-              htmlFor="status"
-              className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}
-            >
-              Enrollment Status:
+            <label htmlFor="level" className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}>
+              Level:
             </label>
-            <select
-              id="status"
-              className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${
-                isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'
-              }`}
-            >
-              <option value="">Select Status</option>
-              <option value="enrolled">Enrolled</option>
-              <option value="unenrolled">Unenrolled</option>
+            <select id="level" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
+              <option value="">Select Level</option>
+              <option value="igcse">IGCSE</option>]
+              <option value="a-level">IAL level</option>
+              <option value="o-level">IAS</option>
+              <option value="a-level">AS level</option>
+              <option value="o-level">A2 level</option>
+              <option value="o-level">O level</option>
             </select>
           </div>
+
+
+          <div className="flex items-center space-x-3">
+            <label htmlFor="level" className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}>
+              Subjects:
+            </label>
+            <select id="level" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
+              <option value="">Select Level</option>
+              <option value="math">Math</option>]
+              <option value="physics">Physics</option>
+              <option value="chemistry">Chemistry</option>
+              <option value="accounting">Accounting</option>
+              <option value="Economics">Economics</option>
+            </select>
+          </div>
+
         </div>
 
-        {/* Filter Button */}
+        {/* FilterSubject Button */}
         <button
           className={`flex items-center px-6 py-3 ${
             isDarkMode ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-green-600 text-white hover:bg-green-700'
@@ -99,14 +125,22 @@ const Filter = ({ isDarkMode}) => {
           </button>
         </div>
       </div>
+
+      {/* AddSubjectModal */}
+      {isModalOpen && (
+        <AddSubjectModal
+          student={null} // Pass the student data if available
+          onClose={handleCloseModal}
+          isDarkMode={isDarkMode}
+        />
+      )}
     </div>
   );
 };
 
-//props validation
-Filter.propTypes = {
+// Props validation
+FilterSubject.propTypes = {
   isDarkMode: PropTypes.bool.isRequired,
-  toggleTheme: PropTypes.func.isRequired,
 };
 
-export default Filter;
+export default FilterSubject;
