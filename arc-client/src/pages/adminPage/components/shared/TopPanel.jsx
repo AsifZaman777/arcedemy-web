@@ -7,6 +7,10 @@ const TopPanel = ({ isDarkMode }) => {
   const handleLogout = () => {
     // Add any logout logic here, e.g., clearing user session or tokens
     navigate('/');
+
+    // Remove the margin-left from the body
+    document.body.classList.remove("ml-64");
+    document.body.style.transition = "margin-left 0.3s ease-in-out";
   };
 
   return (
