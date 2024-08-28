@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 import goody1 from "../assets/images/image1.jpg";
 import goody2 from "../assets/images/image2.jpg";
 import Typewriter from "typewriter-effect";
@@ -12,7 +11,7 @@ const Home = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
   const images = [goody1, goody2];
-  const navigate = useNavigate(); // Initialize useNavigate
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,9 +36,7 @@ const Home = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleAdminClick = () => {
-    navigate("/dashboard");
-  };
+ 
 
   return (
     <div>
