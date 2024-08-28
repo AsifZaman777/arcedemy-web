@@ -14,7 +14,7 @@ const textVariants = {
 function ServiceCard({ number, Icon, title, description, custom }) {
   return (
     <motion.div
-      className="relative border-[10px] border-gray-300 p-8 serviceCard rounded-none hover:border-orange-500 opacity-100 transition-all duration-300 ease-in-out group h-96 overflow-hidden"
+      className="relative border-[10px] border-gray-300 p-8 serviceCard rounded-3xl hover:border-orange-500 opacity-100 transition-all duration-300 ease-in-out group h-96 overflow-hidden"
       custom={custom}
       variants={textVariants}
     >
