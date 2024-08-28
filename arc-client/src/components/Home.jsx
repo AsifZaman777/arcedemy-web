@@ -4,18 +4,9 @@ import goody1 from "../assets/images/image1.jpg";
 import goody2 from "../assets/images/image2.jpg";
 import Typewriter from "typewriter-effect";
 import arcLogo from "../assets/images/arc-logo.png";
-import { motion } from "framer-motion";
-import { FaUser } from "react-icons/fa";
+import { PiRankingLight } from "react-icons/pi";
 
-const buttonVariants = {
-  hover: {
-    scale: 1.1,
-    borderColor: "#FFA500",
-    transition: {
-      duration: 0.1,
-    },
-  },
-};
+import asif from "../assets/images/asif.png";
 
 const Home = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -47,7 +38,7 @@ const Home = () => {
   }, []);
 
   const handleAdminClick = () => {
-    navigate("/dashboard"); 
+    navigate("/dashboard");
   };
 
   return (
@@ -197,14 +188,40 @@ const Home = () => {
           </ul>
         </div>
         <div className="navbar-end hidden lg:flex">
-          <motion.button
-            whileHover="hover"
-            variants={buttonVariants}
-            onClick={handleAdminClick} 
-            className="flex px-6 py-2 border-2 mr-10 gap-2 bg-transparent text-black hover:text-white hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
-          >
-            <FaUser className="text-orange-500" /> Admin Panel
-          </motion.button>
+          <div className="flex items-center space-x-6 mr-20">
+            {/* Avatar with Tooltip */}
+            <div className="relative group">
+              <div className="avatar">
+                <div className="ring-primary ring-offset-base-100 w-12 rounded-full ring ring-offset-2">
+                  <img src={asif} alt="User Avatar" />
+                </div>
+              </div>
+              {/* Tooltip for Avatar */}
+              <div className="absolute left-1/2 text-center font-thin transform -translate-x-1/2 mt-0 opacity-0 group-hover:opacity-90 transition-opacity duration-300 bg-slate-900 text-white text-sm py-1 px-2 rounded-lg w-24">
+                Asif Zaman
+              </div>
+            </div>
+
+            {/* Ranking Icon with Tooltip */}
+            <div className="relative group">
+  {/* Pulsating Indicator */}
+  <span className="absolute flex h-3 w-3 top-7 -left-1">
+    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
+    <span className="relative inline-flex rounded-full h-3 w-3 bg-lime-500"></span>
+  </span>
+  
+  {/* Ranking Icon */}
+  <div className="flex items-center -mt-1 ring ring-gray-700 justify-center bg-orange-500 text-white p-1 rounded-full hover:bg-orange-600 duration-300">
+    <PiRankingLight className="text-4xl" />
+  </div>
+  
+  {/* Tooltip for Ranking Icon */}
+  <div className="absolute left-1/2 text-center font-thin transform -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-90 transition-opacity duration-300 bg-slate-900 text-white text-sm py-1 px-2 rounded-lg w-24">
+    Leaderboard
+  </div>
+</div>
+
+          </div>
         </div>
       </div>
 
@@ -223,7 +240,7 @@ const Home = () => {
               className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
                 currentImage === index ? "opacity-100" : "opacity-0"
               }`}
-              style={{ height: "100vh" }} 
+              style={{ height: "100vh" }}
             />
           ))}
         </div>
