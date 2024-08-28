@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FaPlus, FaFilter, FaSearch, FaSearchPlus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
-import AddChapterModal from './AddChapterModal';
+import AddChapterModal from './AddNoteModal';
 
-const FilterChapter = ({ isDarkMode }) => {
+const FilterNote = ({ isDarkMode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -31,7 +31,7 @@ const FilterChapter = ({ isDarkMode }) => {
             } rounded-lg text-lg font-medium`}
           >
             <FaPlus className="mr-2" />
-            Create Subject
+            Add new note
           </button>
         </div>
 
@@ -148,8 +148,8 @@ const FilterChapter = ({ isDarkMode }) => {
 };
 
 // Props validation
-FilterChapter.propTypes = {
+FilterNote.propTypes = {
   isDarkMode: PropTypes.bool.isRequired,
 };
 
-export default FilterChapter;
+export default FilterNote;

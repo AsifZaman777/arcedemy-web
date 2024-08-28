@@ -12,10 +12,24 @@ import StudentList from "./components/panels/users/StudentList";
 // academics/curriculum components
 import FilterCurr from "./components/panels/academics/curriculum/FilterCurr";
 import CurrList from "./components/panels/academics/curriculum/CurrList";
+
+//academics/subject components
 import FilterSubject from "./components/panels/academics/subject/FilterSubject";
 import SubjectList from "./components/panels/academics/subject/SubjectList";
+
+//academics/chapter components
 import FilterChapter from "./components/panels/academics/chapter/FilterChapter";
 import ChapterList from "./components/panels/academics/chapter/ChapterList";
+
+//manageLib/recVideos components
+import FilterRecVideo from "./components/panels/manageLib/recVideos/FilterRecVideo";
+import VideoList from "./components/panels/manageLib/recVideos/VideoList";
+
+//manageLib/notes components
+import FilterNote from "./components/panels/manageLib/notes/FilterNote";
+import NoteList from "./components/panels/manageLib/notes/NoteList";
+import FilterPapers from "./components/panels/manageLib/pastPapers/FilterPaper";
+import PaperList from "./components/panels/manageLib/pastPapers/PaperList";
 
 const Layout = ({ isDarkMode, toggleTheme }) => {
   return (
@@ -26,7 +40,7 @@ const Layout = ({ isDarkMode, toggleTheme }) => {
       <div className="ml-0">
         <TopPanel isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
         <div className="p-4 mt-4">
-          <Outlet />
+          <Outlet /> {/* Nested routes */}
         </div>
       </div>
     </div>
@@ -103,26 +117,72 @@ const Admin = () => {
               <h2 className="text-3xl font-semibold text-center underline mb-10">
                 Subject Panel
               </h2>
-              <FilterSubject  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-              <SubjectList  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <FilterSubject
+                isDarkMode={isDarkMode}
+                toggleTheme={toggleTheme}
+              />
+              <SubjectList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
             </div>
           }
         />
-       
-       <Route
+
+        <Route
           path="chapter"
           element={
             <div className="space-y-4">
               <h2 className="text-3xl font-semibold text-center underline mb-10">
                 Chapter panel
               </h2>
-                <FilterChapter  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-                <ChapterList  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <FilterChapter
+                isDarkMode={isDarkMode}
+                toggleTheme={toggleTheme}
+              />
+              <ChapterList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
             </div>
           }
         />
-       
 
+        <Route
+          path="video"
+          element={
+            <div className="space-y-4">
+              <h2 className="text-3xl font-semibold text-center underline mb-10">
+                Recorded video panel
+              </h2>
+              <FilterRecVideo
+                isDarkMode={isDarkMode}
+                toggleTheme={toggleTheme}
+              />
+              <VideoList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            </div>
+          }
+        />
+
+        <Route
+          path="note"
+          element={
+            <div className="space-y-4">
+              <h2 className="text-3xl font-semibold text-center underline mb-10">
+                Notes panel
+              </h2>
+              <FilterNote isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <NoteList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            </div>
+          }
+        />
+
+        <Route
+          path="pastpaper"
+          element={
+            <div className="space-y-4">
+              <h2 className="text-3xl font-semibold text-center underline mb-10">
+                Past papers panel
+              </h2>
+              <FilterPapers isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <PaperList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            </div>
+          }
+        />
       </Route>
     </Routes>
   );

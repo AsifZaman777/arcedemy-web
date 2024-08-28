@@ -9,7 +9,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'xl2': '1800px', // Custom breakpoint for 1800px
+      },
+    },
   },
   plugins: [
     typography,
