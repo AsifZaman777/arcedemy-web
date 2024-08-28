@@ -16,6 +16,8 @@ import FilterSubject from "./components/panels/academics/subject/FilterSubject";
 import SubjectList from "./components/panels/academics/subject/SubjectList";
 import FilterChapter from "./components/panels/academics/chapter/FilterChapter";
 import ChapterList from "./components/panels/academics/chapter/ChapterList";
+import FilterRecVideo from "./components/panels/manageLib/recVideos/FilterRecVideo";
+import VideoList from "./components/panels/manageLib/recVideos/VideoList";
 
 const Layout = ({ isDarkMode, toggleTheme }) => {
   return (
@@ -103,26 +105,43 @@ const Admin = () => {
               <h2 className="text-3xl font-semibold text-center underline mb-10">
                 Subject Panel
               </h2>
-              <FilterSubject  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-              <SubjectList  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <FilterSubject
+                isDarkMode={isDarkMode}
+                toggleTheme={toggleTheme}
+              />
+              <SubjectList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
             </div>
           }
         />
-       
-       <Route
+
+        <Route
           path="chapter"
           element={
             <div className="space-y-4">
               <h2 className="text-3xl font-semibold text-center underline mb-10">
                 Chapter panel
               </h2>
-                <FilterChapter  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-                <ChapterList  isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <FilterChapter
+                isDarkMode={isDarkMode}
+                toggleTheme={toggleTheme}
+              />
+              <ChapterList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
             </div>
           }
         />
-       
 
+        <Route
+          path="video"
+          element={
+            <div className="space-y-4">
+              <h2 className="text-3xl font-semibold text-center underline mb-10">
+                Recorded video panel
+              </h2>
+              <FilterRecVideo isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <VideoList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            </div>
+          }
+        />
       </Route>
     </Routes>
   );

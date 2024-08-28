@@ -85,7 +85,7 @@ const menuItems = [
     subItems: [
       {
         title: "Recorded Videos",
-        path: "/library/videos",
+        path: "video",
         icon: <FaPlay className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
