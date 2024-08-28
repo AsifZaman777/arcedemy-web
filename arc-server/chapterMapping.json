@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "curriculum": "Cambridge",
+  "createdBy": "Admin",
+  "modifiedBy": "Sadman Sakib",
+  "levels": [
+    {
+      "id": 1,
+      "level": "AS-Level",
+      "subjects": [
+        {
+          "id": 1,
+          "subject": "Mathematics",
+          "chapters": [
+            { "id": 1, "chapter": "Algebra" },
+            { "id": 2, "chapter": "Calculus" }
+          ]
+        }
+  ]}]}     

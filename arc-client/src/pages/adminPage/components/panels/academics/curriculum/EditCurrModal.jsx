@@ -46,6 +46,11 @@ const EditCurrModal = ({ curr, onClose, isDarkMode }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Perform save logic here (e.g., updating the curriculum list)
+
+    //update the the curriculum by calling the API
+    
+
+
     console.log("Curriculum:", curriculum);
     console.log("Created By:", createdBy);
     console.log("Modified By:", modifiedBy);

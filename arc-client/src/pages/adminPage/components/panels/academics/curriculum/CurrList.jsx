@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import EditCurrModal from "./EditCurrModal";
 
@@ -44,6 +44,17 @@ const CurrList = ({ isDarkMode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCurr, setSelectedCurr] = useState(null);
 
+  //get all the curriculums from the API
+  useEffect(()=>{
+    fetch("http://localhost:5000/api/curriculum")
+    .then((response) => response.json())
+    .then(data=>{
+      console.log(data);
+      setCurrs(data);
+    })
+    
+  },[currs])
+
   const handleEdit = (curr) => {
     setSelectedCurr(curr);
     setIsModalOpen(true);
@@ -51,6 +62,7 @@ const CurrList = ({ isDarkMode }) => {
 
   const handleDelete = (id) => {
     const updatedCurrs = currs.filter((curr) => curr.id !== id);
+  
     setCurrs(updatedCurrs);
   };
 
@@ -99,13 +111,20 @@ const CurrList = ({ isDarkMode }) => {
                     : "bg-white"
                 } hover:bg-orange-300`}
               >
-                <td className="px-4 py-2 border text-center">{curr.id}</td>
+                <td className="px-4 py-2 border text-center">{curr._id}</td>
                 <td className="px-4 py-2 border text-center">
                   {curr.curriculum}
                 </td>
+
                 <td className="px-4 py-2 border text-center">
-                  {curr.level}
-                </td>
+    {curr.levels?.map((level, index) => (
+      <span key={index}>
+        {level.level}
+        {index < curr.levels.length - 1 && ', '}
+      </span>
+    ))}
+  </td>
+                
                 <td className="px-4 py-2 border text-center">
                   {curr.createdBy}
                 </td>

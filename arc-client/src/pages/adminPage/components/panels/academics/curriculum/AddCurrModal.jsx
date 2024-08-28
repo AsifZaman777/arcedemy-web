@@ -5,6 +5,8 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
   const [curriculumName, setCurriculumName] = useState("");
   const [levelCount, setLevelCount] = useState(0);
   const [levelNames, setLevelNames] = useState([]);
+  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({});
 
   // Handle curriculum name change
   const handleCurriculumChange = (e) => {
@@ -29,12 +31,45 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform save logic here
-    console.log("Curriculum:", curriculumName);
-    console.log("Levels:", levelNames);
-    onClose();
+  
+    if (!curriculumName || levelNames.some(name => name === "")) {
+      setMessage("Please fill in all fields.");
+      return;
+    }
+  
+    fetch("http://localhost:5000/api/curriculum", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        curriculum: curriculumName,
+        levels: levelNames.map((name, index) => ({
+          id: index + 1,
+          level: name,
+          subjects: [] 
+        })),
+        createdBy: 'Admin', 
+        modifiedBy: '' 
+      })
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+      setMessage("Added new curriculum successfully.");
+      setFormData({
+        curriculumName: "",
+        levelNames: [], 
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      setMessage("Please try again.");
+    });
+  
+    //onClose();
   };
-
+  
   return (
     <dialog
       id="add_curr_modal"
@@ -55,7 +90,7 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
             <label className="block text-lg mb-2">Curriculum Name:</label>
             <input
               type="text"
-              value={curriculumName}
+              value={formData.curriculumName}
               onChange={handleCurriculumChange}
               className="input input-bordered w-full text-lg p-2"
               placeholder="Enter curriculum name"
@@ -127,6 +162,7 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
               ))}
             </div>
           )}
+           <p className="text-green-500 text-lg font-bold">{message}</p>
           <div className="modal-action mt-4">
             <button
               type="submit"
@@ -141,6 +177,7 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
             >
               Close
             </button>
+           
           </div>
         </form>
       </div>

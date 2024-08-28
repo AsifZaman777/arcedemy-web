@@ -8,6 +8,7 @@ const multer = require("multer");
 const path = require("path");
 const { google } = require("googleapis");
 const upload = multer();
+const bodyParser = require('body-parser');
 const port = process.env.PORT || 5000;
 
 //dotenv
@@ -37,7 +38,14 @@ async function run() {
     const database = client.db("arcedemy");
     const users = database.collection("students");
     const notes = database.collection("notes");
+    const videos = database.collection("videos");
+    const academicsCurriculum = database.collection("academics");
     
+    /*
+      Authentication API (Admin,Student)
+    
+    */
+
     //post student data
     app.post('/api/register', async (req, res) => {
         const student = req.body;
@@ -110,6 +118,14 @@ async function run() {
       res.send(result);
   });
 
+  //search student by any field
+  app.post('/api/search', async (req, res) => {
+    const search = req.body;
+    const cursor = users.find(search);
+    const result = await cursor.toArray();
+    res.send(result);
+  });
+
   //forgot password
   app.put('/api/forgotpassword', async (req, res) => {
     const { phoneNumber, password } = req.body;
@@ -127,6 +143,58 @@ async function run() {
         res.status(401).json({ message: "Invalid phone number" });
     }
   });
+
+  /*      
+  Authentication API END (Admin,Student)
+  */
+
+  /**
+   * Academics --> Curriculum, Subjects, Chapters
+   */
+
+  // Create curriculum
+  app.post('/api/curriculum', async (req, res) => {
+    try {
+      const curriculum = req.body;
+      curriculum.createdAt = new Date();
+      const result = await academicsCurriculum.insertOne(curriculum);
+      res.status(201).send(result);
+    } catch (error) {
+      console.error('Error inserting curriculum:', error);
+      res.status(500).send({ error: 'Failed to insert curriculum' });
+    }
+  });
+
+  //get all curriculum
+  app.get('/api/curriculum', async (req, res) => {
+    const cursor = academicsCurriculum.find({});
+    const result = await cursor.toArray();
+    res.send(result);
+  });
+
+  //update curriculum by id
+  app.put('/api/curriculum/:id', async (req, res) => {
+    const id = req.params.id;
+    const updatedCurriculum = req.body;
+    //updated by
+    //updatedCurriculum.updatedBy = "Admin";
+    const filter = { _id: new ObjectId(id) };
+    const updatedDoc = {
+        $set: updatedCurriculum,
+    };
+    const options = { upsert: true };
+    const result = await academicsCurriculum.updateOne(filter, updatedDoc, options);
+    res.send(result);
+  });
+
+  //delete curriculum by id
+  app.delete('/api/curriculum/:id', async (req, res) => {
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) };
+    const result = await academicsCurriculum.deleteOne(query);
+    res.send(result);
+  });
+
 
   /*
   
@@ -305,6 +373,49 @@ const updateFile = async (fileObject, fileId) => {
 
   */ 
 
+    /*
+     * Recored Videos API
+     */
+
+    //post video data
+    app.post('/api/videos', async (req, res) => {
+      const video = req.body;
+      video.createdAt = new Date();
+      const result = await videos.insertOne(video);
+      res.send(result);
+    });
+
+    //get all videos
+    app.get('/api/videos', async (req, res) => {
+      const cursor = videos.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    //update video data by id
+    app.put('/api/videos/:id', async (req, res) => {
+      const id = req.params.id;
+      const updatedVideo = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updatedDoc = {
+          $set: updatedVideo,
+      };
+      const options = { upsert: true };
+      const result = await videos.updateOne(filter, updatedDoc, options);
+      res.send(result);
+    });
+
+    //delete video data by id
+    app.delete('/api/videos/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await videos.deleteOne(query);
+      res.send(result);
+    });
+
+    /*
+     * Recored Videos API END
+     */
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
