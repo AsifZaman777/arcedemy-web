@@ -1,58 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const AddNoteModal = ({ onClose, isDarkMode }) => {
+const EditPaperModal = ({ pastPapersData, onClose, isDarkMode }) => {
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedCurriculum, setSelectedCurriculum] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
-  const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedChapter, setSelectedChapter] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
 
-  // Sample curriculum, levels, subjects, and chapters for demonstration
-  const curriculum = ["Cambridge", "Edexcel"];
-  const levels = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
-  const subjects = ["Math", "Physics", "Chemistry"];
-  const chapters = ["Algebra Basics", "Kinematics", "Chemical Reactions"];
+  // Sample subjects, curriculums, levels, and chapters for demonstration
+  const subjectOptions = ["Mathematics", "Physics", "Chemistry"];
+  const curriculumOptions = ["Cambridge", "Edexcel"];
+  const levelOptions = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
+  const chapters = ["Algebra Basics", "Kinematics", "Organic Chemistry Basics"];
 
-  // Handle curriculum selection change
-  const handleCurriculumChange = (e) => {
-    setSelectedCurriculum(e.target.value);
-  };
+  // Prefill form with pastPapersData when it changes
+  useEffect(() => {
+    if (pastPapersData) {
+      setUploadedFile(pastPapersData.file || null); // Prefill with existing file if available
+      setSelectedSubject(pastPapersData.subjectName || "");
+      setSelectedCurriculum(pastPapersData.curriculum || "");
+      setSelectedLevel(pastPapersData.level || "");
+      setSelectedChapter(pastPapersData.chapterName || "");
+    }
+  }, [pastPapersData]);
 
-  // Handle level selection change
-  const handleLevelChange = (e) => {
-    setSelectedLevel(e.target.value);
-  };
-
-  // Handle subject selection change
-  const handleSubjectChange = (e) => {
-    setSelectedSubject(e.target.value);
-  };
-
-  // Handle chapter selection change
-  const handleChapterChange = (e) => {
-    setSelectedChapter(e.target.value);
-  };
-
-  // Handle file selection
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
+  // Handle changes for form fields
+  const handleFileChange = (e) => setUploadedFile(e.target.files[0]);
+  const handleSubjectChange = (e) => setSelectedSubject(e.target.value);
+  const handleCurriculumChange = (e) => setSelectedCurriculum(e.target.value);
+  const handleLevelChange = (e) => setSelectedLevel(e.target.value);
+  const handleChapterChange = (e) => setSelectedChapter(e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Perform save logic here
+    console.log("Uploaded File:", uploadedFile);
+    console.log("Selected Chapter:", selectedChapter);
+    console.log("Selected Subject:", selectedSubject);
     console.log("Selected Curriculum:", selectedCurriculum);
     console.log("Selected Level:", selectedLevel);
-    console.log("Selected Subject:", selectedSubject);
-    console.log("Selected Chapter:", selectedChapter);
-    console.log("Selected File:", selectedFile);
     onClose();
   };
 
   return (
     <dialog
-      id="add_chapter_modal"
+      id="edit_note_modal"
       className="modal fixed inset-0 z-50 flex items-center justify-center"
       open
     >
@@ -64,7 +57,7 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
             : "bg-white border-gray-700 border-2"
         }`}
       >
-        <h3 className="font-bold text-2xl mb-4">Add New Chapter</h3>
+        <h3 className="font-bold text-2xl mb-4">Edit Note</h3>
         <form onSubmit={handleSubmit}>
           <div className="py-4">
             <label className="block text-lg mb-2">Select Curriculum:</label>
@@ -74,14 +67,13 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
               className="input input-bordered w-full text-lg p-2"
             >
               <option value="">Select a curriculum</option>
-              {curriculum.map((cur, index) => (
-                <option key={index} value={cur}>
-                  {cur}
+              {curriculumOptions.map((curriculum, index) => (
+                <option key={index} value={curriculum}>
+                  {curriculum}
                 </option>
               ))}
             </select>
           </div>
-
           <div className="py-4">
             <label className="block text-lg mb-2">Select Level:</label>
             <select
@@ -90,14 +82,13 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
               className="input input-bordered w-full text-lg p-2"
             >
               <option value="">Select a level</option>
-              {levels.map((level, index) => (
+              {levelOptions.map((level, index) => (
                 <option key={index} value={level}>
                   {level}
                 </option>
               ))}
             </select>
           </div>
-
           <div className="py-4">
             <label className="block text-lg mb-2">Select Subject:</label>
             <select
@@ -106,14 +97,13 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
               className="input input-bordered w-full text-lg p-2"
             >
               <option value="">Select a subject</option>
-              {subjects.map((subject, index) => (
+              {subjectOptions.map((subject, index) => (
                 <option key={index} value={subject}>
                   {subject}
                 </option>
               ))}
             </select>
           </div>
-
           <div className="py-4">
             <label className="block text-lg mb-2">Select Chapter:</label>
             <select
@@ -129,15 +119,18 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
               ))}
             </select>
           </div>
-
           <div className="py-4">
-            <label className="block text-lg mb-2">Upload File:</label>
+            <label className="block text-lg mb-2">Upload Note:</label>
             <input
               type="file"
-              accept=".pdf"
               onChange={handleFileChange}
               className="input input-bordered w-full text-lg p-2"
             />
+            {uploadedFile && (
+              <p className="mt-2 text-gray-500">
+                Current file: {uploadedFile.name || uploadedFile}
+              </p>
+            )}
           </div>
 
           <div className="modal-action mt-4">
@@ -162,9 +155,16 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
 };
 
 // Props validation
-AddNoteModal.propTypes = {
+EditPaperModal.propTypes = {
+  pastPapersData: PropTypes.shape({
+    file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]), // Handle both string (URL) and File object
+    chapterName: PropTypes.string,
+    subjectName: PropTypes.string,
+    curriculum: PropTypes.string,
+    level: PropTypes.string,
+  }),
   onClose: PropTypes.func.isRequired,
   isDarkMode: PropTypes.bool.isRequired,
 };
 
-export default AddNoteModal;
+export default EditPaperModal;

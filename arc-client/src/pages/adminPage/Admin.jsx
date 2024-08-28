@@ -28,6 +28,8 @@ import VideoList from "./components/panels/manageLib/recVideos/VideoList";
 //manageLib/notes components
 import FilterNote from "./components/panels/manageLib/notes/FilterNote";
 import NoteList from "./components/panels/manageLib/notes/NoteList";
+import FilterPapers from "./components/panels/manageLib/pastPapers/FilterPaper";
+import PaperList from "./components/panels/manageLib/pastPapers/PaperList";
 
 const Layout = ({ isDarkMode, toggleTheme }) => {
   return (
@@ -147,13 +149,16 @@ const Admin = () => {
               <h2 className="text-3xl font-semibold text-center underline mb-10">
                 Recorded video panel
               </h2>
-              <FilterRecVideo isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <FilterRecVideo
+                isDarkMode={isDarkMode}
+                toggleTheme={toggleTheme}
+              />
               <VideoList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
             </div>
           }
         />
 
-<Route
+        <Route
           path="note"
           element={
             <div className="space-y-4">
@@ -166,7 +171,18 @@ const Admin = () => {
           }
         />
 
-
+        <Route
+          path="pastpaper"
+          element={
+            <div className="space-y-4">
+              <h2 className="text-3xl font-semibold text-center underline mb-10">
+                Past papers panel
+              </h2>
+              <FilterPapers isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <PaperList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            </div>
+          }
+        />
       </Route>
     </Routes>
   );

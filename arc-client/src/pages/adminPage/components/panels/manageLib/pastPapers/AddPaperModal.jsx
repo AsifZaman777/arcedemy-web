@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-const AddNoteModal = ({ onClose, isDarkMode }) => {
+const AddPaperModal = ({ onClose, isDarkMode }) => {
   const [selectedCurriculum, setSelectedCurriculum] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -162,9 +162,9 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
 };
 
 // Props validation
-AddNoteModal.propTypes = {
+AddPaperModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   isDarkMode: PropTypes.bool.isRequired,
 };
 
-export default AddNoteModal;
+export default AddPaperModal;

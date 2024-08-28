@@ -99,7 +99,7 @@ const menuItems = [
       },
       {
         title: "Past Papers",
-        path: "/pastpaper",
+        path: "pastpaper",
         icon: <FaQuestion className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
