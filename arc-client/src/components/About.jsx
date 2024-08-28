@@ -17,11 +17,6 @@ const textVariants = {
   }),
 };
 
-const iconVariants = {
-  hidden: { opacity: 0, scale: 0.5 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 1.5 } },
-};
-
 const cardVariants = {
   hidden: { opacity: 1, scale: 0.8 },
   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5 } },
@@ -97,7 +92,7 @@ const About = () => {
             <motion.div
               initial="hidden"
               animate={contentInView ? "visible" : "hidden"}
-              variants={iconVariants}
+              variants={textVariants}
               className="flex items-center mb-6"
             >
               <FaRegLightbulb className="text-orange-500 text-3xl mr-4" />
@@ -109,7 +104,7 @@ const About = () => {
             <motion.div
               initial="hidden"
               animate={contentInView ? "visible" : "hidden"}
-              variants={iconVariants}
+              variants={textVariants}
               className="flex items-center mb-6"
             >
               <FaUsers className="text-orange-500 text-3xl mr-4" />
@@ -119,7 +114,7 @@ const About = () => {
             <motion.div
               initial="hidden"
               animate={contentInView ? "visible" : "hidden"}
-              variants={iconVariants}
+              variants={textVariants}
               className="flex items-center"
             >
               <FaBook className="text-orange-500 text-3xl mr-4" />
