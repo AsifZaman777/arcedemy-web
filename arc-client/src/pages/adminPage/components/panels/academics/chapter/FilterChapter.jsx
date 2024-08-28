@@ -20,10 +20,9 @@ const FilterChapter = ({ isDarkMode }) => {
         isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-300 bg-gray-200'
       }`}
     >
-    
-      {/* Main Row */}
-      <div className="flex items-center justify-between w-full ">
-        {/* Add Student Curriculum */}
+      {/* Main Row - Responsive */}
+      <div className="flex flex-col lg:flex-row items-center justify-between w-full space-y-6 lg:space-y-0 lg:space-x-6">
+        {/* Add Subject */}
         <div className="grid items-center">
           <button
             onClick={handleOpenModal}
@@ -32,15 +31,13 @@ const FilterChapter = ({ isDarkMode }) => {
             } rounded-lg text-lg font-medium`}
           >
             <FaPlus className="mr-2" />
-            Create subject
+            Create Subject
           </button>
-
-         
         </div>
 
-        {/* Select Filters */}
-        <div className="flex items-center space-x-6 -ms-0 mb-10">
-          {/* Subject Select */}
+        {/* Filters - Responsive */}
+        <div className="flex flex-col space-x-0 space-y-5 xl2:flex-row xl2:space-x-6 xl2:space-y-0">
+          {/* Curriculum Select */}
           <div className="flex items-center space-x-3">
             <label
               htmlFor="curriculum"
@@ -67,7 +64,7 @@ const FilterChapter = ({ isDarkMode }) => {
             </label>
             <select id="level" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
               <option value="">Select Level</option>
-              <option value="igcse">IGCSE</option>]
+              <option value="igcse">IGCSE</option>
               <option value="a-level">IAL level</option>
               <option value="o-level">IAS</option>
               <option value="a-level">AS level</option>
@@ -76,38 +73,36 @@ const FilterChapter = ({ isDarkMode }) => {
             </select>
           </div>
 
-
+          {/* Subject Select */}
           <div className="flex items-center space-x-3">
-            <label htmlFor="level" className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}>
+            <label htmlFor="subject" className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}>
               Subjects:
             </label>
-            <select id="level" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
-              <option value="">Select Level</option>
-              <option value="math">Math</option>]
+            <select id="subject" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
+              <option value="">Select Subject</option>
+              <option value="math">Math</option>
               <option value="physics">Physics</option>
               <option value="chemistry">Chemistry</option>
               <option value="accounting">Accounting</option>
-              <option value="Economics">Economics</option>
+              <option value="economics">Economics</option>
             </select>
           </div>
 
+          {/* Chapter Select */}
           <div className="flex items-center space-x-3">
-            <label htmlFor="level" className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}>
-              Subjects:
+            <label htmlFor="chapter" className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}>
+              Chapters:
             </label>
-            <select id="level" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
-              <option value="">Select Level</option>
-              <option value="math">Math</option>]
-              <option value="physics">Physics</option>
-              <option value="chemistry">Chemistry</option>
-              <option value="accounting">Accounting</option>
-              <option value="Economics">Economics</option>
+            <select id="chapter" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
+              <option value="">Select Chapter</option>
+              <option value="algebra-basics">Algebra Basics</option>
+              <option value="kinematics">Kinematics</option>
+              <option value="organic-chemistry">Organic Chemistry</option>
             </select>
           </div>
-
         </div>
 
-        {/* FilterChapter Button */}
+        {/* Filter Button */}
         <button
           className={`flex items-center px-6 py-3 ${
             isDarkMode ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-green-600 text-white hover:bg-green-700'
@@ -119,7 +114,7 @@ const FilterChapter = ({ isDarkMode }) => {
       </div>
 
       {/* Search Bar with Button */}
-      <div className="flex items-center w-full justify-center">
+      <div className="flex items-center w-full justify-center mt-6">
         <div className="relative w-full max-w-md flex items-center">
           <input
             type="text"
