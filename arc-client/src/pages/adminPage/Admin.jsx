@@ -12,12 +12,22 @@ import StudentList from "./components/panels/users/StudentList";
 // academics/curriculum components
 import FilterCurr from "./components/panels/academics/curriculum/FilterCurr";
 import CurrList from "./components/panels/academics/curriculum/CurrList";
+
+//academics/subject components
 import FilterSubject from "./components/panels/academics/subject/FilterSubject";
 import SubjectList from "./components/panels/academics/subject/SubjectList";
+
+//academics/chapter components
 import FilterChapter from "./components/panels/academics/chapter/FilterChapter";
 import ChapterList from "./components/panels/academics/chapter/ChapterList";
+
+//manageLib/recVideos components
 import FilterRecVideo from "./components/panels/manageLib/recVideos/FilterRecVideo";
 import VideoList from "./components/panels/manageLib/recVideos/VideoList";
+
+//manageLib/notes components
+import FilterNote from "./components/panels/manageLib/notes/FilterNote";
+import NoteList from "./components/panels/manageLib/notes/NoteList";
 
 const Layout = ({ isDarkMode, toggleTheme }) => {
   return (
@@ -142,6 +152,21 @@ const Admin = () => {
             </div>
           }
         />
+
+<Route
+          path="note"
+          element={
+            <div className="space-y-4">
+              <h2 className="text-3xl font-semibold text-center underline mb-10">
+                Notes panel
+              </h2>
+              <FilterNote isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <NoteList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            </div>
+          }
+        />
+
+
       </Route>
     </Routes>
   );

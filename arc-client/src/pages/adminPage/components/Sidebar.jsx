@@ -92,14 +92,14 @@ const menuItems = [
       },
       {
         title: "Notes",
-        path: "/library/notes",
+        path: "note",
         icon: <FaBookOpen className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },
       {
-        title: "Previous Questions",
-        path: "/library/questions",
+        title: "Past Papers",
+        path: "/pastpaper",
         icon: <FaQuestion className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
