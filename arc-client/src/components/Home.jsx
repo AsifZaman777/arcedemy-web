@@ -186,18 +186,11 @@ const Home = () => {
         </div>
         <div className="navbar-end hidden lg:flex">
           <div className="flex items-center space-x-6 mr-10">
-            {/* Avatar with Tooltip */}
-            <div className="relative group">
-              <div className="avatar">
-                <div className="ring-primary ring-offset-base-100 w-12 rounded-full ring ring-offset-2">
-                  <img src={asif} alt="User Avatar" />
-                </div>
-              </div>
-              {/* Tooltip for Avatar */}
-              <div className="absolute left-1/2 text-center font-thin transform -translate-x-1/2 mt-0 opacity-0 group-hover:opacity-90 transition-opacity duration-300 bg-slate-900 text-white text-sm py-1 px-2 rounded-lg w-24">
-                Asif Zaman
-              </div>
+            
+            <div className="btn bg-orange-400 border-2 animate-bounce hover:bg-orange-500">
+              <span className="text-white">Sign up</span>
             </div>
+           
 
             {/* Ranking Icon with Tooltip */}
             <div className="relative group">
