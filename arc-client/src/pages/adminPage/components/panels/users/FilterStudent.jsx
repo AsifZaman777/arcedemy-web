@@ -5,6 +5,10 @@ import AddStudentModal from './AddStudentModal';
 
 const Filter = ({ isDarkMode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [curriculum, setCurriculum] = useState('');
+  const [level, setLevel] = useState('');
+  const [status, setStatus] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -12,6 +16,42 @@ const Filter = ({ isDarkMode }) => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleFilter = async () => {
+    // Prepare the filter parameters
+    const filterParams = [];
+    if (curriculum) filterParams.push({ field: 'curriculum', value: curriculum });
+    if (level) filterParams.push({ field: 'level', value: level });
+    if (status) filterParams.push({ field: 'EnrollmentStatus', value: status });
+
+    try {
+      // Assuming `onFilter` is an API call function
+      for (const param of filterParams) {
+        const response = await fetch(`http://localhost:5000/api/students/filter/${param.field}/${param.value}`);
+        const result = await response.json();
+        // Process result here or pass it to another handler
+        console.log(result); // Or pass to parent component
+      }
+    } catch (error) {
+      console.error("Error fetching filtered students:", error);
+    }
+  };
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/student/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ search: searchTerm }),
+      });
+      const result = await response.json();
+      console.log(result); // Or pass to parent component
+    } catch (error) {
+      console.error("Error searching students:", error);
+    }
   };
 
   return (
@@ -47,13 +87,15 @@ const Filter = ({ isDarkMode }) => {
             </label>
             <select
               id="curriculum"
+              value={curriculum}
+              onChange={(e) => setCurriculum(e.target.value)}
               className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${
                 isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'
               }`}
             >
               <option value="">Select Curriculum</option>
-              <option value="cambridge">Cambridge</option>
-              <option value="edexcel">Edexcel</option>
+              <option value="Cambridge">Cambridge</option>
+              <option value="Edexcel">Edexcel</option>
             </select>
           </div>
 
@@ -62,16 +104,20 @@ const Filter = ({ isDarkMode }) => {
             <label htmlFor="level" className={`text-2xl font-semibold ${isDarkMode ? 'text-orange-400' : 'text-orange-500'}`}>
               Level:
             </label>
-            <select id="level" className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'}`}>
+            <select
+              id="level"
+              value={level}
+              onChange={(e) => setLevel(e.target.value)}
+              className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${
+                isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'
+              }`}
+            >
               <option value="">Select Level</option>
-              <option value="igcse">IGCSE</option>
-              <option value="a-level">A level</option>
-              <option value="o-level">O level</option>
+              <option value="IGCSE">IGCSE</option>
+              <option value="A level">A-Level</option>
+              <option value="O level">O-Level</option>
             </select>
           </div>
-
-          
-
 
           {/* Enrollment Status Select */}
           <div className="flex items-center space-x-3">
@@ -83,19 +129,22 @@ const Filter = ({ isDarkMode }) => {
             </label>
             <select
               id="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
               className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${
                 isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'
               }`}
             >
               <option value="">Select Status</option>
-              <option value="enrolled">Enrolled</option>
-              <option value="unenrolled">Unenrolled</option>
+              <option value="Enrolled">Enrolled</option>
+              <option value="Unenrolled">Unenrolled</option>
             </select>
           </div>
         </div>
 
         {/* Filter Button */}
         <button
+          onClick={handleFilter}
           className={`flex items-center px-6 py-3 ${
             isDarkMode ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-green-600 text-white hover:bg-green-700'
           } rounded-lg text-lg font-medium`}
@@ -111,12 +160,15 @@ const Filter = ({ isDarkMode }) => {
           <input
             type="text"
             placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className={`px-4 py-2 border border-gray-400 rounded-lg text-base font-medium focus:outline-none focus:ring-2 ${
               isDarkMode ? 'border-gray-600 bg-gray-800 text-gray-300 focus:ring-blue-500' : 'focus:ring-blue-500'
             } pl-10 w-full`}
           />
           <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
           <button
+            onClick={handleSearch}
             className={`ml-2 px-4 py-2 ${
               isDarkMode ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-blue-600 text-white hover:bg-blue-700'
             } rounded-lg font-medium flex items-center`}
@@ -141,7 +193,7 @@ const Filter = ({ isDarkMode }) => {
 
 // Props validation
 Filter.propTypes = {
-  isDarkMode: PropTypes.bool.isRequired,
+  isDarkMode: PropTypes.bool.isRequired
 };
 
 export default Filter;

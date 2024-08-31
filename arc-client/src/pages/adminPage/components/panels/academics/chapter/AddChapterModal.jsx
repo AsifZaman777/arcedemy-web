@@ -6,35 +6,46 @@ const AddChapterModal = ({ onClose, isDarkMode }) => {
   const [selectedCurriculum, setSelectedCurriculum] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
+  // const [createdBy, setCreatedBy] = useState("Admin"); // Or get this value from context or user session
+  // const [modifiedBy, setModifiedBy] = useState("Admin");
 
-  // Sample curriculum, levels, and subjects for demonstration
   const curriculum = ["Cambridge", "Edexcel"];
   const levels = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
   const subjects = ["Math", "Physics", "Chemistry"];
 
-  // Handle curriculum selection change
-  const handleCurriculumChange = (e) => {
-    setSelectedCurriculum(e.target.value);
-  };
+  const handleCurriculumChange = (e) => setSelectedCurriculum(e.target.value);
+  const handleLevelChange = (e) => setSelectedLevel(e.target.value);
+  const handleSubjectChange = (e) => setSelectedSubject(e.target.value);
 
-  // Handle level selection change
-  const handleLevelChange = (e) => {
-    setSelectedLevel(e.target.value);
-  };
-
-  // Handle subject selection change
-  const handleSubjectChange = (e) => {
-    setSelectedSubject(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform save logic here
-    console.log("Selected Curriculum:", selectedCurriculum);
-    console.log("Selected Level:", selectedLevel);
-    console.log("Subject Name:", subjectName);
-    console.log("Selected Subject:", selectedSubject);
-    onClose();
+    
+    const newChapter = {
+      curriculum: selectedCurriculum,
+      level: selectedLevel,
+      subject: selectedSubject,
+      chapterName: subjectName,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/api/chapters', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newChapter)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Chapter added:', data);
+        onClose();
+      } else {
+        console.error('Failed to add chapter');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (

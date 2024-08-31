@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import countryData from "../../../../../data/countryCode"; // Import your country data
 
 const AddStudentModal = ({ student, onClose, isDarkMode }) => {
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,6 +17,9 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
     createdDate: "",
     enrollmentStatus: "",
   });
+
+  
+  
 
   // Prefill form data when student prop changes
   useEffect(() => {
@@ -52,9 +57,44 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Update student logic here
+
+    const data ={
+      name: formData.name,
+      email: formData.email,
+      mobile: selectedCountry.dial_code+formData.mobile,
+      country: formData.country,
+      countryCode: selectedCountry.countryCode,
+      city: formData.city,
+      curriculum: formData.curriculum,
+      level: formData.level,
+      enrollmentStatus: formData.enrollmentStatus
+    }
+    
+    //fetch to add student
+  fetch("http://localhost:5000/api/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      if (data.message === "Student added successfully") {
+        setSuccessMessage(data.message);
+      } else {
+        setError(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error adding student:", error);
+      setError("An error occurred. Please try again.");
+    });
     onClose();
   };
 
@@ -193,16 +233,6 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
               </select>
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Created Date:</label>
-              <input
-                type="date"
-                name="createdDate"
-                value={formData.createdDate}
-                onChange={handleChange}
-                className="input input-bordered w-full text-lg p-2"
-              />
-            </div>
-            <div className="py-4">
               <label className="block text-lg mb-2">Enrollment Status:</label>
               <select
                 name="enrollmentStatus"
@@ -216,6 +246,9 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
               </select>
             </div>
           </div>
+          {/* error message */}
+          {error && (<p className="text-red-500 text-lg font-bold">{error}</p>)}
+          {successMessage && (<p className="text-green-500 text-lg font-bold">{successMessage}</p>)}
           <div className="modal-action mt-4">
             <button
               type="submit"

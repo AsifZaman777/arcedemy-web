@@ -61,9 +61,15 @@ const CurrList = ({ isDarkMode }) => {
   };
 
   const handleDelete = (id) => {
-    const updatedCurrs = currs.filter((curr) => curr.id !== id);
-  
-    setCurrs(updatedCurrs);
+    //delete the curriculum by calling the API
+    fetch(`http://localhost:5000/api/curriculum/${id}`, {
+      method: "DELETE"
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      setCurrs(currs.filter(curr => curr.id !== id));
+    })
   };
 
   const handleModalClose = () => {
@@ -141,7 +147,7 @@ const CurrList = ({ isDarkMode }) => {
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleDelete(curr.id)}
+                    onClick={() => handleDelete(curr._id)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
                     Delete curriculum

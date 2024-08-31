@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 const AddSubjectModal = ({ onClose, isDarkMode }) => {
-  const [levelCount] = useState(0);
-  const [levelNames, setLevelNames] = useState([]);
+  // const [levelNames, setLevelNames] = useState([]);
   const [subjectName, setSubjectName] = useState("");
   const [selectedCurriculum, setSelectedCurriculum] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
@@ -12,10 +11,9 @@ const AddSubjectModal = ({ onClose, isDarkMode }) => {
   const curriculum = ["Cambridge", "Edexcel"];
   const levels = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
   
-  useEffect(() => {
-    // Initialize level names array when levelCount changes
-    setLevelNames(Array(levelCount).fill(""));
-  }, [levelCount]);
+  // useEffect(() => {
+  //   setLevelNames([]);
+  // }, []);
 
   // Handle curriculum selection change
   const handleCurriculumChange = (e) => {
@@ -27,16 +25,38 @@ const AddSubjectModal = ({ onClose, isDarkMode }) => {
     setSelectedLevel(e.target.value);
   };
 
-  
-  
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform save logic here
-    console.log("Selected Curriculum:", selectedCurriculum);
-    console.log("Selected Level:", selectedLevel);
-    console.log("Subject Name:", subjectName);
-    console.log("Levels:", levelNames);
-    onClose();
+    if (!selectedCurriculum || !selectedLevel || !subjectName) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
+    const subject = {
+      name: subjectName,
+    };
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/curriculum/subject/${selectedCurriculum}/${selectedLevel}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(subject),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Subject added successfully:", result);
+        onClose();  // Close the modal after successful addition
+      } else {
+        console.error("Failed to add subject:", response.statusText);
+        alert("Failed to add subject. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error adding subject:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
 
   return (

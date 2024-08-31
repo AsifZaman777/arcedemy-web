@@ -50,13 +50,21 @@ async function run() {
     app.post('/api/register', async (req, res) => {
         const student = req.body;
         //check phone number already exists or not
-        const userPhone = await users.findOne({ phoneNumber: student.phoneNumber });
+        const userPhone = await users.findOne({ mobile: student.mobile });
         if (userPhone) {
             return res.status(400).json({ message: "Phone number already exists" });
         }
+        //check email
+        const userEmail = await users.findOne({ email: student.email });
+        if (userEmail) {
+            return res.status(400).json({ message: "Email already exists" });
+        }
         //CreatedAt
         student.createdAt = new Date();
-        student.EnrollmentStatus = "Enrolled";
+        if(student.enrollmentStatus == "unenrolled"){
+          student.enrollmentStatus = "Unenrolled";
+        }
+        student.enrollmentStatus = "enrolled";
         const result = await users.insertOne(student);
         res.send(result);
     });
@@ -75,6 +83,36 @@ async function run() {
       const student = await users.findOne(query);
       res.send(student);
   });
+
+  //filter student data by field
+
+  app.get('/api/students/filter/:field/:value', async (req, res) => {
+    const field = req.params.field;
+    console.log(field);
+    const value = req.params.value;
+    console.log(value);
+    const query = { [field]: value };
+    const cursor = users.find(query);
+    const result = await cursor.toArray();
+    res.send(result);
+  })
+
+  //search student by any field
+  app.post('/api/student/search', async (req, res) => {
+    const search = req.body;
+    const cursor = users.find(search);
+    const result = await cursor.toArray();
+    res.send(result);
+  });
+
+  //delete student data by id
+  app.delete('/api/students/delete/:id', async (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    const query = { _id: new ObjectId(id) };
+    const result = await users.deleteOne(query);
+    res.send(result);
+  })
 
     //login using email and password and get token
     app.post('/api/login', async (req, res) => {
@@ -108,16 +146,6 @@ async function run() {
       const result = await users.updateOne(filter, updatedDoc, options);
       res.send(result);
   });
-
-    //delete student data by id
-    app.delete('/api/students/:id', async (req, res) => {
-      const id = req.params.id;
-      console.log(id);
-      const query = { _id: new ObjectId(id) };
-      const result = await users.deleteOne(query);
-      res.send(result);
-  });
-
   //search student by any field
   app.post('/api/search', async (req, res) => {
     const search = req.body;
@@ -194,6 +222,79 @@ async function run() {
     const result = await academicsCurriculum.deleteOne(query);
     res.send(result);
   });
+
+  // Add subject to curriculum
+app.put('/api/curriculum/subject/:curriculum/:level', async (req, res) => {
+  const curriculumName = req.params.curriculum;
+  const level = req.params.level;
+  const subject = req.body;
+
+  // Get curriculum by name
+  const curriculum = await academicsCurriculum.findOne({ curriculum: curriculumName });
+  console.log(curriculum);
+
+  if (!curriculum) {
+    return res.status(404).send({ message: "Curriculum not found" });
+  }
+
+  const curriculumLevel = curriculum.levels.find(l => l.level === level);
+  console.log(curriculumLevel);
+
+  if (!curriculumLevel) {
+    return res.status(404).send({ message: "Level not found in curriculum" });
+  }
+
+  const filter = { _id: new ObjectId(curriculum._id), "levels.level": level };
+  const updatedDoc = {
+    $push: { "levels.$.subjects": subject },
+  };
+  
+  const result = await academicsCurriculum.updateOne(filter, updatedDoc);
+
+  if (result.matchedCount > 0) {
+    res.send({ message: "Subject added successfully" });
+  } else {
+    res.status(500).send({ message: "Failed to add subject" });
+  }
+});
+
+  //add chapter to subject
+
+  app.put('/api/curriculum/subject/chapter/:id', async (req, res) => {
+    const id = req.params.id;
+    const chapter = req.body;
+    const filter = { "subjects._id": new ObjectId(id) };
+    const updatedDoc = {
+        $push: { "subjects.$.chapters": chapter },
+    };
+    const options = { upsert: true };
+    const result = await academicsCurriculum.updateOne(filter, updatedDoc, options);
+    res.send(result);
+  });
+
+  // POST route to add a new chapter
+app.post('/api/chapters', (req, res) => {
+  const { curriculum, level, subject, chapterName, createdBy, modifiedBy } = req.body;
+
+  if (!curriculum || !level || !subject || !chapterName || !createdBy || !modifiedBy) {
+    return res.status(400).json({ message: 'All fields are required.' });
+  }
+
+  const newChapter = {
+    id: chapters.length + 1,
+    curriculum,
+    level,
+    subject,
+    chapterName,
+    createdBy,
+    modifiedBy,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  chapters.push(newChapter);
+  res.status(201).json(newChapter);
+});
 
 
   /*

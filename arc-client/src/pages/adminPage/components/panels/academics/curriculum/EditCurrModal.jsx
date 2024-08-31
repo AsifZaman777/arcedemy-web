@@ -26,9 +26,9 @@ const EditCurrModal = ({ curr, onClose, isDarkMode }) => {
   };
 
   // Handle modifiedBy change
-  const handleModifiedByChange = (e) => {
-    setModifiedBy(e.target.value);
-  };
+  // const handleModifiedByChange = (e) => {
+  //   setModifiedBy(e.target.value);
+  // };
 
   // Handle level name change
   const handleLevelChange = (index, value) => {
@@ -94,7 +94,7 @@ const EditCurrModal = ({ curr, onClose, isDarkMode }) => {
               placeholder="Enter creator's name"
             />
           </div>
-          <div className="py-4">
+          {/* <div className="py-4">
             <label className="block text-lg mb-2">Modified By:</label>
             <input
               type="text"
@@ -103,11 +103,11 @@ const EditCurrModal = ({ curr, onClose, isDarkMode }) => {
               className="input input-bordered w-full text-lg p-2"
               placeholder="Enter modifier's name"
             />
-          </div>
+          </div> */}
           <div className="py-4">
             <label className="block text-lg mb-2">Levels:</label>
-            {levels.length > 0 ? (
-              levels.map((level, index) => (
+            {curr.levels.length > 0 ? (
+              curr.levels?.map((level, index) => (
                 <div key={index} className="flex items-center mb-2">
                   <input
                     type="text"
