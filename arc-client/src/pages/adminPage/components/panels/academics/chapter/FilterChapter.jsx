@@ -138,7 +138,7 @@ const FilterChapter = ({ isDarkMode }) => {
       {/* AddChapterModal */}
       {isModalOpen && (
         <AddChapterModal
-          student={null} // Pass the student data if available
+          student={null} 
           onClose={handleCloseModal}
           isDarkMode={isDarkMode}
         />
