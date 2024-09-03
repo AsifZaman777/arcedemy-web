@@ -9,6 +9,7 @@ const LeaderboardIcon = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  //test 
   return (
     <div className="fixed group z-50 bottom-10 right-10">
       {/* Pulsating Indicator */}
