@@ -20,7 +20,7 @@ const LeaderboardIcon = () => {
       {/* Ranking Icon */}
       <div
         className="flex items-center justify-center bg-orange-500 text-white p-2 rounded-full ring-2 ring-gray-700 shadow-lg hover:bg-orange-600 duration-300 cursor-pointer"
-        onClick={toggleModal} // Toggle modal on click
+        onClick={toggleModal} //toggle logic
       >
         <PiRankingLight className="text-4xl" />
       </div>
@@ -30,7 +30,7 @@ const LeaderboardIcon = () => {
         Leaderboard
       </div>
 
-      {/* Conditionally render the Leaderboard Modal */}
+     {/*render the modal */}
       {isModalOpen && (
         <LeaderboardModal closeModal={toggleModal} />
       )}
