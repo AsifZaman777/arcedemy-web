@@ -7,6 +7,8 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedChapter, setSelectedChapter] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); 
 
   // Sample curriculum, levels, subjects, and chapters for demonstration
   const curriculum = ["Cambridge", "Edexcel"];
@@ -41,14 +43,36 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform save logic here
+
+    // Create a new FormData object
+    const formData = new FormData();
+    formData.append("curriculum", selectedCurriculum);
+    formData.append("level", selectedLevel);
+    formData.append("subject", selectedSubject);
+    formData.append("chapter", selectedChapter);
+    formData.append("files", selectedFile); // 'files' should match the field name expected on the server
+
+    fetch("http://localhost:5000/api/upload", {
+        method: "POST",
+        body: formData, // Set the body to the FormData object
+    })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => {
+      console.error('Error:', error)
+      setErrorMessage("An error occurred while uploading the file");
+    }
+  );
+
     console.log("Selected Curriculum:", selectedCurriculum);
     console.log("Selected Level:", selectedLevel);
     console.log("Selected Subject:", selectedSubject);
     console.log("Selected Chapter:", selectedChapter);
-    console.log("Selected File:", selectedFile);
-    onClose();
-  };
+    console.log(selectedFile);
+    setSuccessMessage(`${selectedFile.name} uploaded successfully`);
+};
+
+
 
   return (
     <dialog
@@ -139,6 +163,8 @@ const AddNoteModal = ({ onClose, isDarkMode }) => {
               className="input input-bordered w-full text-lg p-2"
             />
           </div>
+          {successMessage && <p className="text-green-500 font-bold">{successMessage}</p>}
+          {errorMessage && <p className="text-red-500 font-bold">{errorMessage}</p>}
 
           <div className="modal-action mt-4">
             <button

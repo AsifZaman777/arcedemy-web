@@ -227,36 +227,45 @@ async function run() {
 app.put('/api/curriculum/subject/:curriculum/:level', async (req, res) => {
   const curriculumName = req.params.curriculum;
   const level = req.params.level;
-  const subject = req.body;
+  const newSubject = req.body; // The new subject to be added
 
-  // Get curriculum by name
-  const curriculum = await academicsCurriculum.findOne({ curriculum: curriculumName });
-  console.log(curriculum);
+  try {
+    // Find the curriculum by its name
+    const curriculum = await academicsCurriculum.findOne({ curriculum: curriculumName });
 
-  if (!curriculum) {
-    return res.status(404).send({ message: "Curriculum not found" });
-  }
+    if (!curriculum) {
+      return res.status(404).send({ message: "Curriculum not found" });
+    }
 
-  const curriculumLevel = curriculum.levels.find(l => l.level === level);
-  console.log(curriculumLevel);
+    // Find the specific level within the curriculum
+    const curriculumLevel = curriculum.levels.find(l => l.level === level);
 
-  if (!curriculumLevel) {
-    return res.status(404).send({ message: "Level not found in curriculum" });
-  }
+    if (!curriculumLevel) {
+      return res.status(404).send({ message: "Level not found in curriculum" });
+    }
 
-  const filter = { _id: new ObjectId(curriculum._id), "levels.level": level };
-  const updatedDoc = {
-    $push: { "levels.$.subjects": subject },
-  };
-  
-  const result = await academicsCurriculum.updateOne(filter, updatedDoc);
+    // Define the filter to locate the specific curriculum and level
+    const filter = { _id: curriculum._id, "levels.level": level };
+    
+    // Update the document to add the new subject to the specified level
+    const updatedDoc = {
+      $push: { "levels.$.subjects": newSubject }
+    };
 
-  if (result.matchedCount > 0) {
-    res.send({ message: "Subject added successfully" });
-  } else {
-    res.status(500).send({ message: "Failed to add subject" });
+    // Execute the update query
+    const result = await academicsCurriculum.updateOne(filter, updatedDoc);
+
+    if (result.matchedCount > 0) {
+      res.send({ message: "Subject added successfully" });
+    } else {
+      res.status(500).send({ message: "Failed to add subject" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "An error occurred while adding the subject" });
   }
 });
+
 
   //add chapter to subject
 
@@ -326,35 +335,38 @@ const auth = new google.auth.GoogleAuth({
 });
   
   
-  app.post("/api/upload", upload.any(), async (req, res) => {
-    try {
-        console.log(req.body);
-        console.log(req.files);
-        const { subject, chapter } = req.body;  // Get additional data from req.body
-        const { files } = req;
+app.post("/api/upload", upload.any(), async (req, res) => {
+  try {
+      console.log(req.body);
+      console.log(req.files);
+      const { subject, chapter } = req.body;
+      const { files } = req;
 
-        for (let f = 0; f < files.length; f += 1) {
-            const uploadedFile = await uploadFile(files[f]);
-            
-            // Construct the document to be stored in MongoDB
-            const fileMetadata = {
-                subject: subject,
-                chapter: chapter,
-                fileName: uploadedFile.name,
-                fileId: uploadedFile.id,
-                filePath: `https://drive.google.com/file/d/${uploadedFile.id}/view?usp=sharing`,  // Example Google Drive path
-                uploadedAt: new Date()
-            };
-            await saveFileMetadata(fileMetadata);
-        }
+      for (let f = 0; f < files.length; f += 1) {
+          const uploadedFile = await uploadFile(files[f]);
+          
+          const fileMetadata = {
+              curriculum: req.body.curriculum,
+              level: req.body.level,
+              subject: subject,
+              chapter: chapter,
+              fileName: uploadedFile.name,
+              fileId: uploadedFile.id,
+              filePath: `https://drive.google.com/file/d/${uploadedFile.id}/view?usp=sharing`,
+              uploadedAt: new Date()
+          };
+          await saveFileMetadata(fileMetadata);
+      }
 
-        res.status(200).send("Form Submitted");
-        console.log("Form Submitted");
-    } catch (f) {
-        console.error(f);
-        res.status(500).send(f.message);
-    }
+      // Send a JSON response
+      res.status(200).json({ message: "Form Submitted" });
+      console.log("Form Submitted");
+  } catch (f) {
+      console.error(f);
+      res.status(500).send(f.message);
+  }
 });
+
 
 const uploadFile = async (fileObject) => {
     const bufferStream = new stream.PassThrough();
@@ -459,12 +471,40 @@ const updateFile = async (fileObject, fileId) => {
       res.send(result);
     });
 
-    //delete note by id
     app.delete('/api/notes/:id', async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await notes.deleteOne(query);
-      res.send(result);
+      try {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+    
+        // Find the note by its ID
+        const note = await notes.findOne(query);
+        if (!note) {
+          return res.status(404).send({ error: 'Note not found' });
+        }
+    
+        // Delete the file from Google Drive
+        const drive = google.drive({ version: "v3", auth }); // Ensure 'auth' is properly configured
+        try {
+          await drive.files.delete({
+            fileId: note.fileId,
+          });
+          console.log(`File ${note.fileId} deleted from Google Drive.`);
+        } catch (googleError) {
+          console.error('Error deleting file from Google Drive:', googleError.message);
+          return res.status(500).send({ error: 'Failed to delete file from Google Drive' });
+        }
+    
+        // Delete the note from MongoDB
+        const result = await notes.deleteOne(query);
+        if (result.deletedCount === 0) {
+          return res.status(404).send({ error: 'Note not found for deletion' });
+        }
+    
+        res.send({ success: true, message: 'Note and associated file deleted successfully' });
+      } catch (error) {
+        console.error('Error deleting note:', error.message);
+        res.status(500).send({ error: 'Internal Server Error' });
+      }
     });
 
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import EditNoteModal from "./EditNoteModal"; // Assuming you have a component for editing notes
 
@@ -42,20 +42,46 @@ const NoteList = ({ isDarkMode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
 
+  useEffect(() => {
+    const fetchNotes = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/notes");
+        const data = await response.json();
+        setNotes(data);
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+      }
+    };
+  
+    fetchNotes();
+  }, []); // Dependency array can include triggers like note addition if needed
+  
+
   const handleEdit = (note) => {
     setSelectedNote(note);
     setIsModalOpen(true);
   };
 
   const handleDelete = (id) => {
-    const updatedNotes = notes.filter((note) => note.id !== id);
+    const updatedNotes = notes.filter((note) => note._id !== id);
     setNotes(updatedNotes);
+    //api call to delete note
+    fetch(`http://localhost:5000/api/notes/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then((response) => response.json())
+    .then(data => console.log(data))
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedNote(null);
   };
+
+  
 
   return (
     <div
@@ -100,10 +126,10 @@ const NoteList = ({ isDarkMode }) => {
                     : "bg-white"
                 } hover:bg-orange-300`}
               >
-                <td className="px-4 py-2 border text-center">{note.id}</td>
+                <td className="px-4 py-2 border text-center">{note._id}</td>
                 <td className="px-4 py-2 border text-center">
                   <a
-                    href={note.noteLink}
+                    href={note.filePath}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700"
@@ -112,10 +138,10 @@ const NoteList = ({ isDarkMode }) => {
                   </a>
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {note.chapterName}
+                  {note.chapter}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {note.subjectName}
+                  {note.subject}
                 </td>
                 <td className="px-4 py-2 border text-center">
                   {note.curriculum}
@@ -137,7 +163,7 @@ const NoteList = ({ isDarkMode }) => {
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleDelete(note.id)}
+                    onClick={() => handleDelete(note._id)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
                     Delete
