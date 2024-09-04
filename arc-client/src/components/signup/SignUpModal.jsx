@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
-import countryData from "../../../../../data/countryCode"; // Import your country data
+import countryData from "../../data/countryCode"; // Import your country data
 
-const SignUpModal = ({ student, onClose, isDarkMode }) => {
+const SignUpModal = ({ onClose }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,26 +16,8 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
     enrollmentStatus: "",
   });
 
-  // Prefill form data when student prop changes
-  useEffect(() => {
-    if (student) {
-      setFormData({
-        name: student.name || "",
-        email: student.email || "",
-        mobile: student.mobile || "",
-        countryCode: student.countryCode || "",
-        country: student.country || "",
-        city: student.city || "",
-        curriculum: student.curriculum || "",
-        level: student.level || "",
-        createdDate: student.createdDate || "",
-        enrollmentStatus: student.enrollmentStatus || "",
-      });
-    }
-  }, [student]);
-
   // Update countryCode when country changes
-  useEffect(() => {
+  useState(() => {
     const selectedCountry = countryData.find(
       (country) => country.name === formData.country
     );
@@ -54,7 +36,7 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Update student logic here
+    // Handle the form submission logic here
     onClose();
   };
 
@@ -66,47 +48,41 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
   return (
     <dialog
       id="edit_modal"
-      className="modal fixed inset-0 z-50 flex items-center justify-center"
+      className="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-0 backdrop-blur-sm"
       open
     >
-      <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div
-        className={`modal-box z-10 ${
-          isDarkMode
-            ? "bg-gray-900 border-cyan-600 border-2"
-            : "bg-white border-gray-700 border-2"
-        }`}
-      >
-        <h3 className="font-bold text-2xl mb-4">Add new student</h3>
+      <div className="absolute inset-0 bg-black opacity-10"></div>
+      <div className="modal-box z-10 bg-white bg-opacity-70 backdrop-blur-3xl border border-orange-500 rounded-xl p-8 shadow-xl">
+        <h3 className="font-bold text-3xl text-orange-600 mb-4">Add new student</h3>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="py-4">
-              <label className="block text-lg mb-2">Name:</label>
+              <label className="block text-lg mb-2 text-orange-700">Name:</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="input input-bordered w-full text-lg p-2"
+                className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               />
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Email:</label>
+              <label className="block text-lg mb-2 text-orange-700">Email:</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="input input-bordered w-full text-lg p-2"
+                className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               />
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Country:</label>
+              <label className="block text-lg mb-2 text-orange-700">Country:</label>
               <select
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
-                className="select select-bordered w-full text-lg p-2"
+                className="select select-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               >
                 <option value="">Select a country</option>
                 {countryData.map((country) => (
@@ -117,7 +93,7 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
               </select>
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Mobile Number:</label>
+              <label className="block text-lg mb-2 text-orange-700">Mobile Number:</label>
               <div className="flex items-center">
                 {selectedCountry && (
                   <>
@@ -138,7 +114,7 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
                       name="mobile"
                       value={formData.mobile}
                       onChange={handleChange}
-                      className="input input-bordered w-36  -ml-5 text-lg p-1"
+                      className="input input-bordered w-36 -ml-5 text-lg p-1 bg-white bg-opacity-60 border-orange-400"
                       placeholder="Enter mobile"
                     />
                   </>
@@ -149,29 +125,29 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
                     name="mobile"
                     value={formData.mobile}
                     onChange={handleChange}
-                    className="input input-bordered w-full text-lg p-2"
+                    className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400"
                     placeholder="Enter mobile"
                   />
                 )}
               </div>
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">City:</label>
+              <label className="block text-lg mb-2 text-orange-700">City:</label>
               <input
                 type="text"
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
-                className="input input-bordered w-full text-lg p-2"
+                className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               />
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Curriculum:</label>
+              <label className="block text-lg mb-2 text-orange-700">Curriculum:</label>
               <select
                 name="curriculum"
                 value={formData.curriculum}
                 onChange={handleChange}
-                className="select select-bordered w-full text-lg p-2"
+                className="select select-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               >
                 <option value="">Select a curriculum</option>
                 <option value="Cambridge">Cambridge</option>
@@ -179,12 +155,12 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
               </select>
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Level:</label>
+              <label className="block text-lg mb-2 text-orange-700">Level:</label>
               <select
                 name="level"
                 value={formData.level}
                 onChange={handleChange}
-                className="select select-bordered w-full text-lg p-2"
+                className="select select-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               >
                 <option value="">Select a level</option>
                 <option value="IGCSE">IGCSE</option>
@@ -193,22 +169,22 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
               </select>
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Created Date:</label>
+              <label className="block text-lg mb-2 text-orange-700">Created Date:</label>
               <input
                 type="date"
                 name="createdDate"
                 value={formData.createdDate}
                 onChange={handleChange}
-                className="input input-bordered w-full text-lg p-2"
+                className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               />
             </div>
             <div className="py-4">
-              <label className="block text-lg mb-2">Enrollment Status:</label>
+              <label className="block text-lg mb-2 text-orange-700">Enrollment Status:</label>
               <select
                 name="enrollmentStatus"
                 value={formData.enrollmentStatus}
                 onChange={handleChange}
-                className="select select-bordered w-60 text-lg p-2"
+                className="select select-bordered w-60 text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               >
                 <option value="">Select enrollment status</option>
                 <option value="enrolled">Enrolled</option>
@@ -219,14 +195,14 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
           <div className="modal-action mt-4">
             <button
               type="submit"
-              className="btn bg-orange-500 text-xl font-normal text-slate-200 hover:bg-orange-600 p-2"
+              className="btn bg-orange-500 text-xl font-normal text-white hover:bg-orange-600 p-2"
             >
               Save
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="btn bg-red-500 text-xl font-normal text-slate-200 hover:bg-red-600 p-2"
+              className="btn bg-red-500 text-xl font-normal text-white hover:bg-red-600 p-2"
             >
               Close
             </button>
@@ -239,20 +215,7 @@ const SignUpModal = ({ student, onClose, isDarkMode }) => {
 
 // Props validation
 SignUpModal.propTypes = {
-  student: PropTypes.shape({
-    name: PropTypes.string,
-    email: PropTypes.string,
-    mobile: PropTypes.string,
-    countryCode: PropTypes.string,
-    country: PropTypes.string,
-    city: PropTypes.string,
-    curriculum: PropTypes.string,
-    level: PropTypes.string,
-    createdDate: PropTypes.string,
-    enrollmentStatus: PropTypes.string,
-  }),
   onClose: PropTypes.func.isRequired,
-  isDarkMode: PropTypes.bool.isRequired,
 };
 
 export default SignUpModal;

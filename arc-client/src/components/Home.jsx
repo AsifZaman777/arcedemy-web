@@ -3,19 +3,14 @@ import goody1 from "../assets/images/image1.jpg";
 import goody2 from "../assets/images/image2.jpg";
 import Typewriter from "typewriter-effect";
 import arcLogo from "../assets/images/arc-logo.png";
-import {Navigate} from "react-router-dom";
-
-//components
-import SignUpButton from "./signup/SignUpButton";
-
-
-
+import SignUpModal from "./signup/SignUpModal"; // Correct import for the SignUpModal
 
 const Home = () => {
+  // State for image carousel
   const [currentImage, setCurrentImage] = useState(0);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for signup modal
   const images = [goody1, goody2];
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,7 +35,10 @@ const Home = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
- 
+  // Toggle modal function
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   return (
     <div>
@@ -79,37 +77,58 @@ const Home = () => {
               }`}
             >
               <li>
-                <a href="#home" className="text-lg hover:bg-orange-400 hover:text-gray-200">
+                <a
+                  href="#home"
+                  className="text-lg hover:bg-orange-400 hover:text-gray-200"
+                >
                   Home
                 </a>
               </li>
               <li>
-                <a href="#about" className="text-lg hover:bg-orange-400 hover:text-gray-200">
+                <a
+                  href="#about"
+                  className="text-lg hover:bg-orange-400 hover:text-gray-200"
+                >
                   About
                 </a>
               </li>
               <li>
-                <a href="#service" className="text-lg hover:bg-orange-400 hover:text-gray-200">
+                <a
+                  href="#service"
+                  className="text-lg hover:bg-orange-400 hover:text-gray-200"
+                >
                   Service
                 </a>
               </li>
               <li>
-                <a href="#course" className="text-lg hover:bg-orange-400 hover:text-gray-200">
+                <a
+                  href="#course"
+                  className="text-lg hover:bg-orange-400 hover:text-gray-200"
+                >
                   Courses
                 </a>
               </li>
               <li>
-                <a href="#faq" className="text-lg hover:bg-orange-400 hover:text-gray-200">
+                <a
+                  href="#faq"
+                  className="text-lg hover:bg-orange-400 hover:text-gray-200"
+                >
                   FAQ
                 </a>
               </li>
               <li>
-                <a href="#ourteam" className="text-lg hover:bg-orange-400 hover:text-gray-200">
+                <a
+                  href="#ourteam"
+                  className="text-lg hover:bg-orange-400 hover:text-gray-200"
+                >
                   Our Team
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-lg hover:bg-orange-400 hover:text-gray-200">
+                <a
+                  href="#contact"
+                  className="text-lg hover:bg-orange-400 hover:text-gray-200"
+                >
                   Contact
                 </a>
               </li>
@@ -128,7 +147,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="navbar-center ml-20 hidden xl:flex flex-grow justify-center">
+        <div className="navbar-center ml-10 hidden xl:flex flex-grow justify-center">
           <ul className="menu menu-horizontal px-1 text-lg">
             <li>
               <a
@@ -199,12 +218,13 @@ const Home = () => {
         </div>
         <div className="navbar-end lg:flex">
           <div className="flex items-center space-x-6 mr-10">
-             
-
-            <SignUpButton/>
-   
-            {/* Ranking Icon with Tooltip */}
-       
+            {/* Sign up Button */}
+            <div
+              className="btn bg-orange-400 border-1 border-white animate-bounce hover:bg-orange-500"
+              onClick={toggleModal}
+            >
+              <span className="text-white text-lg font-thin">Sign up</span>
+            </div>
           </div>
         </div>
       </div>
@@ -239,17 +259,24 @@ const Home = () => {
           <p className="text-2xl md:text-4xl mt-4 text-white">
             Arcedemy is a community to
           </p>
-          <p className="text-2xl md:text-5xl font-bold mt-4 text-white">
+          <div className="text-3xl md:text-5xl mt-4 text-white">
             <Typewriter
               options={{
-                strings: ["Learn...", "Grow...", "Play..."],
+                strings: [
+                  "Learn...",
+                  "Grow...",
+                  "Play...",
+                ],
                 autoStart: true,
                 loop: true,
               }}
             />
-          </p>
+          </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && <SignUpModal onClose={toggleModal} />}
     </div>
   );
 };
