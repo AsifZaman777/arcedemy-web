@@ -53,7 +53,7 @@ const SignUpModal = ({ onClose }) => {
     >
       <div className="absolute inset-0 bg-black opacity-10"></div>
       <div className="modal-box z-10 bg-white bg-opacity-70 backdrop-blur-3xl border border-orange-500 rounded-xl p-8 shadow-xl">
-        <h3 className="font-bold text-3xl text-orange-600 mb-4">Add new student</h3>
+        <h3 className="font-bold text-3xl text-orange-600 text-center mb-4">Join Arcedemy</h3>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="py-4">
@@ -61,6 +61,7 @@ const SignUpModal = ({ onClose }) => {
               <input
                 type="text"
                 name="name"
+                placeholder="John doe"
                 value={formData.name}
                 onChange={handleChange}
                 className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
@@ -71,6 +72,7 @@ const SignUpModal = ({ onClose }) => {
               <input
                 type="email"
                 name="email"
+                placeholder="example@gmail.com"
                 value={formData.email}
                 onChange={handleChange}
                 className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
@@ -136,6 +138,7 @@ const SignUpModal = ({ onClose }) => {
               <input
                 type="text"
                 name="city"
+                placeholder="San Francisco"
                 value={formData.city}
                 onChange={handleChange}
                 className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
@@ -168,29 +171,7 @@ const SignUpModal = ({ onClose }) => {
                 <option value="O level">O level</option>
               </select>
             </div>
-            <div className="py-4">
-              <label className="block text-lg mb-2 text-orange-700">Created Date:</label>
-              <input
-                type="date"
-                name="createdDate"
-                value={formData.createdDate}
-                onChange={handleChange}
-                className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
-              />
-            </div>
-            <div className="py-4">
-              <label className="block text-lg mb-2 text-orange-700">Enrollment Status:</label>
-              <select
-                name="enrollmentStatus"
-                value={formData.enrollmentStatus}
-                onChange={handleChange}
-                className="select select-bordered w-60 text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
-              >
-                <option value="">Select enrollment status</option>
-                <option value="enrolled">Enrolled</option>
-                <option value="unenrolled">Unenrolled</option>
-              </select>
-            </div>
+        
           </div>
           <div className="modal-action mt-4">
             <button
