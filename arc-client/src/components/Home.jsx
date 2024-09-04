@@ -3,6 +3,10 @@ import goody1 from "../assets/images/image1.jpg";
 import goody2 from "../assets/images/image2.jpg";
 import Typewriter from "typewriter-effect";
 import arcLogo from "../assets/images/arc-logo.png";
+import {Navigate} from "react-router-dom";
+
+//components
+import SignUpButton from "./signup/SignUpButton";
 
 
 
@@ -50,7 +54,7 @@ const Home = () => {
       >
         <div className="navbar-start flex items-center">
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <div tabIndex={0} role="button" className="btn btn-ghost xl:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -75,37 +79,37 @@ const Home = () => {
               }`}
             >
               <li>
-                <a href="#home" className="text-lg">
+                <a href="#home" className="text-lg hover:bg-orange-400 hover:text-gray-200">
                   Home
                 </a>
               </li>
               <li>
-                <a href="#about" className="text-lg">
+                <a href="#about" className="text-lg hover:bg-orange-400 hover:text-gray-200">
                   About
                 </a>
               </li>
               <li>
-                <a href="#service" className="text-lg">
+                <a href="#service" className="text-lg hover:bg-orange-400 hover:text-gray-200">
                   Service
                 </a>
               </li>
               <li>
-                <a href="#course" className="text-lg">
+                <a href="#course" className="text-lg hover:bg-orange-400 hover:text-gray-200">
                   Courses
                 </a>
               </li>
               <li>
-                <a href="#faq" className="text-lg">
+                <a href="#faq" className="text-lg hover:bg-orange-400 hover:text-gray-200">
                   FAQ
                 </a>
               </li>
               <li>
-                <a href="#ourteam" className="text-lg">
+                <a href="#ourteam" className="text-lg hover:bg-orange-400 hover:text-gray-200">
                   Our Team
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-lg">
+                <a href="#contact" className="text-lg hover:bg-orange-400 hover:text-gray-200">
                   Contact
                 </a>
               </li>
@@ -117,14 +121,14 @@ const Home = () => {
             width={70}
             alt="Arcedemy"
           />
-          <div className="btn btn-ghost text-3xl animate-pulse animate-ease-linear ml-2">
+          <div className="btn btn-ghost text-3xl animate-pulse animate-ease-linear ml-2 ">
             <a href="#home" className="text-orange-300 px-0 py-0 rounded-lg">
               Arcedemy
             </a>
           </div>
         </div>
 
-        <div className="navbar-center hidden lg:flex flex-grow justify-center">
+        <div className="navbar-center ml-20 hidden xl:flex flex-grow justify-center">
           <ul className="menu menu-horizontal px-1 text-lg">
             <li>
               <a
@@ -182,16 +186,23 @@ const Home = () => {
                 Contact
               </a>
             </li>
+
+            <li>
+              <a
+                href="#"
+                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
+              >
+                Past papers
+              </a>
+            </li>
           </ul>
         </div>
         <div className="navbar-end lg:flex">
           <div className="flex items-center space-x-6 mr-10">
-            
-            <div className="btn bg-orange-400 border-1 border-white animate-bounce hover:bg-orange-500">
-              <span className="text-white text-lg font-thin">Sign up</span>
-            </div>
-           
+             
 
+            <SignUpButton/>
+   
             {/* Ranking Icon with Tooltip */}
        
           </div>
