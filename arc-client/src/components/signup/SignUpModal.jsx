@@ -48,11 +48,11 @@ const SignUpModal = ({ onClose }) => {
   return (
     <dialog
       id="edit_modal"
-      className="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-0 backdrop-blur-sm"
+      className="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-0 backdrop-blur-lg"
       open
     >
       <div className="absolute inset-0 bg-black opacity-10"></div>
-      <div className="modal-box z-10 bg-white bg-opacity-70 backdrop-blur-3xl border border-orange-500 rounded-xl p-8 shadow-xl">
+      <div className="modal-box z-10 bg-orange-100 bg-opacity-70 backdrop-blur-3xl border border-orange-500 rounded-xl p-8 shadow-xl">
         <h3 className="font-bold text-3xl text-orange-600 text-center mb-4">Join Arcedemy</h3>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
