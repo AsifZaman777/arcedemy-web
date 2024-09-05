@@ -39,7 +39,7 @@ const CambridgePapers = () => {
         {/* Navbar */}
         <div className="py-4 px-4 sm:px-8 bg-white shadow-sm flex flex-row items-center justify-between w-full">
           <h2 className="text-2xl sm:text-4xl font-bold text-gray-500">
-            Cambridge
+            Edexcel
           </h2>
           <button
             className="btn btn-ghost rounded-md bg-red-400 text-white text-md sm:text-md hover:bg-orange-600 hover:text-white"
@@ -55,13 +55,13 @@ const CambridgePapers = () => {
           {/* Category Filters */}
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <button className="px-4 py-2 text-md sm:text-md border border-orange-500 rounded hover:bg-orange-500 hover:text-white text-orange-500 duration-100">
-              IGCSE level
+              AS level
             </button>
             <button className="px-4 py-2 text-md sm:text-md border border-orange-500 rounded hover:bg-orange-500 hover:text-white text-orange-500 duration-100">
-              IAS level
+              A2 level
             </button>
             <button className="px-4 py-2 text-md sm:text-md border border-orange-500 rounded hover:bg-orange-500 hover:text-white text-orange-500 duration-100">
-              IAL level
+              O level
             </button>
           </div>
 

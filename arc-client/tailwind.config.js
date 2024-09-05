@@ -18,8 +18,14 @@ export default {
   plugins: [
     typography,
     daisyui,],
+  
 
   daisyui: {
     themes: ["dark","cupcake",'autumn','light'],
   },
 }
+
+
+
+
+
