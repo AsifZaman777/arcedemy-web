@@ -4,6 +4,7 @@ import goody2 from "../assets/images/image2.jpg";
 import Typewriter from "typewriter-effect";
 import arcLogo from "../assets/images/arc-logo.png";
 import SignUpModal from "./signup/SignUpModal"; // Correct import for the SignUpModal
+import { Link } from "react-router-dom";
 
 const Home = () => {
   // State for image carousel
@@ -207,12 +208,9 @@ const Home = () => {
             </li>
 
             <li>
-              <a
-                href="#"
-                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
-              >
+              <Link to="/pastpapers" className="hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded">
                 Past papers
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
