@@ -471,7 +471,7 @@ const updateFile = async (fileObject, fileId) => {
       res.send(result);
     });
 
-    app.delete('/api/notes/:id', async (req, res) => {
+    app.delete('/api/notes/delete/:id', async (req, res) => {
       try {
         const id = req.params.id;
         const query = { _id: new ObjectId(id) };
@@ -520,10 +520,16 @@ const updateFile = async (fileObject, fileId) => {
 
     //post video data
     app.post('/api/videos', async (req, res) => {
-      const video = req.body;
-      video.createdAt = new Date();
-      const result = await videos.insertOne(video);
-      res.send(result);
+
+      try{
+        const video = req.body;
+        video.createdAt = new Date();
+        const result = await videos.insertOne(video);
+        res.send(result);
+      }
+      catch(error){
+        console.error('Error inserting video:', error);
+      }
     });
 
     //get all videos

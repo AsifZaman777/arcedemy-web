@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import EditNoteModal from "./EditNoteModal"; // Assuming you have a component for editing notes
+import DeleteNoteModal from "./DeleteNoteModal"; 
 
 const NoteList = ({ isDarkMode }) => {
   const notesData = [
@@ -40,6 +41,7 @@ const NoteList = ({ isDarkMode }) => {
 
   const [notes, setNotes] = useState(notesData);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
   const [selectedNote, setSelectedNote] = useState(null);
 
   useEffect(() => {
@@ -65,15 +67,26 @@ const NoteList = ({ isDarkMode }) => {
   const handleDelete = (id) => {
     const updatedNotes = notes.filter((note) => note._id !== id);
     setNotes(updatedNotes);
-    //api call to delete note
-    fetch(`http://localhost:5000/api/notes/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
-    .then((response) => response.json())
-    .then(data => console.log(data))
+    // //api call to delete note
+    // fetch(`http://localhost:5000/api/notes/${id}`, {
+    //   method: "DELETE",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   }
+    // })
+    // .then((response) => response.json())
+    // .then(data => console.log(data))
+  };
+
+  const handleOpenDeleteModal = (note) => {
+    console.log(note);
+    setSelectedNote(note); // Set the student to be deleted
+    setIsDeleteModalOpen(true); // Open the delete modal
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedNote(null);
   };
 
   const handleModalClose = () => {
@@ -163,7 +176,7 @@ const NoteList = ({ isDarkMode }) => {
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleDelete(note._id)}
+                    onClick={() => handleOpenDeleteModal(note)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
                     Delete
@@ -183,6 +196,18 @@ const NoteList = ({ isDarkMode }) => {
           onClose={handleModalClose}
         />
       )}
+
+     
+      
+      {isDeleteModalOpen && selectedNote && (
+        <DeleteNoteModal
+          note={selectedNote}
+          onClose={handleCloseDeleteModal}
+          onDelete={handleDelete}
+          isDarkMode={isDarkMode}
+        />
+      )}
+  
     </div>
   );
 };
