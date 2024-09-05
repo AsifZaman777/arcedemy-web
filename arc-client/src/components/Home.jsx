@@ -133,6 +133,7 @@ const Home = () => {
                   Contact
                 </a>
               </li>
+              
             </ul>
           </div>
           <img
@@ -206,11 +207,27 @@ const Home = () => {
                 Contact
               </a>
             </li>
-
-            <li>
-              <Link to="/pastpapers" className="hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded">
+            <li className="dropdown dropdown-hover dropdown-down ml-0">
+              <a
+                href="#"
+                tabIndex={0}
+                role="button"
+                className="hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
+              >
                 Past papers
-              </Link>
+              </a>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow bg-opacity-80"
+              >
+                <li>
+                  <Link to="/cambridge" className="hover:bg-orange-500 hover:text-gray-200">Cambridge</Link>
+                </li>
+                <li>
+                <Link to="/edexcel" className="hover:bg-orange-500 hover:text-gray-200">Edexcel</Link>
+                </li>
+                
+              </ul>
             </li>
           </ul>
         </div>
@@ -260,11 +277,7 @@ const Home = () => {
           <div className="text-3xl md:text-5xl mt-4 text-white">
             <Typewriter
               options={{
-                strings: [
-                  "Learn...",
-                  "Grow...",
-                  "Play...",
-                ],
+                strings: ["Learn...", "Grow...", "Play..."],
                 autoStart: true,
                 loop: true,
               }}
