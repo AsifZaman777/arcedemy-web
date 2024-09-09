@@ -8,6 +8,7 @@ import zafri from "../assets/images/zafri.jpg";
 import asif from "../assets/images/asif.png";
 import adir from "../assets/images/adir.jpg";
 import oni from "../assets/images/oni.jpg";
+import sunny from "../assets/images/sunny.jpeg";
 
 const OurTeam = () => {
   return (
@@ -89,6 +90,18 @@ const Cards = () => {
         className="w-36 md:w-56 text-lg text-orange-400"
         name="Oni"
         designation="UI/UX Designer"
+      />
+
+      <Card
+        containerRef={containerRef}
+        src={sunny}
+        alt="Team Member 5"
+        rotate="10deg"
+        top="50%"
+        left="45%"
+        className="w-36 md:w-56 text-lg text-orange-400"
+        name="Alfay Sunny"
+        designation="Co-founder"
       />
     </div>
   );
