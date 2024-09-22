@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import countryData from "../../data/countryCode"; // Import your country data
+import emailjs from '@emailjs/browser';
 
 const SignUpModal = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -12,8 +13,8 @@ const SignUpModal = ({ onClose }) => {
     city: "",
     curriculum: "",
     level: "",
-    createdDate: "",
-    enrollmentStatus: "",
+    createdDate: new Date().toLocaleDateString(), // Set createdDate to current date
+    enrollmentStatus: "Pending", // Default enrollment status
   });
 
   // Update countryCode when country changes
@@ -34,13 +35,40 @@ const SignUpModal = ({ onClose }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle the form submission logic here
-    onClose();
+  const sendMail = () => {
+    const message = {
+      to_name: formData.name,
+      email: formData.email,
+      mobile: `${formData.countryCode} ${formData.mobile}`,
+      country: formData.country,
+      city: formData.city,
+      curriculum: formData.curriculum,
+      level: formData.level,
+      created_date: formData.createdDate,
+      enrollment_status: formData.enrollmentStatus,
+    };
+
+    emailjs
+      .send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,  // Use environment variables
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID, // Use environment variables
+        message,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY   // Use environment variables
+      )
+      .then((response) => {
+        console.log("Email successfully sent!", response.status, response.text);
+      })
+      .catch((err) => {
+        console.error("Failed to send email. Error:", err);
+      });
   };
 
-  // Find the flag and dial code for the selected country
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendMail(); // Send the email after form submission
+    onClose();  // Close the modal after submission
+  };
+
   const selectedCountry = countryData.find(
     (country) => country.name === formData.country
   );
@@ -61,7 +89,7 @@ const SignUpModal = ({ onClose }) => {
               <input
                 type="text"
                 name="name"
-                placeholder="John doe"
+                placeholder="John Doe"
                 value={formData.name}
                 onChange={handleChange}
                 className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
