@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import countryData from "../../data/countryCode"; // Import your country data
 import emailjs from '@emailjs/browser';
@@ -18,7 +18,7 @@ const SignUpModal = ({ onClose }) => {
   });
 
   // Update countryCode when country changes
-  useState(() => {
+  useEffect(() => {
     const selectedCountry = countryData.find(
       (country) => country.name === formData.country
     );
@@ -48,12 +48,13 @@ const SignUpModal = ({ onClose }) => {
       enrollment_status: formData.enrollmentStatus,
     };
 
+    // Access the environment variables using import.meta.env
     emailjs
       .send(
-        'service_kklwtsn', // Replace with your EmailJS service ID
-        'signupTW', // Replace with your EmailJS template ID
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,  // Use the environment variable
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID, // Use the environment variable
         message,
-        'j0DqWBxLed5fA-64F' // Replace with your EmailJS public key
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY   // Use the environment variable
       )
       .then((response) => {
         console.log("Email successfully sent!", response.status, response.text);
@@ -84,6 +85,7 @@ const SignUpModal = ({ onClose }) => {
         <h3 className="font-bold text-3xl text-orange-600 text-center mb-4">Join Arcedemy</h3>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Name */}
             <div className="py-4">
               <label className="block text-lg mb-2 text-orange-700">Name:</label>
               <input
@@ -95,6 +97,8 @@ const SignUpModal = ({ onClose }) => {
                 className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               />
             </div>
+
+            {/* Email */}
             <div className="py-4">
               <label className="block text-lg mb-2 text-orange-700">Email:</label>
               <input
@@ -106,6 +110,8 @@ const SignUpModal = ({ onClose }) => {
                 className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               />
             </div>
+
+            {/* Country */}
             <div className="py-4">
               <label className="block text-lg mb-2 text-orange-700">Country:</label>
               <select
@@ -122,6 +128,8 @@ const SignUpModal = ({ onClose }) => {
                 ))}
               </select>
             </div>
+
+            {/* Mobile Number */}
             <div className="py-4">
               <label className="block text-lg mb-2 text-orange-700">Mobile Number:</label>
               <div className="flex items-center">
@@ -161,6 +169,8 @@ const SignUpModal = ({ onClose }) => {
                 )}
               </div>
             </div>
+
+            {/* City */}
             <div className="py-4">
               <label className="block text-lg mb-2 text-orange-700">City:</label>
               <input
@@ -172,6 +182,8 @@ const SignUpModal = ({ onClose }) => {
                 className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
               />
             </div>
+
+            {/* Curriculum */}
             <div className="py-4">
               <label className="block text-lg mb-2 text-orange-700">Curriculum:</label>
               <select
@@ -185,6 +197,8 @@ const SignUpModal = ({ onClose }) => {
                 <option value="Edexcel">Edexcel</option>
               </select>
             </div>
+
+            {/* Level */}
             <div className="py-4">
               <label className="block text-lg mb-2 text-orange-700">Level:</label>
               <select
