@@ -1,8 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import countryData from "../../data/countryCode"; // Import your country data
-import emailjs from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3.6.0/dist/email.min.js';
-
+import emailjs from '@emailjs/browser'; //updated
 
 const SignUpModal = ({ onClose }) => {
   const [formData, setFormData] = useState({
