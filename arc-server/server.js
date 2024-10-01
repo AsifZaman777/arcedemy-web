@@ -38,6 +38,7 @@ async function run() {
     const database = client.db("arcedemy");
     const users = database.collection("students");
     const notes = database.collection("notes");
+    const papers = database.collection("papers");
     const videos = database.collection("videos");
     const academicsCurriculum = database.collection("academics");
     
@@ -48,8 +49,10 @@ async function run() {
 
     //post student data
     app.post('/api/register', async (req, res) => {
+
+      try{
+
         const student = req.body;
-        //check phone number already exists or not
         const userPhone = await users.findOne({ mobile: student.mobile });
         if (userPhone) {
             return res.status(400).json({ message: "Phone number already exists" });
@@ -67,6 +70,12 @@ async function run() {
         student.enrollmentStatus = "enrolled";
         const result = await users.insertOne(student);
         res.send(result);
+
+      }
+      catch(error){
+        res.status(500).send({ error: 'Internal Server Error' });
+      }
+        
     });
 
     //get all students data
@@ -368,6 +377,45 @@ app.post("/api/upload", upload.any(), async (req, res) => {
 });
 
 
+app.post("/api/paper/upload", upload.any(), async (req, res) => {
+  try {
+      console.log(req.body);
+      console.log(req.files);
+      const { subject, chapter } = req.body;
+      const { files } = req;
+
+      for (let f = 0; f < files.length; f += 1) {
+          const uploadedFile = await uploadFile(files[f]);
+          
+          const fileMetadata = {
+              curriculum: req.body.curriculum,
+              level: req.body.level,
+              subject: subject,
+              chapter: chapter,
+              fileName: uploadedFile.name,
+              fileId: uploadedFile.id,
+              filePath: `https://drive.google.com/file/d/${uploadedFile.id}/view?usp=sharing`,
+              uploadedAt: new Date()
+          };
+          await savePaperMetadata(fileMetadata);
+      }
+
+      // Send a JSON response
+      res.status(200).json({ message: "Form Submitted" });
+      console.log("Form Submitted");
+  } catch (f) {
+      console.error(f);
+      res.status(500).send(f.message);
+  }
+});
+
+app.get("/api/papers", async (req, res) => {
+  const cursor = papers.find({});
+  const result = await cursor.toArray();
+  res.send(result);
+})
+
+
 const uploadFile = async (fileObject) => {
     const bufferStream = new stream.PassThrough();
     bufferStream.end(fileObject.buffer);
@@ -386,6 +434,15 @@ const uploadFile = async (fileObject) => {
 
     console.log(`Uploaded file ${data.name} ${data.id}`);
     return data;  
+};
+
+const savePaperMetadata = async (fileMetadata) => {
+  try {
+      const result = await papers.insertOne(fileMetadata);
+      console.log("File metadata saved to MongoDB:", result.insertedId);
+  } catch (error) {
+      console.error("Error saving file metadata to MongoDB:", error);
+  }
 };
 
 const saveFileMetadata = async (fileMetadata) => {
@@ -508,6 +565,43 @@ const updateFile = async (fileObject, fileId) => {
     });
 
 
+    app.delete('/api/paper/delete/:id', async (req, res) => {
+      try {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+    
+        // Find the note by its ID
+        const paper = await papers.findOne(query);
+        if (!paper) {
+          return res.status(404).send({ error: 'Paper not found' });
+        }
+    
+        // Delete the file from Google Drive
+        const drive = google.drive({ version: "v3", auth }); // Ensure 'auth' is properly configured
+        try {
+          await drive.files.delete({
+            fileId: paper.fileId,
+          });
+          console.log(`File ${paper.fileId} deleted from Google Drive.`);
+        } catch (googleError) {
+          console.error('Error deleting file from Google Drive:', googleError.message);
+          return res.status(500).send({ error: 'Failed to delete file from Google Drive' });
+        }
+    
+        // Delete the note from MongoDB
+        const result = await papers.deleteOne(query);
+        if (result.deletedCount === 0) {
+          return res.status(404).send({ error: 'Note not found for deletion' });
+        }
+    
+        res.send({ success: true, message: 'Note and associated file deleted successfully' });
+      } catch (error) {
+        console.error('Error deleting note:', error.message);
+        res.status(500).send({ error: 'Internal Server Error' });
+      }
+    });
+
+
 
   /*
     Notes API END
@@ -519,7 +613,7 @@ const updateFile = async (fileObject, fileId) => {
      */
 
     //post video data
-    app.post('/api/videos', async (req, res) => {
+    app.post('/api/videos/create', async (req, res) => {
 
       try{
         const video = req.body;
@@ -534,9 +628,17 @@ const updateFile = async (fileObject, fileId) => {
 
     //get all videos
     app.get('/api/videos', async (req, res) => {
-      const cursor = videos.find({});
-      const result = await cursor.toArray();
-      res.send(result);
+
+      try{
+        const cursor = videos.find({});
+        const result = await cursor.toArray();
+        res.send(result);
+      }
+      catch(error){
+        console.error('Error getting videos:', error);
+      }
+
+      
     });
 
     //update video data by id
@@ -553,7 +655,7 @@ const updateFile = async (fileObject, fileId) => {
     });
 
     //delete video data by id
-    app.delete('/api/videos/:id', async (req, res) => {
+    app.delete('/api/videos/delete/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await videos.deleteOne(query);

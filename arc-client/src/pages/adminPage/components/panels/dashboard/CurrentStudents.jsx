@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import EditModal from './EditModal';
+import DeleteStudentModal from "./DeleteStudentModal";
+
 
 const CurrentStudents = ({ isDarkMode }) => {
   const [students, setStudents] = useState([
@@ -165,12 +167,24 @@ const CurrentStudents = ({ isDarkMode }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
+
 
   const handleEdit = (student) => {
     setSelectedStudent(student);
     setIsModalOpen(true);
   };
 
+  const handleOpenDeleteModal = (student) => {
+    console.log(student);
+    setSelectedStudent(student); // Set the student to be deleted
+    setIsDeleteModalOpen(true); // Open the delete modal
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedStudent(null);
+  };
   const handleDelete = (id) => {
     const updatedStudents = students.filter((student) => student.id !== id);
     setStudents(updatedStudents);
@@ -180,6 +194,14 @@ const CurrentStudents = ({ isDarkMode }) => {
     setIsModalOpen(false);
     setSelectedStudent(null);
   };
+
+  useEffect(()=>{
+    fetch("http://localhost:5000/api/students")
+    .then((response)=>response.json())
+    .then((data)=>{
+      setStudents(data);
+    })
+  },[])
 
   return (
     <div
@@ -226,7 +248,7 @@ const CurrentStudents = ({ isDarkMode }) => {
                     : "bg-white"
                 } hover:bg-orange-300`}
               >
-                <td className="px-4 py-2 border text-center">{student.id}</td>
+                <td className="px-4 py-2 border text-center">{student._id}</td>
                 <td className="px-4 py-2 border text-center">{student.name}</td>
                 <td className="px-4 py-2 border text-center">
                   {student.email}
@@ -235,11 +257,6 @@ const CurrentStudents = ({ isDarkMode }) => {
                   {student.mobile}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  <img
-                    src={`https://flagcdn.com/16x12/${student.countryCode}.png`}
-                    alt={`${student.country} flag`}
-                    className="inline-block mr-2"
-                  />
                   {student.country}
                 </td>
                 <td className="px-4 py-2 border text-center">{student.city}</td>
@@ -250,7 +267,7 @@ const CurrentStudents = ({ isDarkMode }) => {
                   {student.level}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {student.createdDate}
+                {student.createdAt?.split("T")[0]}
                 </td>
                 <td className="px-4 py-2 border text-center">
                   {student.enrollmentStatus}
@@ -265,7 +282,7 @@ const CurrentStudents = ({ isDarkMode }) => {
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleDelete(student.id)}
+                    onClick={() => handleOpenDeleteModal(student)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
                     Delete
@@ -282,6 +299,15 @@ const CurrentStudents = ({ isDarkMode }) => {
         <EditModal
           student={selectedStudent}
           onClose={handleModalClose}
+          isDarkMode={isDarkMode}
+        />
+      )}
+
+{isDeleteModalOpen && selectedStudent && (
+        <DeleteStudentModal
+          student={selectedStudent}
+          onClose={handleCloseDeleteModal}
+          onDelete={handleDelete}
           isDarkMode={isDarkMode}
         />
       )}

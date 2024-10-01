@@ -7,52 +7,52 @@ const AddPaperModal = ({ onClose, isDarkMode }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedChapter, setSelectedChapter] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // Sample curriculum, levels, subjects, and chapters for demonstration
+  // Sample data for the form
   const curriculum = ["Cambridge", "Edexcel"];
   const levels = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
   const subjects = ["Math", "Physics", "Chemistry"];
   const chapters = ["Algebra Basics", "Kinematics", "Chemical Reactions"];
 
-  // Handle curriculum selection change
-  const handleCurriculumChange = (e) => {
-    setSelectedCurriculum(e.target.value);
-  };
-
-  // Handle level selection change
-  const handleLevelChange = (e) => {
-    setSelectedLevel(e.target.value);
-  };
-
-  // Handle subject selection change
-  const handleSubjectChange = (e) => {
-    setSelectedSubject(e.target.value);
-  };
-
-  // Handle chapter selection change
-  const handleChapterChange = (e) => {
-    setSelectedChapter(e.target.value);
-  };
-
-  // Handle file selection
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
+  const handleCurriculumChange = (e) => setSelectedCurriculum(e.target.value);
+  const handleLevelChange = (e) => setSelectedLevel(e.target.value);
+  const handleSubjectChange = (e) => setSelectedSubject(e.target.value);
+  const handleChapterChange = (e) => setSelectedChapter(e.target.value);
+  const handleFileChange = (e) => setSelectedFile(e.target.files[0]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform save logic here
-    console.log("Selected Curriculum:", selectedCurriculum);
-    console.log("Selected Level:", selectedLevel);
-    console.log("Selected Subject:", selectedSubject);
-    console.log("Selected Chapter:", selectedChapter);
-    console.log("Selected File:", selectedFile);
-    onClose();
+
+    const formData = new FormData();
+    formData.append("curriculum", selectedCurriculum);
+    formData.append("level", selectedLevel);
+    formData.append("subject", selectedSubject);
+    formData.append("chapter", selectedChapter);
+    formData.append("files", selectedFile);
+
+    fetch("http://localhost:5000/api/paper/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setSuccessMessage(`${selectedFile.name} uploaded successfully`);
+        setErrorMessage("");
+        onClose();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setErrorMessage("An error occurred while uploading the file");
+        setSuccessMessage("");
+      });
   };
 
   return (
     <dialog
-      id="add_chapter_modal"
+      id="add_paper_modal"
       className="modal fixed inset-0 z-50 flex items-center justify-center"
       open
     >
@@ -64,7 +64,7 @@ const AddPaperModal = ({ onClose, isDarkMode }) => {
             : "bg-white border-gray-700 border-2"
         }`}
       >
-        <h3 className="font-bold text-2xl mb-4">Add New Chapter</h3>
+        <h3 className="font-bold text-2xl mb-4">Add New Paper</h3>
         <form onSubmit={handleSubmit}>
           <div className="py-4">
             <label className="block text-lg mb-2">Select Curriculum:</label>
@@ -140,6 +140,9 @@ const AddPaperModal = ({ onClose, isDarkMode }) => {
             />
           </div>
 
+          {successMessage && <p className="text-green-500 font-bold">{successMessage}</p>}
+          {errorMessage && <p className="text-red-500 font-bold">{errorMessage}</p>}
+
           <div className="modal-action mt-4">
             <button
               type="submit"
@@ -161,7 +164,6 @@ const AddPaperModal = ({ onClose, isDarkMode }) => {
   );
 };
 
-// Props validation
 AddPaperModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   isDarkMode: PropTypes.bool.isRequired,

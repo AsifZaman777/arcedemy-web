@@ -212,7 +212,8 @@ const SubjectList = ({ isDarkMode }) => {
             </tr>
           </thead>
           <tbody>
-          {subjects.map((subject) => (
+            {/* if subjects is exist then display */}
+            {subjects.levels?.subjects > 0 && subjects.map((subject) => (
   <React.Fragment key={subject._id}>
     {subject.levels &&
       subject.levels.map((level, levelIndex) => (
@@ -258,6 +259,7 @@ const SubjectList = ({ isDarkMode }) => {
       ))}
   </React.Fragment>
 ))}
+        
 
 
 

@@ -1,61 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import EditVideoModal from "./EditVideoModal"; // Assuming you have a component for editing videos
+import VideoDeleteModal from "./VideoDeleteModal"; // Import the delete modal
 
 const VideoList = ({ isDarkMode }) => {
-  const videosData = [
-    // Sample video data
-    {
-      id: 1,
-      chapterName: "Algebra Basics",
-      subjectName: "Mathematics",
-      curriculum: "Cambridge",
-      level: "AS-Level",
-      youtubeLink: "https://www.youtube.com/watch?v=example1",
-      createdBy: "Admin",
-      modifiedBy: "Sadman Sakib",
-    },
-    {
-      id: 2,
-      chapterName: "Kinematics",
-      subjectName: "Physics",
-      curriculum: "Cambridge",
-      level: "AS-Level",
-      youtubeLink: "https://www.youtube.com/watch?v=example2",
-      createdBy: "Admin",
-      modifiedBy: "Sadman Sakib",
-    },
-    {
-      id: 3,
-      chapterName: "Organic Chemistry Basics",
-      subjectName: "Chemistry",
-      curriculum: "Cambridge",
-      level: "AS-Level",
-      youtubeLink: "https://www.youtube.com/watch?v=example3",
-      createdBy: "Admin",
-      modifiedBy: "Sadman Sakib",
-    },
-    // Add more video data as needed
-  ];
-
-  const [videos, setVideos] = useState(videosData);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [videos, setVideos] = useState([]); // Fetch videos from the API
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete modal
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   const handleEdit = (video) => {
     setSelectedVideo(video);
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
   };
 
   const handleDelete = (id) => {
-    const updatedVideos = videos.filter((video) => video.id !== id);
+    const updatedVideos = videos.filter((video) => video._id !== id);
     setVideos(updatedVideos);
+    setIsDeleteModalOpen(false); // Close the delete modal after deletion
+  };
+
+  const openDeleteModal = (video) => {
+    setSelectedVideo(video);
+    setIsDeleteModalOpen(true);
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
+    setIsEditModalOpen(false);
     setSelectedVideo(null);
   };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedVideo(null);
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/videos")
+      .then((response) => response.json())
+      .then((data) => {
+        setVideos(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching videos:", error);
+      });
+  }, []);
 
   return (
     <div
@@ -89,7 +78,7 @@ const VideoList = ({ isDarkMode }) => {
           <tbody>
             {videos.map((video, index) => (
               <tr
-                key={video.id}
+                key={video._id}
                 className={`${
                   index % 2 === 0
                     ? isDarkMode
@@ -100,19 +89,19 @@ const VideoList = ({ isDarkMode }) => {
                     : "bg-white"
                 } hover:bg-orange-300`}
               >
-                <td className="px-4 py-2 border text-center">{video.id}</td>
+                <td className="px-4 py-2 border text-center">{video._id}</td>
                 <td className="px-4 py-2 border text-center">
                   <a
-                    href={video.youtubeLink}
+                    href={video.VideoLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline"
                   >
-                    {video.youtubeLink}
+                    {video.videoLink}
                   </a>
                 </td>
-                <td className="px-4 py-2 border text-center">{video.chapterName}</td>
-                <td className="px-4 py-2 border text-center">{video.subjectName}</td>
+                <td className="px-4 py-2 border text-center">{video.chapter}</td>
+                <td className="px-4 py-2 border text-center">{video.subject}</td>
                 <td className="px-4 py-2 border text-center">{video.curriculum}</td>
                 <td className="px-4 py-2 border text-center">{video.level}</td>
                 <td className="px-4 py-2 border text-center">{video.createdBy}</td>
@@ -127,7 +116,7 @@ const VideoList = ({ isDarkMode }) => {
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleDelete(video.id)}
+                    onClick={() => openDeleteModal(video)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
                     Delete
@@ -140,11 +129,21 @@ const VideoList = ({ isDarkMode }) => {
       </div>
 
       {/* Edit Modal */}
-      {isModalOpen && selectedVideo && (
+      {isEditModalOpen && selectedVideo && (
         <EditVideoModal
           isDarkMode={isDarkMode}
           videoData={selectedVideo}
           onClose={handleModalClose}
+        />
+      )}
+
+      {/* Delete Modal */}
+      {isDeleteModalOpen && selectedVideo && (
+        <VideoDeleteModal
+          isDarkMode={isDarkMode}
+          video={selectedVideo}
+          onClose={handleDeleteModalClose}
+          onDelete={handleDelete} // Pass the handleDelete function to delete the video
         />
       )}
     </div>

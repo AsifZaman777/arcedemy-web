@@ -6,34 +6,51 @@ const AddVideoModal = ({ onClose, isDarkMode }) => {
   const [selectedCurriculum, setSelectedCurriculum] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
+  const [videoLink, setVideoLink] = useState("");  // Add state for videoLink
 
-  // Sample curriculum, levels, and subjects for demonstration
   const curriculum = ["Cambridge", "Edexcel"];
   const levels = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
   const subjects = ["Math", "Physics", "Chemistry"];
 
-  // Handle curriculum selection change
   const handleCurriculumChange = (e) => {
     setSelectedCurriculum(e.target.value);
   };
 
-  // Handle level selection change
   const handleLevelChange = (e) => {
     setSelectedLevel(e.target.value);
   };
 
-  // Handle subject selection change
   const handleSubjectChange = (e) => {
     setSelectedSubject(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform save logic here
+    fetch("http://localhost:5000/api/videos/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        curriculum: selectedCurriculum,
+        level: selectedLevel,
+        subject: selectedSubject,
+        chapter: subjectName,
+        videoLink: videoLink,  // Access videoLink from state
+      }),
+    }).then((response) => {
+      if (response.ok) {
+        console.log("Chapter added successfully");
+        onClose();
+      } else {
+        console.log("Failed to add chapter");
+      }
+    });
     console.log("Selected Curriculum:", selectedCurriculum);
     console.log("Selected Level:", selectedLevel);
     console.log("Subject Name:", subjectName);
     console.log("Selected Subject:", selectedSubject);
+    console.log("Video Link:", videoLink);
     onClose();
   };
 
@@ -109,6 +126,16 @@ const AddVideoModal = ({ onClose, isDarkMode }) => {
               onChange={(e) => setSubjectName(e.target.value)}
               className="input input-bordered w-full text-lg p-2"
               placeholder="Enter chapter name"
+            />
+          </div>
+          <div className="py-4">
+            <label className="block text-lg mb-2">Video Link:</label>
+            <input
+              type="text"
+              value={videoLink}  // Bind value to state
+              onChange={(e) => setVideoLink(e.target.value)}  // Update state on change
+              className="input input-bordered w-full text-lg p-2"
+              placeholder="Enter video link"
             />
           </div>
 

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import EditNoteModal from "./EditPaperModal"; // Assuming you have a component for editing papers
+import DeletePaperModal from "./DeletePaperModal"; // Import the DeletePaperModal
 
 const PaperList = ({ isDarkMode }) => {
   const pastPapersData = [
@@ -39,23 +40,46 @@ const PaperList = ({ isDarkMode }) => {
   ];
 
   const [papers, setPapers] = useState(pastPapersData);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedNote, setSelectedNote] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedPaper, setSelectedPaper] = useState(null);
 
-  const handleEdit = (papers) => {
-    setSelectedNote(papers);
-    setIsModalOpen(true);
+  const handleEdit = (paper) => {
+    setSelectedPaper(paper);
+    setIsEditModalOpen(true);
   };
 
   const handleDelete = (id) => {
-    const updatedNotes = papers.filter((papers) => papers.id !== id);
-    setPapers(updatedNotes);
+    const updatedPapers = papers.filter((paper) => paper.id !== id);
+    setPapers(updatedPapers);
+    setIsDeleteModalOpen(false);
+  };
+
+  const openDeleteModal = (paper) => {
+    setSelectedPaper(paper);
+    setIsDeleteModalOpen(true);
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedNote(null);
+    setIsEditModalOpen(false);
+    setSelectedPaper(null);
   };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedPaper(null);
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/papers")
+      .then((response) => response.json())
+      .then((data) => {
+        setPapers(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, []);
 
   return (
     <div
@@ -87,9 +111,9 @@ const PaperList = ({ isDarkMode }) => {
             </tr>
           </thead>
           <tbody>
-            {papers.map((papers, index) => (
+            {papers.map((paper, index) => (
               <tr
-                key={papers.id}
+                key={paper.id}
                 className={`${
                   index % 2 === 0
                     ? isDarkMode
@@ -100,10 +124,10 @@ const PaperList = ({ isDarkMode }) => {
                     : "bg-white"
                 } hover:bg-orange-300`}
               >
-                <td className="px-4 py-2 border text-center">{papers.id}</td>
+                <td className="px-4 py-2 border text-center">{paper._id}</td>
                 <td className="px-4 py-2 border text-center">
                   <a
-                    href={papers.noteLink}
+                    href={paper.filePath}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700"
@@ -111,25 +135,15 @@ const PaperList = ({ isDarkMode }) => {
                     View in Google Drive
                   </a>
                 </td>
-                <td className="px-4 py-2 border text-center">
-                  {papers.chapterName}
-                </td>
-                <td className="px-4 py-2 border text-center">
-                  {papers.subjectName}
-                </td>
-                <td className="px-4 py-2 border text-center">
-                  {papers.curriculum}
-                </td>
-                <td className="px-4 py-2 border text-center">{papers.level}</td>
-                <td className="px-4 py-2 border text-center">
-                  {papers.createdBy}
-                </td>
-                <td className="px-4 py-2 border text-center">
-                  {papers.modifiedBy}
-                </td>
+                <td className="px-4 py-2 border text-center">{paper.chapter}</td>
+                <td className="px-4 py-2 border text-center">{paper.subject}</td>
+                <td className="px-4 py-2 border text-center">{paper.curriculum}</td>
+                <td className="px-4 py-2 border text-center">{paper.level}</td>
+                <td className="px-4 py-2 border text-center">{paper.createdBy}</td>
+                <td className="px-4 py-2 border text-center">{paper.modifiedBy}</td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleEdit(papers)}
+                    onClick={() => handleEdit(paper)}
                     className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700"
                   >
                     Edit
@@ -137,7 +151,7 @@ const PaperList = ({ isDarkMode }) => {
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleDelete(papers.id)}
+                    onClick={() => openDeleteModal(paper)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
                     Delete
@@ -150,11 +164,21 @@ const PaperList = ({ isDarkMode }) => {
       </div>
 
       {/* Edit Modal */}
-      {isModalOpen && selectedNote && (
+      {isEditModalOpen && selectedPaper && (
         <EditNoteModal
           isDarkMode={isDarkMode}
-          pastPapersData={selectedNote}
+          pastPapersData={selectedPaper}
           onClose={handleModalClose}
+        />
+      )}
+
+      {/* Delete Modal */}
+      {isDeleteModalOpen && selectedPaper && (
+        <DeletePaperModal
+          isDarkMode={isDarkMode}
+          paper={selectedPaper}
+          onClose={handleDeleteModalClose}
+          onDelete={handleDelete}
         />
       )}
     </div>

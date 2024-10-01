@@ -1,79 +1,58 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import EditCurrModal from "./EditCurrModal";
+import DeleteCurriculumModal from "./DeleteCurriculumModal"; // Import the delete modal
 
 const CurrList = ({ isDarkMode }) => {
-  const curriculumsData = [
-    {
-      id: 1,
-      curriculum: "Cambridge",
-      createdBy: "Admin",
-      modifiedBy: "Sadman Sakib",
-      levels: [
-        { id: 1, level: "AS-Level" },
-        { id: 2, level: "A2-Level" },
-        { id: 3, level: "O-Level" },
-      ],
-    },
-    {
-      id: 2,
-      curriculum: "Edexcel",
-      createdBy: "Super Admin",
-      modifiedBy: "Zafri",
-      levels: [
-        { id: 4, level: "IGCSE" },
-        { id: 5, level: "IAL" },
-        { id: 6, level: "IAS" },
-      ],
-    },
-  ];
-
-  // Flatten the curriculum data to a single list
-  const [currs, setCurrs] = useState(
-    curriculumsData.flatMap(({curriculum, createdBy, modifiedBy, levels }) =>
-      levels.map((level) => ({
-        id: level.id,
-        curriculum,
-        level: level.level,
-        createdBy,
-        modifiedBy,
-      }))
-    )
-  );
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currs, setCurrs] = useState([]); // Fetch curriculums from API
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete modal
   const [selectedCurr, setSelectedCurr] = useState(null);
 
-  //get all the curriculums from the API
-  useEffect(()=>{
+  useEffect(() => {
     fetch("http://localhost:5000/api/curriculum")
-    .then((response) => response.json())
-    .then(data=>{
-      console.log(data);
-      setCurrs(data);
-    })
-    
-  },[currs])
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCurrs(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching curriculums:", error);
+      });
+  }, []);
 
   const handleEdit = (curr) => {
     setSelectedCurr(curr);
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
   };
 
   const handleDelete = (id) => {
-    //delete the curriculum by calling the API
     fetch(`http://localhost:5000/api/curriculum/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      setCurrs(currs.filter(curr => curr.id !== id));
-    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCurrs(currs.filter((curr) => curr.id !== id));
+        setIsDeleteModalOpen(false); // Close the delete modal after deletion
+      })
+      .catch((error) => {
+        console.error("Error deleting curriculum:", error);
+      });
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+  const openDeleteModal = (curr) => {
+    setSelectedCurr(curr);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+    setSelectedCurr(null);
+  };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
     setSelectedCurr(null);
   };
 
@@ -121,16 +100,9 @@ const CurrList = ({ isDarkMode }) => {
                 <td className="px-4 py-2 border text-center">
                   {curr.curriculum}
                 </td>
-
                 <td className="px-4 py-2 border text-center">
-    {curr.levels?.map((level, index) => (
-      <span key={index}>
-        {level.level}
-        {index < curr.levels.length - 1 && ', '}
-      </span>
-    ))}
-  </td>
-                
+                  {curr.levels.map((level) => level.level).join(", ")}
+                </td>
                 <td className="px-4 py-2 border text-center">
                   {curr.createdBy}
                 </td>
@@ -147,10 +119,10 @@ const CurrList = ({ isDarkMode }) => {
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleDelete(curr._id)}
+                    onClick={() => openDeleteModal(curr)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
-                    Delete curriculum
+                    Delete
                   </button>
                 </td>
               </tr>
@@ -160,18 +132,26 @@ const CurrList = ({ isDarkMode }) => {
       </div>
 
       {/* Edit Modal */}
-      {isModalOpen && selectedCurr && (
+      {isEditModalOpen && selectedCurr && (
         <EditCurrModal
           isDarkMode={isDarkMode}
           curr={{
             curriculum: selectedCurr.curriculum,
             createdBy: selectedCurr.createdBy,
             modifiedBy: selectedCurr.modifiedBy,
-            levels: [
-              { id: selectedCurr.id, level: selectedCurr.level },
-            ],
+            levels: [{ id: selectedCurr.id, level: selectedCurr.level }],
           }}
-          onClose={handleModalClose}
+          onClose={handleEditModalClose}
+        />
+      )}
+
+      {/* Delete Modal */}
+      {isDeleteModalOpen && selectedCurr && (
+        <DeleteCurriculumModal
+          isDarkMode={isDarkMode}
+          curriculum={selectedCurr}
+          onDelete={handleDelete}
+          onClose={handleDeleteModalClose}
         />
       )}
     </div>
