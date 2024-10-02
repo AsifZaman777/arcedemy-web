@@ -16,7 +16,8 @@ const SignUpModal = ({ onClose }) => {
     createdDate: new Date().toLocaleDateString(), // Set createdDate to current date
     enrollmentStatus: "Pending", // Default enrollment status
   });
-
+ 
+  const [errors, setErrors] = useState({});
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false); // For verification modal
   const [verificationCode, setVerificationCode] = useState("");
   const [generatedCode, setGeneratedCode] = useState("");
@@ -40,21 +41,70 @@ const SignUpModal = ({ onClose }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSave = () => {  
-    setLoading(true);  // Set loading to true when Save is clicked
-    
-    // Immediately call sendMail and handle modal state based on the result
-    sendMail()
-      .then((response) => {
-        console.log("Email successfully sent!", response.status, response.text);
-        setIsCodeModalOpen(true); // Open the verification modal if the email is sent
-      })
-      .catch((err) => {
-        console.error("Failed to send email. Error:", err);
-      })
-      .finally(() => {
-        setLoading(false);  // Reset loading regardless of success or failure
-      });
+  const validate = () => {
+    const newErrors = {};
+
+    // Name validation
+    if (!formData.name) {
+      newErrors.name = "Name is required";
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    // Mobile validation
+    if (!formData.mobile) {
+      newErrors.mobile = "Mobile number is required";
+    } else if (formData.mobile.length < 7 || formData.mobile.length > 15) {
+      newErrors.mobile = "Mobile number should be between 7 to 15 digits";
+    }
+
+    // Country validation
+    if (!formData.country) {
+      newErrors.country = "Country is required";
+    }
+
+    // City validation
+    if (!formData.city) {
+      newErrors.city = "City is required";
+    }
+
+    // Curriculum validation
+    if (!formData.curriculum) {
+      newErrors.curriculum = "Curriculum is required";
+    }
+
+    // Level validation
+    if (!formData.level) {
+      newErrors.level = "Level is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
+  const handleSave = () => {
+    if (validate()) {
+      setLoading(true); // Set loading to true when Save is clicked
+
+      // Immediately call sendMail and handle modal state based on the result
+      sendMail()
+        .then((response) => {
+          console.log("Email successfully sent!", response.status, response.text);
+          setIsCodeModalOpen(true); // Open the verification modal if the email is sent
+        })
+        .catch((err) => {
+          console.error("Failed to send email. Error:", err);
+        })
+        .finally(() => {
+          setLoading(false); // Reset loading regardless of success or failure
+        });
+    }
   };
   
 
@@ -133,6 +183,7 @@ const SignUpModal = ({ onClose }) => {
                   onChange={handleChange}
                   className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
                 />
+                {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
               </div>
               <div className="py-4">
                 <label className="block text-lg mb-2 text-orange-700">Email:</label>
@@ -144,6 +195,7 @@ const SignUpModal = ({ onClose }) => {
                   onChange={handleChange}
                   className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
                 />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
               </div>
               <div className="py-4">
                 <label className="block text-lg mb-2 text-orange-700">Country:</label>
@@ -160,6 +212,7 @@ const SignUpModal = ({ onClose }) => {
                     </option>
                   ))}
                 </select>
+                {errors.country && <p className="text-red-500 text-sm">{errors.country}</p>}
               </div>
               <div className="py-4">
                 <label className="block text-lg mb-2 text-orange-700">Mobile Number:</label>
@@ -198,7 +251,9 @@ const SignUpModal = ({ onClose }) => {
                       placeholder="Enter mobile"
                     />
                   )}
+                  
                 </div>
+                {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
               </div>
               <div className="py-4">
                 <label className="block text-lg mb-2 text-orange-700">City:</label>
@@ -210,6 +265,7 @@ const SignUpModal = ({ onClose }) => {
                   onChange={handleChange}
                   className="input input-bordered w-full text-lg p-2 bg-white bg-opacity-60 border-orange-400 text-black"
                 />
+                {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
               </div>
               <div className="py-4">
                 <label className="block text-lg mb-2 text-orange-700">Curriculum:</label>
@@ -223,6 +279,7 @@ const SignUpModal = ({ onClose }) => {
                   <option value="Cambridge">Cambridge</option>
                   <option value="Edexcel">Edexcel</option>
                 </select>
+                {errors.curriculum && <p className="text-red-500 text-sm">{errors.curriculum}</p>}
               </div>
               <div className="py-4">
                 <label className="block text-lg mb-2 text-orange-700">Level:</label>
@@ -237,7 +294,9 @@ const SignUpModal = ({ onClose }) => {
                   <option value="A level">A level</option>
                   <option value="O level">O level</option>
                 </select>
+                {errors.level && <p className="text-red-500 text-sm">{errors.level}</p>}
               </div>
+             
             </div>
             <div className="modal-action mt-4">
               {loading ? (
