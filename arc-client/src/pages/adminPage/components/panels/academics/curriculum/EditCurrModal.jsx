@@ -5,14 +5,14 @@ const EditCurrModal = ({ curr, onClose, isDarkMode }) => {
   const [curriculum, setCurriculumName] = useState(curr.curriculum || "");
   const [createdBy, setCreatedBy] = useState(curr.createdBy || "");
   const [modifiedBy, setModifiedBy] = useState(curr.modifiedBy || "");
-  const [levels, setLevels] = useState(curr.levels || []);
+  const [levels, setLevels] = useState(curr.levels?.map((level) => level.level) || []);
 
   // Prefill form with curr data when it changes
   useEffect(() => {
     setCurriculumName(curr.curriculum || "");
     setCreatedBy(curr.createdBy || "");
     setModifiedBy(curr.modifiedBy || "");
-    setLevels(curr.levels || []);
+    setLevels(curr.levels|| []);
   }, [curr]);
 
   // Handle curriculum name change
@@ -101,17 +101,23 @@ const EditCurrModal = ({ curr, onClose, isDarkMode }) => {
           </div>
           <div className="py-4">
             <label className="block text-lg mb-2">Levels:</label>
-            {levels.length > 0 ? (
-              levels.map((level, index) => (
+            {/* show levels */}
+            
+
+
+
+            {levels?.length > 0 ? (
+              levels?.map((level, index) => (
                 <div key={index} className="flex items-center mb-2">
-                  <input
+                  
+                   <input
                     type="text"
-                    value={level.level}
+                    value={level?.level}
                     onChange={(e) => handleLevelChange(index, e.target.value)}
                     className="input input-bordered w-full text-lg p-2"
-                    placeholder={`Level ${index + 1}`}
+                    placeholder={`Level ${level + 1}`}
                   />
-                  <button
+                   <button
                     type="button"
                     onClick={() => handleDeleteLevel(index)}
                     className="ml-2 btn bg-red-500 text-slate-200 hover:bg-red-600"

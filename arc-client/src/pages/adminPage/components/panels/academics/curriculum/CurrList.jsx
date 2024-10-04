@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import EditCurrModal from "./EditCurrModal";
 
@@ -59,6 +59,18 @@ const CurrList = ({ isDarkMode }) => {
     setSelectedCurr(null);
   };
 
+  useEffect(() => {
+    
+    fetch("http://localhost:5000/api/curriculum")
+      .then((response) => response.json())
+      .then((data) => {
+        setCurrs(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching curriculum data:", error);
+      });
+  }, []);
+
   return (
     <div
       className={`p-4 rounded-2xl ${
@@ -88,7 +100,7 @@ const CurrList = ({ isDarkMode }) => {
           <tbody>
             {currs.map((curr, index) => (
               <tr
-                key={curr.id}
+                key={curr._id}
                 className={`${
                   index % 2 === 0
                     ? isDarkMode
@@ -99,12 +111,12 @@ const CurrList = ({ isDarkMode }) => {
                     : "bg-white"
                 } hover:bg-orange-300`}
               >
-                <td className="px-4 py-2 border text-center">{curr.id}</td>
+                <td className="px-4 py-2 border text-center">{curr._id}</td>
                 <td className="px-4 py-2 border text-center">
                   {curr.curriculum}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {curr.level}
+                  {curr.levels?.map((level) => level.level).join(", ")}
                 </td>
                 <td className="px-4 py-2 border text-center">
                   {curr.createdBy}

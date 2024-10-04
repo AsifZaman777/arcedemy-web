@@ -5,13 +5,15 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
   const [curriculumName, setCurriculumName] = useState("");
   const [levelCount, setLevelCount] = useState(0);
   const [levelNames, setLevelNames] = useState([]);
+  // const [createdBy, setCreatedBy] = useState("Admin"); // Example createdBy field
+  // const [modifiedBy, setModifiedBy] = useState("Sadman Sakib"); // Example modifiedBy field
 
   // Handle curriculum name change
   const handleCurriculumChange = (e) => {
     setCurriculumName(e.target.value);
   };
 
-  // Handle radio button selection
+  // Handle radio button selection for level count
   const handleLevelCountChange = (e) => {
     const count = parseInt(e.target.value, 10);
     setLevelCount(count);
@@ -27,12 +29,46 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
     setLevelNames(updatedLevels);
   };
 
+  // Handle submit to post the curriculum
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform save logic here
-    console.log("Curriculum:", curriculumName);
-    console.log("Levels:", levelNames);
-    onClose();
+
+    // Construct the curriculum data as per the provided JSON schema
+    const curriculumData = {
+      curriculum: curriculumName,
+      createdBy: "Admin", // Example: Admin
+      modifiedBy: "Admin", // Example: Sadman Sakib
+      levels: levelNames.map((levelName, index) => ({
+        id: index + 1,
+        level: levelName,
+        subjects: [] // Add subject logic later if needed
+      }))
+    };
+
+    // Send POST request to save the curriculum
+    fetch("http://localhost:5000/api/curriculum/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(curriculumData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            const errorMessage = errorData?.message || "An error occurred.";
+            console.error(errorMessage);
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Curriculum saved successfully:", data);
+        onClose(); // Close modal on success
+      })
+      .catch((error) => {
+        console.error("Error saving curriculum:", error);
+      });
   };
 
   return (
@@ -59,13 +95,15 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
               onChange={handleCurriculumChange}
               className="input input-bordered w-full text-lg p-2"
               placeholder="Enter curriculum name"
+              required
             />
           </div>
           <div className="py-4">
-            <label className="block text-lg mb-2">How many academic levels do you want to add?</label>
+            <label className="block text-lg mb-2">
+              How many academic levels do you want to add?
+            </label>
             <div className="flex gap-4">
-
-            <label className="flex items-center">
+              <label className="flex items-center">
                 <input
                   type="radio"
                   name="levelCount"
@@ -75,7 +113,6 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
                 />
                 1 Level
               </label>
-
               <label className="flex items-center">
                 <input
                   type="radio"
@@ -86,7 +123,6 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
                 />
                 2 Levels
               </label>
-
               <label className="flex items-center">
                 <input
                   type="radio"
@@ -113,7 +149,9 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
             <div className="py-4 ease-in duration-300">
               {Array.from({ length: levelCount }).map((_, index) => (
                 <div key={index} className="mb-4">
-                  <label className="block text-lg mb-2">{`Level ${index + 1}:`}</label>
+                  <label className="block text-lg mb-2">{`Level ${
+                    index + 1
+                  }:`}</label>
                   <input
                     type="text"
                     value={levelNames[index]}
@@ -122,6 +160,7 @@ const AddCurrModal = ({ onClose, isDarkMode }) => {
                     }
                     className="input input-bordered w-full text-lg p-2"
                     placeholder={`e.g. O level, A level, etc.`}
+                    required
                   />
                 </div>
               ))}

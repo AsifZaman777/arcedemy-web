@@ -85,13 +85,7 @@ async function run() {
         res.send(result);
     });
 
-    //get student data by id
-    app.get('/api/students/:id', async (req, res) => {
-      const id = req.params.id;
-      const query = {_id : new ObjectId(id)}
-      const student = await users.findOne(query);
-      res.send(student);
-  });
+    
 
   //filter student data by field
 
@@ -116,11 +110,15 @@ async function run() {
 
   //delete student data by id
   app.delete('/api/students/delete/:id', async (req, res) => {
-    const id = req.params.id;
-    console.log(id);
-    const query = { _id: new ObjectId(id) };
-    const result = await users.deleteOne(query);
-    res.send(result);
+    try {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await users.deleteOne(query);
+      res.send(result);
+    }
+    catch(error){
+      res.status(500).send({ error: 'Internal Server Error' });
+    }
   })
 
     //login using email and password and get token
@@ -145,15 +143,21 @@ async function run() {
     });
     //update student data by id
     app.put('/api/students/:id', async (req, res) => {
-      const id = req.params.id;
-      const updatedStudent = req.body;
-      const filter = { _id: new ObjectId(id) };
-      const updatedDoc = {
-          $set: updatedStudent,
-      };
-      const options = { upsert: true };
-      const result = await users.updateOne(filter, updatedDoc, options);
-      res.send(result);
+      try {
+        const id = req.params.id;
+        const updatedStudent = req.body;
+        const filter = { _id: new ObjectId(id) };
+        const updatedDoc = {
+            $set: updatedStudent,
+        };
+        const options = { upsert: true };
+        const result = await users.updateOne(filter, updatedDoc, options);
+        res.send(result);
+      }
+      catch(error){
+        res.status(500).send({ error: 'Internal Server Error' });
+      }
+      
   });
   //search student by any field
   app.post('/api/search', async (req, res) => {
@@ -194,9 +198,13 @@ async function run() {
     try {
       const curriculum = req.body;
       curriculum.createdAt = new Date();
+      curriculum.updatedAt = new Date();
+      curriculum.createdBy = "Admin";
+      curriculum.updatedBy = "Admin";
       const result = await academicsCurriculum.insertOne(curriculum);
       res.status(201).send(result);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error inserting curriculum:', error);
       res.status(500).send({ error: 'Failed to insert curriculum' });
     }
