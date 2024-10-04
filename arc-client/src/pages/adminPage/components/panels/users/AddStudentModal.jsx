@@ -85,7 +85,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
   
     // Validate the form before submitting
     if (!validateForm()) {
-      setError("Please fix the errors in the form.");
+      setError("Please fill the form correctly.");
       return;
     }
   
@@ -109,15 +109,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => {
-        // Check if response is not ok (i.e., bad request or server error)
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(errorData.message || "Something went wrong");
-          });
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         // If successful, handle the success message
         if (data.message === "Student added successfully") {
@@ -139,13 +131,12 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
         }
       })
       .catch((error) => {
-        // Catch block for handling errors (e.g., 400 or 500 status)
-        setError(error.message);
-      })
-      .finally(() => {
-        onClose(); // Close the modal after submission
+        // Handle unexpected errors (like network issues)
+        const errorMessage = error?.message || "An unknown error occurred.";
+        setError(errorMessage);
       });
   };
+  
   
 
   const selectedCountry = countryData.find(
