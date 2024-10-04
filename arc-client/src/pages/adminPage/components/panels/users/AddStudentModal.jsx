@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import countryData from "../../../../../data/countryCode"; // Import your country data
 
 const AddStudentModal = ({ student, onClose, isDarkMode }) => {
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,6 +17,8 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
     createdDate: "",
     enrollmentStatus: "",
   });
+
+  const [formErrors, setFormErrors] = useState({});
 
   // Prefill form data when student prop changes
   useEffect(() => {
@@ -52,13 +56,98 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Update student logic here
-    onClose();
+  const validateForm = () => {
+    const errors = {};
+    
+    if (!formData.name.trim()) errors.name = "Name is required.";
+    if (!formData.email.trim()) {
+      errors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Email is invalid.";
+    }
+    if (!formData.mobile.trim()) errors.mobile = "Mobile number is required.";
+    if (!formData.country) errors.country = "Country is required.";
+    if (!formData.city.trim()) errors.city = "City is required.";
+    if (!formData.curriculum) errors.curriculum = "Curriculum is required.";
+    if (!formData.level) errors.level = "Level is required.";
+    if (!formData.enrollmentStatus) errors.enrollmentStatus = "Enrollment status is required.";
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
-  // Find the flag and dial code for the selected country
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    // Clear previous error/success messages
+    setError("");
+    setSuccessMessage("");
+  
+    // Validate the form before submitting
+    if (!validateForm()) {
+      setError("Please fix the errors in the form.");
+      return;
+    }
+  
+    const data = {
+      name: formData.name,
+      email: formData.email,
+      mobile: selectedCountry.dial_code + formData.mobile,
+      country: formData.country,
+      countryCode: selectedCountry.dial_code, // Fixed to use dial_code instead of countryCode
+      city: formData.city,
+      curriculum: formData.curriculum,
+      level: formData.level,
+      enrollmentStatus: formData.enrollmentStatus,
+    };
+  
+    // Send POST request to add the student
+    fetch("http://localhost:5000/api/students/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        // Check if response is not ok (i.e., bad request or server error)
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            throw new Error(errorData.message || "Something went wrong");
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // If successful, handle the success message
+        if (data.message === "Student added successfully") {
+          setSuccessMessage(data.message);
+          setError("");
+          setFormData({
+            name: "",
+            email: "",
+            mobile: "",
+            country: "",
+            countryCode: "",
+            city: "",
+            curriculum: "",
+            level: "",
+            enrollmentStatus: "",
+          }); // Clear the form after success
+        } else {
+          setError(data.message);
+        }
+      })
+      .catch((error) => {
+        // Catch block for handling errors (e.g., 400 or 500 status)
+        setError(error.message);
+      })
+      .finally(() => {
+        onClose(); // Close the modal after submission
+      });
+  };
+  
+
   const selectedCountry = countryData.find(
     (country) => country.name === formData.country
   );
@@ -89,6 +178,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
                 onChange={handleChange}
                 className="input input-bordered w-full text-lg p-2"
               />
+              {formErrors.name && <p className="text-red-500">{formErrors.name}</p>}
             </div>
             <div className="py-4">
               <label className="block text-lg mb-2">Email:</label>
@@ -99,6 +189,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
                 onChange={handleChange}
                 className="input input-bordered w-full text-lg p-2"
               />
+              {formErrors.email && <p className="text-red-500">{formErrors.email}</p>}
             </div>
             <div className="py-4">
               <label className="block text-lg mb-2">Country:</label>
@@ -115,6 +206,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
                   </option>
                 ))}
               </select>
+              {formErrors.country && <p className="text-red-500">{formErrors.country}</p>}
             </div>
             <div className="py-4">
               <label className="block text-lg mb-2">Mobile Number:</label>
@@ -154,6 +246,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
                   />
                 )}
               </div>
+              {formErrors.mobile && <p className="text-red-500">{formErrors.mobile}</p>}
             </div>
             <div className="py-4">
               <label className="block text-lg mb-2">City:</label>
@@ -164,6 +257,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
                 onChange={handleChange}
                 className="input input-bordered w-full text-lg p-2"
               />
+              {formErrors.city && <p className="text-red-500">{formErrors.city}</p>}
             </div>
             <div className="py-4">
               <label className="block text-lg mb-2">Curriculum:</label>
@@ -177,6 +271,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
                 <option value="Cambridge">Cambridge</option>
                 <option value="Edexcel">Edexcel</option>
               </select>
+              {formErrors.curriculum && <p className="text-red-500">{formErrors.curriculum}</p>}
             </div>
             <div className="py-4">
               <label className="block text-lg mb-2">Level:</label>
@@ -191,16 +286,7 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
                 <option value="A level">A level</option>
                 <option value="O level">O level</option>
               </select>
-            </div>
-            <div className="py-4">
-              <label className="block text-lg mb-2">Created Date:</label>
-              <input
-                type="date"
-                name="createdDate"
-                value={formData.createdDate}
-                onChange={handleChange}
-                className="input input-bordered w-full text-lg p-2"
-              />
+              {formErrors.level && <p className="text-red-500">{formErrors.level}</p>}
             </div>
             <div className="py-4">
               <label className="block text-lg mb-2">Enrollment Status:</label>
@@ -214,8 +300,12 @@ const AddStudentModal = ({ student, onClose, isDarkMode }) => {
                 <option value="enrolled">Enrolled</option>
                 <option value="unenrolled">Unenrolled</option>
               </select>
+              {formErrors.enrollmentStatus && <p className="text-red-500">{formErrors.enrollmentStatus}</p>}
             </div>
           </div>
+          {/* error message */}
+          {error && <p className="text-red-500 text-lg font-bold">{error}</p>}
+          {successMessage && <p className="text-green-500 text-lg font-bold">{successMessage}</p>}
           <div className="modal-action mt-4">
             <button
               type="submit"

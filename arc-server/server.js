@@ -48,7 +48,7 @@ async function run() {
     */
 
     //post student data
-    app.post('/api/register', async (req, res) => {
+    app.post('/api/students/register', async (req, res) => {
 
       try{
 
