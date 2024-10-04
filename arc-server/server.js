@@ -198,7 +198,6 @@ async function run() {
     try {
       const curriculum = req.body;
       curriculum.createdAt = new Date();
-      curriculum.updatedAt = new Date();
       curriculum.createdBy = "Admin";
       curriculum.updatedBy = "Admin";
       const result = await academicsCurriculum.insertOne(curriculum);
@@ -220,9 +219,10 @@ async function run() {
   //update curriculum by id
   app.put('/api/curriculum/:id', async (req, res) => {
     const id = req.params.id;
+    console.log(id);
     const updatedCurriculum = req.body;
     //updated by
-    //updatedCurriculum.updatedBy = "Admin";
+    updatedCurriculum.updatedBy = "Admin";
     const filter = { _id: new ObjectId(id) };
     const updatedDoc = {
         $set: updatedCurriculum,

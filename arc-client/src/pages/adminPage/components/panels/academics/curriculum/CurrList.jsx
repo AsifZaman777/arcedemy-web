@@ -151,11 +151,12 @@ const CurrList = ({ isDarkMode }) => {
         <EditCurrModal
           isDarkMode={isDarkMode}
           curr={{
+            _id: selectedCurr._id,
             curriculum: selectedCurr.curriculum,
             createdBy: selectedCurr.createdBy,
             modifiedBy: selectedCurr.modifiedBy,
             levels: [
-              { id: selectedCurr.id, level: selectedCurr.level },
+              { _id: selectedCurr._id, level: selectedCurr.levels?.map((level) => level.level) },
             ],
           }}
           onClose={handleModalClose}
