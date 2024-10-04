@@ -9,13 +9,28 @@ const AddSubjectModal = ({ onClose, isDarkMode }) => {
   const [selectedLevel, setSelectedLevel] = useState("");
 
   // Sample curriculum and levels for demonstration
-  const curriculum = ["Cambridge", "Edexcel"];
-  const levels = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
+  // const curriculum = ["Cambridge", "Edexcel"];
+  // const levels = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
+
+  //currilum and levels from api
+  const [curriculum, setCurriculum] = useState([]);
+  const [levels, setLevels] = useState(curriculum.levels || []);
+
+
   
   useEffect(() => {
     // Initialize level names array when levelCount changes
     setLevelNames(Array(levelCount).fill(""));
-  }, [levelCount]);
+
+    // Fetch curriculum data from API
+    fetch("http://localhost:5000/api/curriculum")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCurriculum(data);
+        setLevels(curriculum.levels || []);
+      });
+  }, []);
 
   // Handle curriculum selection change
   const handleCurriculumChange = (e) => {
@@ -64,8 +79,8 @@ const AddSubjectModal = ({ onClose, isDarkMode }) => {
             >
               <option value="">Select a curriculum</option>
               {curriculum.map((curriculum, index) => (
-                <option key={index} value={curriculum}>
-                  {curriculum}
+                <option key={index} value={curriculum.curriculum}>
+                  {curriculum.curriculum}
                 </option>
               ))}
             </select>
@@ -80,8 +95,8 @@ const AddSubjectModal = ({ onClose, isDarkMode }) => {
             >
               <option value="">Select a level</option>
               {levels.map((level, index) => (
-                <option key={index} value={level}>
-                  {level}
+                <option key={index} value={level.level}>
+                  {level.level}
                 </option>
               ))}
             </select>
