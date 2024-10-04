@@ -1,36 +1,27 @@
 import { useState } from "react";
 import { FaHome } from "react-icons/fa";
 
-// Sample data for subjects
+// Sample data for subjects and their associated papers
 const subjects = [
-  { name: "Accounting", code: 9706 },
-  { name: "Afrikaans Language", code: 8679 },
-  { name: "Applied Information and Communication Technology", code: 9713 },
-  { name: "Biology BES", code: 9184 },
-  { name: "Biology", code: 9700 },
-  { name: "Business Studies", code: 9707 },
-  { name: "Business", code: 9609 },
-  { name: "Chemistry", code: 9701 },
-  { name: "Chinese", code: 9715 },
-  { name: "Computer Science", code: 9608 },
-  { name: "Computer Science", code: 9618 },
-  { name: "Computing", code: 9691 },
+  { name: "Accounting", code: 9706, papers: ["Paper 1", "Paper 2", "Paper 3"] },
+  { name: "Afrikaans Language", code: 8679, papers: ["Paper 1", "Paper 2"] },
+  { name: "Applied Information and Communication Technology", code: 9713, papers: ["Paper 1", "Paper 2"] },
+  { name: "Biology BES", code: 9184, papers: ["Paper 1", "Paper 2", "Paper 3", "Paper 4"] },
+  { name: "Biology", code: 9700, papers: ["Paper 1", "Paper 2"] },
+  { name: "Business Studies", code: 9707, papers: ["Paper 1", "Paper 2", "Paper 3"] },
+  { name: "Business", code: 9609, papers: ["Paper 1"] },
+  { name: "Chemistry", code: 9701, papers: ["Paper 1", "Paper 2", "Paper 3"] },
+  { name: "Chinese", code: 9715, papers: ["Paper 1", "Paper 2"] },
+  { name: "Computer Science", code: 9608, papers: ["Paper 1", "Paper 2", "Paper 3"] },
+  { name: "Computer Science", code: 9618, papers: ["Paper 1", "Paper 2"] },
+  { name: "Computing", code: 9691, papers: ["Paper 1", "Paper 2", "Paper 3", "Paper 4"] },
 ];
 
 const Header = () => {
-  
-
   return (
     <header className="bg-white shadow-md py-4 px-8 flex justify-between items-center">
       {/* Logo */}
-      <div className="text-2xl font-bold text-gray-700">
-        Mcq Solver
-      </div>
-
-      
-
-      {/* Dropdowns */}
-      
+      <div className="text-2xl font-bold text-gray-700">Mcq Solver</div>
 
       {/* Home Button */}
       <button className="bg-red-300 text-white rounded-lg px-4 py-2 flex items-center">
@@ -45,15 +36,17 @@ const MCQSolver = () => {
   const [selectedCourse, setSelectedCourse] = useState("Alevels");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const [selectedPapers, setSelectedPapers] = useState([]);
 
   // Filter subjects based on search term
   const filteredSubjects = subjects.filter((subject) =>
     subject.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle subject selection
+  // Handle subject selection and show papers
   const handleSubjectSelect = (subject) => {
     setSelectedSubject(subject);
+    setSelectedPapers(subject.papers);
   };
 
   return (
@@ -95,7 +88,7 @@ const MCQSolver = () => {
         </div>
 
         {/* Main content area */}
-        <div className="w-3/4 p-8">
+        <div className="w-3/4 p-8 flex flex-col">
           {/* Header */}
           <h2 className="text-2xl font-bold mb-4">{selectedCourse}</h2>
 
@@ -113,22 +106,37 @@ const MCQSolver = () => {
             {filteredSubjects.map((subject) => (
               <li
                 key={subject.code}
-                className="p-2 border border-gray-300 rounded cursor-pointer hover:bg-gray-100"
+                className={`p-2 border border-gray-300 rounded cursor-pointer hover:bg-gray-100 ${
+                  selectedSubject?.code === subject.code ? "bg-orange-100 text-orange-500" : ""
+                }`}
                 onClick={() => handleSubjectSelect(subject)}
               >
                 {subject.name} ({subject.code})
               </li>
             ))}
           </ul>
+        </div>
 
-          {/* Display selected subject MCQ Solver */}
+        {/* Right Side for Papers */}
+        <div className="w-1/4 p-4 border-l border-gray-300">
+          {/* Display selected subject and its papers */}
           {selectedSubject && (
-            <div className="mt-8">
+            <div className="mt-4">
               <h3 className="text-xl font-bold mb-4">
                 MCQ Solver for {selectedSubject.name} ({selectedSubject.code})
               </h3>
-              {/* MCQ Solver content goes here */}
-             
+
+              {/* Display list of papers */}
+              <ul className="space-y-2">
+                {selectedPapers.map((paper, index) => (
+                  <li
+                    key={index}
+                    className="p-2 border border-gray-300 rounded cursor-pointer hover:bg-gray-100"
+                  >
+                    {paper}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>
