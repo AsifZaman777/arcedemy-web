@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import goody1 from "../assets/images/image1.jpg";
 import goody2 from "../assets/images/image2.jpg";
 import Typewriter from "typewriter-effect";
-import arcLogo from "../assets/images/arc-logo.png";
+import arcLogo from "../assets/images/icon.png";
 import SignUpModal from "./signup/SignUpModal"; // Correct import for the SignUpModal
 import { Link } from "react-router-dom";
 
@@ -45,10 +45,10 @@ const Home = () => {
     <div>
       {/* Navbar */}
       <div
-        className={`navbar py-1 shadow-lg fixed w-full top-0 left-0 z-20 transition-colors duration-300 ${
+        className={`navbar py-3 shadow-lg fixed w-full top-0 left-0 z-20 transition-colors duration-300 md:px-60 ${
           navbarScrolled
-            ? "bg-slate-100 bg-opacity-50 backdrop-blur-xl text-black font-medium"
-            : "bg-slate-100 bg-opacity-10 backdrop-blur-lg text-white font-medium"
+            ? "bg-slate-100 bg-opacity-80 backdrop-blur-xl text-black font-medium"
+            : "bg-slate-100 bg-opacity-80 backdrop-blur-lg text-black font-medium"
         }`}
       >
         <div className="navbar-start flex items-center">
@@ -117,14 +117,14 @@ const Home = () => {
                   FAQ
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="#ourteam"
                   className="text-lg hover:bg-orange-400 hover:text-gray-200"
                 >
                   Our Team
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a
                   href="#contact"
@@ -133,23 +133,27 @@ const Home = () => {
                   Contact
                 </a>
               </li>
-              
             </ul>
           </div>
-          <img
-            className="ml-0 md:ml-20"
-            src={arcLogo}
-            width={70}
-            alt="Arcedemy"
-          />
-          <div className="btn btn-ghost text-3xl animate-pulse animate-ease-linear ml-2 ">
-            <a href="#home" className="text-orange-300 px-0 py-0 rounded-lg">
-              Arcedemy
-            </a>
-          </div>
+          <a
+            href="#home"
+            className="flex items-center transform transition-transform duration-500 ease-in-out hover:scale-95"
+          >
+            <img
+              className="ml-0 md:ml-20"
+              src={arcLogo}
+              width={70}
+              alt="Arcedemy"
+            />
+            <div className="text-3xl ml-5 hidden md:block">
+              <span className="text-orange-500 px-0 py-0 rounded-lg">
+                Arcedemy
+              </span>
+            </div>
+          </a>
         </div>
 
-        <div className="navbar-center ml-10 hidden xl:flex flex-grow justify-center">
+        <div className="navbar-center ml-0 hidden xl:flex flex-grow justify-center">
           <ul className="menu menu-horizontal px-1 text-lg">
             <li>
               <a
@@ -191,14 +195,14 @@ const Home = () => {
                 FAQ
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#ourteam"
                 className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
                 Our Team
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="#contact"
@@ -218,15 +222,24 @@ const Home = () => {
               </a>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow bg-opacity-80"
+                className="dropdown-content menu bg-orange-200 rounded-box z-[1] w-52 p-2 shadow-md bg-opacity-80"
               >
                 <li>
-                  <Link to="/cambridge" className="hover:bg-orange-500 hover:text-gray-200">Cambridge</Link>
+                  <Link
+                    to="/cambridge"
+                    className="hover:bg-orange-500 hover:text-gray-200"
+                  >
+                    Cambridge
+                  </Link>
                 </li>
                 <li>
-                <Link to="/edexcel" className="hover:bg-orange-500 hover:text-gray-200">Edexcel</Link>
+                  <Link
+                    to="/edexcel"
+                    className="hover:bg-orange-500 hover:text-gray-200"
+                  >
+                    Edexcel
+                  </Link>
                 </li>
-                
               </ul>
             </li>
           </ul>

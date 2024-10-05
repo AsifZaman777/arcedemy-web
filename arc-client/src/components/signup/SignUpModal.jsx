@@ -20,6 +20,8 @@ const SignUpModal = ({ onClose }) => {
   const [errors, setErrors] = useState({});
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false); // For verification modal
   const [verificationCode, setVerificationCode] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isFailure, setIsFailure] = useState(false);
   const [generatedCode, setGeneratedCode] = useState("");
   const [loading, setLoading] = useState(false); // Added loading state
 
@@ -146,15 +148,22 @@ const SignUpModal = ({ onClose }) => {
 
   const handleCodeSubmit = (e) => {
     e.preventDefault();
-    // Check if the entered code matches the generated code
     if (verificationCode === generatedCode) {
-      alert("Email successfully verified!");
       setIsCodeModalOpen(false);
-      onClose(); // Close the modal after successful verification
+      setIsSuccess(true);
+      setTimeout(() => {
+        onClose(); 
+      }, 3000);
     } else {
-      alert("Invalid verification code. Please try again.");
+      setIsFailure(true);
     }
   };
+
+  const handleFailure = () => { 
+    setIsFailure(false);
+  };
+  
+
 
   const selectedCountry = countryData.find(
     (country) => country.name === formData.country
@@ -358,18 +367,62 @@ const SignUpModal = ({ onClose }) => {
                 >
                   Verify
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setIsCodeModalOpen(false)}
-                  className="btn bg-red-500 text-xl font-normal text-white hover:bg-red-600 p-2"
-                >
-                  Close
-                </button>
               </div>
             </form>
           </div>
         </dialog>
       )}
+
+      {/* Success Modal */}
+      {isSuccess && (
+        <dialog
+          id="success_modal"
+          className="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-0 backdrop-blur-lg"
+          open
+        >
+          <div className="absolute inset-0 bg-black opacity-10"></div>
+          <div className="modal-box z-10 bg-orange-100 bg-opacity-70 backdrop-blur-3xl border border-orange-500 rounded-xl p-8 shadow-xl">
+            <h3 className="font-bold text-2xl text-orange-600 text-center mb-4">Success!</h3>
+            <p className="text-lg text-orange-700 text-center">
+            You have been registered successfully to Arcedemy.
+            </p>
+            <div className="modal-action mt-4">
+              <button
+                onClick={onClose}
+                className="btn bg-orange-500 text-xl font-normal text-white hover:bg-orange-600 p-2"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
+
+      {/* failure modal */}
+      {isFailure && (
+        <dialog
+          id="failure_modal"
+          className="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-0 backdrop-blur-lg"
+          open
+        >
+          <div className="absolute inset-0 bg-black opacity-10"></div>
+          <div className="modal-box z-10 bg-red-400 bg-opacity-70 backdrop-blur-3xl border border-white rounded-xl p-8 shadow-xl">
+            <h3 className="font-bold text-2xl text-white text-center mb-4">Failed!</h3>
+            <p className="text-lg text-white text-center">
+              You have entered wrong verification code. Please try again.
+            </p>
+            <div className="modal-action mt-4">
+              <button
+                onClick={handleFailure}
+                className="btn bg-orange-500 text-xl font-normal text-white hover:bg-orange-600 p-2"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
+
     </>
   );
 };
