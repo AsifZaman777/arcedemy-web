@@ -211,77 +211,99 @@ async function run() {
 
   //get all curriculum
   app.get('/api/curriculum', async (req, res) => {
-    const cursor = academicsCurriculum.find({});
-    const result = await cursor.toArray();
-    res.send(result);
+    try{
+      const cursor = academicsCurriculum.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+    }
+    catch(error){
+      console.error('Error getting curriculum:', error);
+      res.status(500).send({ error: 'Failed to get curriculum' });
+    }
   });
 
   //update curriculum by id
   app.put('/api/curriculum/:id', async (req, res) => {
-    const id = req.params.id;
-    console.log(id);
-    const updatedCurriculum = req.body;
-    //updated by
-    updatedCurriculum.updatedBy = "Admin";
-    const filter = { _id: new ObjectId(id) };
-    const updatedDoc = {
-        $set: updatedCurriculum,
-    };
-    const options = { upsert: true };
-    const result = await academicsCurriculum.updateOne(filter, updatedDoc, options);
-    res.send(result);
+
+    try{
+      const id = req.params.id;
+      const updatedCurriculum = req.body;
+      //updated by
+      updatedCurriculum.updatedBy = "Admin";
+      const filter = { _id: new ObjectId(id) };
+      const updatedDoc = {
+          $set: updatedCurriculum,
+      };
+      const options = { upsert: true };
+      const result = await academicsCurriculum.updateOne(filter, updatedDoc, options);
+      res.send(result);
+    }
+    catch(error){
+      console.error('Error updating curriculum:', error);
+      res.status(500).send({ error: 'Failed to update curriculum' });
+    }
   });
 
   //delete curriculum by id
   app.delete('/api/curriculum/:id', async (req, res) => {
-    const id = req.params.id;
-    const query = { _id: new ObjectId(id) };
-    const result = await academicsCurriculum.deleteOne(query);
-    res.send(result);
+    try{
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await academicsCurriculum.deleteOne(query);
+      res.send(result);
+    }
+    catch(error){
+      console.error('Error deleting curriculum:', error);
+      res.status(500).send({ error: 'Failed to delete curriculum' });
+    }
   });
 
-  // Add subject to curriculum
-app.put('/api/curriculum/subject/:curriculum/:level', async (req, res) => {
-  const curriculumName = req.params.curriculum;
-  const level = req.params.level;
-  const newSubject = req.body; // The new subject to be added
-
-  try {
-    // Find the curriculum by its name
-    const curriculum = await academicsCurriculum.findOne({ curriculum: curriculumName });
-
-    if (!curriculum) {
-      return res.status(404).send({ message: "Curriculum not found" });
+  app.post('/api/subjects', async (req, res) => {
+    const { curriculum, levels } = req.body;
+  
+    try {
+      // Find the curriculum
+      const existingCurriculum = await academicsCurriculum.findOne({ curriculum });
+      
+      if (!existingCurriculum) {
+        return res.status(404).send({ message: 'Curriculum not found' });
+      }
+  
+      // Iterate over levels to find and update the level in the curriculum
+      for (const levelObj of levels) {
+        const { level, subjects } = levelObj;
+  
+        // Find the level in the curriculum
+        const curriculumLevel = existingCurriculum.levels.find(l => l.level === level);
+  
+        if (!curriculumLevel) {
+          return res.status(404).send({ message: `Level ${level} not found in the selected curriculum` });
+        }
+  
+        // Add the new subject to the subjects array of the level
+        curriculumLevel.subjects.push(...subjects); // Add all new subjects
+  
+        // Update the curriculum in the database
+        const filter = { _id: existingCurriculum._id, "levels.level": level };
+        const update = {
+          $set: { "levels.$.subjects": curriculumLevel.subjects },
+          $set: { modifiedBy: req.body.modifiedBy || 'Admin' } // Set modifiedBy if provided
+        };
+  
+        const result = await academicsCurriculum.updateOne(filter, update);
+  
+        if (result.matchedCount === 0) {
+          return res.status(500).send({ message: "Failed to add subject" });
+        }
+      }
+  
+      res.status(201).send({ message: "Subject added successfully", curriculum: existingCurriculum });
+  
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "An error occurred while adding the subject" });
     }
-
-    // Find the specific level within the curriculum
-    const curriculumLevel = curriculum.levels.find(l => l.level === level);
-
-    if (!curriculumLevel) {
-      return res.status(404).send({ message: "Level not found in curriculum" });
-    }
-
-    // Define the filter to locate the specific curriculum and level
-    const filter = { _id: curriculum._id, "levels.level": level };
-    
-    // Update the document to add the new subject to the specified level
-    const updatedDoc = {
-      $push: { "levels.$.subjects": newSubject }
-    };
-
-    // Execute the update query
-    const result = await academicsCurriculum.updateOne(filter, updatedDoc);
-
-    if (result.matchedCount > 0) {
-      res.send({ message: "Subject added successfully" });
-    } else {
-      res.status(500).send({ message: "Failed to add subject" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: "An error occurred while adding the subject" });
-  }
-});
+  });
 
 
   //add chapter to subject

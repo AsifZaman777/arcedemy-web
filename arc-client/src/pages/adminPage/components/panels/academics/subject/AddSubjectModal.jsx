@@ -2,39 +2,32 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const AddSubjectModal = ({ onClose, isDarkMode }) => {
-  const [levelCount] = useState(0);
-  const [levelNames, setLevelNames] = useState([]);
   const [subjectName, setSubjectName] = useState("");
   const [selectedCurriculum, setSelectedCurriculum] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
 
-  // Sample curriculum and levels for demonstration
-  // const curriculum = ["Cambridge", "Edexcel"];
-  // const levels = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
-
-  //currilum and levels from api
+  //curriculum and levels from API
   const [curriculum, setCurriculum] = useState([]);
-  const [levels, setLevels] = useState(curriculum.levels || []);
+  const [levels, setLevels] = useState([]);
 
-
-  
   useEffect(() => {
-    // Initialize level names array when levelCount changes
-    setLevelNames(Array(levelCount).fill(""));
-
     // Fetch curriculum data from API
     fetch("http://localhost:5000/api/curriculum")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setCurriculum(data);
-        setLevels(curriculum.levels || []);
-      });
+      })
+      .catch((error) => console.error("Error fetching curriculum:", error));
   }, []);
 
   // Handle curriculum selection change
   const handleCurriculumChange = (e) => {
-    setSelectedCurriculum(e.target.value);
+    const selectedCurriculum = curriculum.find(
+      (curr) => curr.curriculum === e.target.value
+    );
+    setSelectedCurriculum(selectedCurriculum);
+    setLevels(selectedCurriculum ? selectedCurriculum.levels : []);
+    console.log(selectedCurriculum.levels);
   };
 
   // Handle level selection change
@@ -42,16 +35,47 @@ const AddSubjectModal = ({ onClose, isDarkMode }) => {
     setSelectedLevel(e.target.value);
   };
 
-  
-  
-  const handleSubmit = (e) => {
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform save logic here
-    console.log("Selected Curriculum:", selectedCurriculum);
-    console.log("Selected Level:", selectedLevel);
-    console.log("Subject Name:", subjectName);
-    console.log("Levels:", levelNames);
-    onClose();
+
+    const newSubject = {
+      curriculum: selectedCurriculum.curriculum,
+      createdBy: "Admin", // Placeholder
+      modifiedBy: "Sadman Sakib", // Placeholder
+      levels: [
+        {
+          level: selectedLevel,
+          subjects: [
+            {
+              id: Math.floor(Math.random() * 1000),
+              subject: subjectName,
+              chapters: [], 
+            },
+          ],
+        },
+      ],
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/subjects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newSubject),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Subject added successfully:", result);
+        onClose(); // Close modal on success
+      } else {
+        console.error("Error adding subject:", response.statusText);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
 
   return (
@@ -73,14 +97,14 @@ const AddSubjectModal = ({ onClose, isDarkMode }) => {
           <div className="py-4">
             <label className="block text-lg mb-2">Select Curriculum:</label>
             <select
-              value={selectedCurriculum}
+              value={selectedCurriculum.curriculum || ""}
               onChange={handleCurriculumChange}
               className="input input-bordered w-full text-lg p-2"
             >
               <option value="">Select a curriculum</option>
-              {curriculum.map((curriculum, index) => (
-                <option key={index} value={curriculum.curriculum}>
-                  {curriculum.curriculum}
+              {curriculum.map((curr, index) => (
+                <option key={index} value={curr.curriculum}>
+                  {curr.curriculum}
                 </option>
               ))}
             </select>
@@ -92,6 +116,7 @@ const AddSubjectModal = ({ onClose, isDarkMode }) => {
               value={selectedLevel}
               onChange={handleLevelChange}
               className="input input-bordered w-full text-lg p-2"
+              disabled={!selectedCurriculum}
             >
               <option value="">Select a level</option>
               {levels.map((level, index) => (
