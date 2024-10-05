@@ -195,6 +195,14 @@ const Home = () => {
                 FAQ
               </a>
             </li>
+            <li>
+                  <Link
+                    to="/mcqSolver"
+                    className="hover:bg-orange-500 hover:text-gray-200"
+                  >
+                    Mcq Solver
+                  </Link>
+                </li>
             {/* <li>
               <a
                 href="#ourteam"
@@ -241,7 +249,9 @@ const Home = () => {
                   </Link>
                 </li>
               </ul>
+              
             </li>
+            
           </ul>
         </div>
         <div className="navbar-end lg:flex">
