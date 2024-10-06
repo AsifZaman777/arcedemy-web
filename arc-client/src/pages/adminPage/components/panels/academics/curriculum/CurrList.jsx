@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import EditCurrModal from "./EditCurrModal";
+import DeleteCurriculumModal from "./DeleteCurriculumModal";
 
 const CurrList = ({ isDarkMode }) => {
   const curriculumsData = [
@@ -43,6 +44,7 @@ const CurrList = ({ isDarkMode }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCurr, setSelectedCurr] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete modal
 
   const handleEdit = (curr) => {
     setSelectedCurr(curr);
@@ -50,14 +52,46 @@ const CurrList = ({ isDarkMode }) => {
   };
 
   const handleDelete = (id) => {
-    const updatedCurrs = currs.filter((curr) => curr.id !== id);
-    setCurrs(updatedCurrs);
+    fetch(`http://localhost:5000/api/curriculum/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCurrs(currs.filter((curr) => curr.id !== id));
+        setIsDeleteModalOpen(false); // Close the delete modal after deletion
+      })
+      .catch((error) => {
+        console.error("Error deleting curriculum:", error);
+      });
+  };
+
+  const openDeleteModal = (curr) => {
+    setSelectedCurr(curr);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedCurr(null);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedCurr(null);
   };
+
+  useEffect(() => {
+    
+    fetch("http://localhost:5000/api/curriculum")
+      .then((response) => response.json())
+      .then((data) => {
+        setCurrs(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching curriculum data:", error);
+      });
+  }, []);
 
   return (
     <div
@@ -88,7 +122,7 @@ const CurrList = ({ isDarkMode }) => {
           <tbody>
             {currs.map((curr, index) => (
               <tr
-                key={curr.id}
+                key={curr._id}
                 className={`${
                   index % 2 === 0
                     ? isDarkMode
@@ -99,12 +133,12 @@ const CurrList = ({ isDarkMode }) => {
                     : "bg-white"
                 } hover:bg-orange-300`}
               >
-                <td className="px-4 py-2 border text-center">{curr.id}</td>
+                <td className="px-4 py-2 border text-center">{curr._id}</td>
                 <td className="px-4 py-2 border text-center">
                   {curr.curriculum}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {curr.level}
+                  {curr.levels?.map((level) => level.level).join(", ")}
                 </td>
                 <td className="px-4 py-2 border text-center">
                   {curr.createdBy}
@@ -122,10 +156,10 @@ const CurrList = ({ isDarkMode }) => {
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
-                    onClick={() => handleDelete(curr.id)}
+                    onClick={() => openDeleteModal(curr)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
-                    Delete curriculum
+                    Delete
                   </button>
                 </td>
               </tr>
@@ -139,14 +173,25 @@ const CurrList = ({ isDarkMode }) => {
         <EditCurrModal
           isDarkMode={isDarkMode}
           curr={{
+            _id: selectedCurr._id,
             curriculum: selectedCurr.curriculum,
             createdBy: selectedCurr.createdBy,
             modifiedBy: selectedCurr.modifiedBy,
             levels: [
-              { id: selectedCurr.id, level: selectedCurr.level },
+              { _id: selectedCurr._id, level: selectedCurr.levels?.map((level) => level.level) },
             ],
           }}
           onClose={handleModalClose}
+        />
+      )}
+
+      {/* Delete Modal */}
+      {isDeleteModalOpen && selectedCurr && (
+        <DeleteCurriculumModal
+          isDarkMode={isDarkMode}
+          curriculum={selectedCurr}
+          onDelete={handleDelete}
+          onClose={handleDeleteModalClose}
         />
       )}
     </div>

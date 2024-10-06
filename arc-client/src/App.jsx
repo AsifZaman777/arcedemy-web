@@ -4,6 +4,7 @@ import Admin from "./pages/adminPage/Admin";
 import "./App.css";
 import CambridgePapers from "./components/pastPapers/CambridgePapers";
 import EdexcelPapers from "./components/pastPapers/EdexcelPapers";
+import MCQSolver from "./components/mcqSolver/mcqSolver";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     <Route path="/dashboard/*" element={<Admin />} />
     <Route path="/cambridge" element={<CambridgePapers/>} />
     <Route path="/edexcel" element={<EdexcelPapers/>} />
+    <Route path="/mcqSolver" element={<MCQSolver/>} />
   </Routes>
   )
 }
