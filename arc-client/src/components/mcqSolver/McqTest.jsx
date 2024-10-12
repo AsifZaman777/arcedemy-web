@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FiMoreVertical } from "react-icons/fi"; // Import the three-dot icon from React Icons
+import dummyPdf from "../../assets/dummy.pdf"; // Import the dummy PDF file
 
 const McqTest = () => {
   const [drawerOpen, setDrawerOpen] = useState(true); // State to control the drawer
@@ -35,11 +36,18 @@ const McqTest = () => {
     <div className="flex h-screen">
       {/* Dummy Page Content */}
       <div className={`p-8 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
-        <h1 className="text-3xl font-bold">MCQ Test</h1>
-        <p className="mt-4">
-          This is a dummy page content. You can add any test instructions or
-          additional information here.
-        </p>
+        {/* Embed PDF using iframe */}
+        <div className="mt-0">
+          <iframe
+            src={dummyPdf} // Ensure this path is correct
+            width="100%"
+            height="900px"
+            title="Dummy PDF"
+            style={{ border: 'none' }} // Optional: Remove border
+          >
+            This browser does not support PDFs. Please download the PDF to view it: <a href={dummyPdf}>Download PDF</a>
+          </iframe>
+        </div>
       </div>
 
       {/* Drawer Toggle Button (Three Dots with Animation) */}
@@ -64,8 +72,7 @@ const McqTest = () => {
 
           {/* Top Bar (Real-time Checker Toggle) */}
           <div className="flex justify-center items-center mb-6">
-            <label className="mr-2 text-lg font-bold">Real-time Checker:</label>
-
+            <label className="mr-5 text-2xl font-bold text-white">Real-time Checker:</label>
             <div className="relative">
               <input
                 type="checkbox"
@@ -77,11 +84,11 @@ const McqTest = () => {
               <label
                 htmlFor="realtimeCheckerToggle"
                 className={`flex items-center cursor-pointer w-12 h-6 bg-gray-300 rounded-full transition duration-300 ${
-                  realtimeChecker ? "bg-orange-500" : ""
+                  realtimeChecker ? "bg-yellow-400" : ""
                 }`}
               >
                 <span
-                  className={`w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
+                  className={`w-6 h-6 bg-gray-100 rounded-full shadow-sm transform transition-transform duration-300 ${
                     realtimeChecker ? "translate-x-6" : ""
                   }`}
                 ></span>
@@ -104,9 +111,7 @@ const McqTest = () => {
                     {["A", "B", "C", "D"].map((option) => (
                       <button
                         key={option}
-                        onClick={() =>
-                          handleAnswerSelect(questionIndex, option)
-                        }
+                        onClick={() => handleAnswerSelect(questionIndex, option)}
                         className={`rounded-full p-2 w-10 h-10 border border-orange-400 flex items-center justify-center ${
                           selectedAnswers[questionIndex] === option
                             ? "bg-orange-500 text-white"

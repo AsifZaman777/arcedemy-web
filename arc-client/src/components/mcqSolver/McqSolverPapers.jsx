@@ -61,6 +61,7 @@ const Header = () => {
     navigate("/");
   };
 
+
   return (
     <header className="bg-orange-50 shadow-md py-4 px-8 flex justify-between items-center">
       {/* Logo */}
@@ -79,6 +80,9 @@ const Header = () => {
 };
 
 const McqSolver = () => {
+
+  const navigate = useNavigate();
+
   const [selectedCourse, setSelectedCourse] = useState("Alevels");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubject, setSelectedSubject] = useState(null);
@@ -185,6 +189,7 @@ const McqSolver = () => {
                 {selectedPapers.map((paper, index) => (
                   <li
                     key={index}
+                    onClick={()=> navigate("/mcqtest")}
                     className="p-2 border border-gray-300 rounded cursor-pointer hover:bg-orange-100"
                   >
                     {paper}
