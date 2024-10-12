@@ -4,6 +4,7 @@ import paperImage from "../../assets/images/paper.jpg";
 import { useNavigate } from "react-router-dom";
 import pastPapers from "../../data/pastPapers";
 
+
 const CambridgePapers = () => {
   const navigate = useNavigate();
 

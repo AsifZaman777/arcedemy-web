@@ -197,7 +197,7 @@ const Home = () => {
             </li>
             <li>
                   <Link
-                    to="/mcqSolver"
+                    to="/mcqsolver"
                     className="hover:bg-orange-500 hover:text-gray-200"
                   >
                     Mcq Solver
