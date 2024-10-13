@@ -45,7 +45,7 @@ const Home = () => {
     <div>
       {/* Navbar */}
       <div
-        className={`navbar py-3 shadow-lg fixed w-full top-0 left-0 z-20 transition-colors duration-300 md:px-60 ${
+        className={`navbar py-3 shadow-lg fixed w-full top-0 left-0 z-20 transition-colors duration-300 md:px-20 ${
           navbarScrolled
             ? "bg-slate-100 bg-opacity-80 backdrop-blur-xl text-black font-medium"
             : "bg-slate-100 bg-opacity-80 backdrop-blur-lg text-black font-medium"
@@ -111,7 +111,7 @@ const Home = () => {
               </li>
               <li>
                 <a
-                  href="#faq"
+                  href="#features"
                   className="text-lg hover:bg-orange-400 hover:text-gray-200"
                 >
                   FAQ
@@ -146,9 +146,9 @@ const Home = () => {
               alt="Arcedemy"
             />
             <div className="text-3xl ml-5 hidden md:block">
-              <span className="text-orange-500 px-0 py-0 rounded-lg">
+              {/* <span className="text-orange-500 px-0 py-0 rounded-lg">
                 Arcedemy
-              </span>
+              </span> */}
             </div>
           </a>
         </div>
@@ -189,10 +189,10 @@ const Home = () => {
             </li>
             <li>
               <a
-                href="#faq"
+                href="#features"
                 className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
-                FAQ
+                Features
               </a>
             </li>
             <li>
@@ -258,7 +258,7 @@ const Home = () => {
           <div className="flex items-center space-x-6 mr-10">
             {/* Sign up Button */}
             <div
-              className="btn bg-orange-400 border-1 border-white animate-bounce hover:bg-orange-500"
+              className="btn bg-orange-400 border-1 border-white hover:bg-orange-500"
               onClick={toggleModal}
             >
               <span className="text-white text-lg font-thin">Sign up</span>

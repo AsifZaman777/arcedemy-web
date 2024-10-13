@@ -64,7 +64,7 @@ const McqTest = () => {
 
       {/* Drawer */}
       {drawerOpen && (
-        <div className="w-1/5 h-screen bg-neutral-950 shadow-lg p-7 flex flex-col items-center ">
+        <div className="w-1/4 h-screen bg-neutral-950 shadow-lg p-7 flex flex-col items-center ">
           {/* Timer at the Top Center */}
           <div className="text-4xl font-bold text-orange-400 mb-8">
             Time: {formatTime(time)}
