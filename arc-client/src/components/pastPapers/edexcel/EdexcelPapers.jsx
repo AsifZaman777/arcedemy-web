@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FaHome, FaEllipsisV } from "react-icons/fa";
-import paperImage from "../../assets/images/paper.jpg";
+import paperImage from "../../../assets/images/paper.jpg";
 import { useNavigate } from "react-router-dom";
-import pastPapers from "../../data/pastPapers";
+import pastPapers from "../../../data/pastPapers";
 
 const CambridgePapers = () => {
   const navigate = useNavigate();
