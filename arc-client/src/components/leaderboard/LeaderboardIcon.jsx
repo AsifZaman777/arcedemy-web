@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { PiRankingLight } from "react-icons/pi";
+import { FaRankingStar } from "react-icons/fa6";
 import LeaderboardModal from "./LeaderboardModal"; // Import the modal component
+import { userLoggedIn } from "../Home";
 
 const LeaderboardIcon = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,7 +12,8 @@ const LeaderboardIcon = () => {
 
 ///test
   return (
-    <div className="fixed group z-50 bottom-10 right-10">
+  
+    <div className={`fixed group z-50 top-3 right-20 ${userLoggedIn? `visible`: `hidden`}`}>
       {/* Pulsating Indicator */}
       <span className="absolute flex h-3 w-3 top-10 left-0">
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
@@ -20,10 +22,10 @@ const LeaderboardIcon = () => {
 
       {/* Ranking Icon */}
       <div
-        className="flex items-center justify-center bg-orange-500 text-white p-2 rounded-full ring-2 ring-gray-700 shadow-lg hover:bg-orange-600 duration-300 cursor-pointer"
+        className="flex items-center justify-center bg-neutral-700 text-white p-2 rounded-full ring-2 ring-gray-700 shadow-lg hover:bg-orange-600 duration-300 cursor-pointer"
         onClick={toggleModal} //toggle logic
       >
-        <PiRankingLight className="text-4xl" />
+        <FaRankingStar className="text-4xl" />
       </div>
 
       {/* Tooltip for Ranking Icon */}

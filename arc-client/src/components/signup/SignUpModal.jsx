@@ -4,6 +4,7 @@ import countryData from "../../data/countryCode"; // Import your country data
 import emailjs from "../../../emailjs"; // Updated
 
 const SignUpModal = ({ onClose }) => {
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -151,6 +152,7 @@ const SignUpModal = ({ onClose }) => {
     if (verificationCode === generatedCode) {
       setIsCodeModalOpen(false);
       setIsSuccess(true);
+      
       setTimeout(() => {
         onClose(); 
       }, 3000);
@@ -432,3 +434,5 @@ SignUpModal.propTypes = {
 };
 
 export default SignUpModal;
+
+

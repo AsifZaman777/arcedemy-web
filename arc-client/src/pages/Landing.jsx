@@ -11,7 +11,7 @@ import Features from "../components/Features";
 const Landing = () => {
     return (
         <div>
-            <LeaderboardIcon />
+            <LeaderboardIcon/>
             <Home />
             <About />
             <Service />

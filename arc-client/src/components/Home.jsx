@@ -6,11 +6,17 @@ import arcLogo from "../assets/images/icon.png";
 import SignUpModal from "./signup/SignUpModal"; // Correct import for the SignUpModal
 import { Link } from "react-router-dom";
 
+
+// Global variable to check if user is logged in
+var userLoggedIn = false;
+
 const Home = () => {
   // State for image carousel
   const [currentImage, setCurrentImage] = useState(0);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for signup modal
+
+ 
   const images = [goody1, goody2];
 
   useEffect(() => {
@@ -254,7 +260,11 @@ const Home = () => {
             
           </ul>
         </div>
+        
         <div className="navbar-end lg:flex">
+          {userLoggedIn ? (
+            userLoggedIn = true
+          ) :
           <div className="flex items-center space-x-6 mr-10">
             {/* Sign up Button */}
             <div
@@ -264,6 +274,9 @@ const Home = () => {
               <span className="text-white text-lg font-thin">Sign up</span>
             </div>
           </div>
+          }
+
+          
         </div>
       </div>
 
@@ -315,4 +328,7 @@ const Home = () => {
   );
 };
 
+//export home and userLoggedIn
+
 export default Home;
+export { userLoggedIn };
