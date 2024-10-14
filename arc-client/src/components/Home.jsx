@@ -5,7 +5,7 @@ import Typewriter from "typewriter-effect";
 import arcLogo from "../assets/images/icon.png";
 import SignUpModal from "./signup/SignUpModal"; // Correct import for the SignUpModal
 import { Link } from "react-router-dom";
-
+import { FaPhone } from "react-icons/fa";
 
 // Global variable to check if user is logged in
 var userLoggedIn = false;
@@ -16,7 +16,6 @@ const Home = () => {
   const [navbarScrolled, setNavbarScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for signup modal
 
- 
   const images = [goody1, goody2];
 
   useEffect(() => {
@@ -202,13 +201,13 @@ const Home = () => {
               </a>
             </li>
             <li>
-                  <Link
-                    to="/mcqsolver"
-                    className="hover:bg-orange-500 hover:text-gray-200"
-                  >
-                    Mcq Solver
-                  </Link>
-                </li>
+              <Link
+                to="/mcqsolver"
+                className="hover:bg-orange-500 hover:text-gray-200"
+              >
+                Mcq Solver
+              </Link>
+            </li>
             {/* <li>
               <a
                 href="#ourteam"
@@ -217,14 +216,7 @@ const Home = () => {
                 Our Team
               </a>
             </li> */}
-            <li>
-              <a
-                href="#contact"
-                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
-              >
-                Contact
-              </a>
-            </li>
+
             <li className="dropdown dropdown-hover dropdown-down ml-0">
               <a
                 href="#"
@@ -255,28 +247,32 @@ const Home = () => {
                   </Link>
                 </li>
               </ul>
-              
             </li>
-            
           </ul>
         </div>
-        
+
         <div className="navbar-end lg:flex">
           {userLoggedIn ? (
-            userLoggedIn = true
-          ) :
-          <div className="flex items-center space-x-6 mr-10">
-            {/* Sign up Button */}
-            <div
-              className="btn bg-orange-400 border-1 border-white hover:bg-orange-500"
-              onClick={toggleModal}
-            >
-              <span className="text-white text-lg font-thin">Sign up</span>
+            (userLoggedIn = true)
+          ) : (
+            <div className="flex items-center space-x-6 mr-10">
+              {/* Sign up Button */}
+              <div
+                className="btn bg-orange-400 border-1 border-white hover:bg-orange-500"
+                onClick={toggleModal}
+              >
+                <span className="text-white text-lg font-thin">Sign up</span>
+              </div>
             </div>
-          </div>
-          }
+          )}
 
-          
+          <a
+            href="#contact"
+            className="relative inline-block px-5 py-3 bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-yellow-500 hover:to-red-500 transition-all duration-700 ease-in-out rounded-full mr-2 overflow-hidden shadow-lg hover:shadow-2xl group"
+          >
+            <span className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-red-300 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out rounded-full blur-lg"></span>
+            <FaPhone className="relative inline text-white text-2xl animate-bounce " />
+          </a>
         </div>
       </div>
 
