@@ -5,12 +5,17 @@ import Typewriter from "typewriter-effect";
 import arcLogo from "../assets/images/icon.png";
 import SignUpModal from "./signup/SignUpModal"; // Correct import for the SignUpModal
 import { Link } from "react-router-dom";
+import { FaPhone } from "react-icons/fa";
+
+// Global variable to check if user is logged in
+var userLoggedIn = false;
 
 const Home = () => {
   // State for image carousel
   const [currentImage, setCurrentImage] = useState(0);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for signup modal
+
   const images = [goody1, goody2];
 
   useEffect(() => {
@@ -45,7 +50,7 @@ const Home = () => {
     <div>
       {/* Navbar */}
       <div
-        className={`navbar py-3 shadow-lg fixed w-full top-0 left-0 z-20 transition-colors duration-300 md:px-60 ${
+        className={`navbar py-3 shadow-lg fixed w-full top-0 left-0 z-20 transition-colors duration-300 md:px-20 ${
           navbarScrolled
             ? "bg-slate-100 bg-opacity-80 backdrop-blur-xl text-black font-medium"
             : "bg-slate-100 bg-opacity-80 backdrop-blur-lg text-black font-medium"
@@ -111,7 +116,7 @@ const Home = () => {
               </li>
               <li>
                 <a
-                  href="#faq"
+                  href="#features"
                   className="text-lg hover:bg-orange-400 hover:text-gray-200"
                 >
                   FAQ
@@ -146,9 +151,9 @@ const Home = () => {
               alt="Arcedemy"
             />
             <div className="text-3xl ml-5 hidden md:block">
-              <span className="text-orange-500 px-0 py-0 rounded-lg">
+              {/* <span className="text-orange-500 px-0 py-0 rounded-lg">
                 Arcedemy
-              </span>
+              </span> */}
             </div>
           </a>
         </div>
@@ -189,20 +194,20 @@ const Home = () => {
             </li>
             <li>
               <a
-                href="#faq"
+                href="#features"
                 className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
-                FAQ
+                Features
               </a>
             </li>
             <li>
-                  <Link
-                    to="/mcqSolver"
-                    className="hover:bg-orange-500 hover:text-gray-200"
-                  >
-                    Mcq Solver
-                  </Link>
-                </li>
+              <Link
+                to="/mcqsolver"
+                className="hover:bg-orange-500 hover:text-gray-200"
+              >
+                Mcq Solver
+              </Link>
+            </li>
             {/* <li>
               <a
                 href="#ourteam"
@@ -211,14 +216,7 @@ const Home = () => {
                 Our Team
               </a>
             </li> */}
-            <li>
-              <a
-                href="#contact"
-                className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
-              >
-                Contact
-              </a>
-            </li>
+
             <li className="dropdown dropdown-hover dropdown-down ml-0">
               <a
                 href="#"
@@ -249,21 +247,32 @@ const Home = () => {
                   </Link>
                 </li>
               </ul>
-              
             </li>
-            
           </ul>
         </div>
+
         <div className="navbar-end lg:flex">
-          <div className="flex items-center space-x-6 mr-10">
-            {/* Sign up Button */}
-            <div
-              className="btn bg-orange-400 border-1 border-white animate-bounce hover:bg-orange-500"
-              onClick={toggleModal}
-            >
-              <span className="text-white text-lg font-thin">Sign up</span>
+          {userLoggedIn ? (
+            (userLoggedIn = true)
+          ) : (
+            <div className="flex items-center space-x-6 mr-10">
+              {/* Sign up Button */}
+              <div
+                className="btn bg-orange-400 border-1 border-white hover:bg-orange-500"
+                onClick={toggleModal}
+              >
+                <span className="text-white text-lg font-thin">Sign up</span>
+              </div>
             </div>
-          </div>
+          )}
+
+          <a
+            href="#contact"
+            className="relative inline-block px-5 py-3 bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-yellow-500 hover:to-red-500 transition-all duration-700 ease-in-out rounded-full mr-2 overflow-hidden shadow-lg hover:shadow-2xl group"
+          >
+            <span className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-red-300 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out rounded-full blur-lg"></span>
+            <FaPhone className="relative inline text-white text-2xl animate-bounce " />
+          </a>
         </div>
       </div>
 
@@ -315,4 +324,7 @@ const Home = () => {
   );
 };
 
+//export home and userLoggedIn
+
 export default Home;
+export { userLoggedIn };
