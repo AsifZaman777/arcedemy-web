@@ -1,21 +1,34 @@
 import { useState, useEffect } from "react";
-import { FiMoreVertical } from "react-icons/fi"; // Import the three-dot icon from React Icons
-import dummyPdf from "../../assets/dummy.pdf"; // Import the dummy PDF file
+import { FiMoreVertical } from "react-icons/fi";
+import dummyPdf from "../../assets/dummy.pdf";
 
 const McqTest = () => {
-  const [drawerOpen, setDrawerOpen] = useState(true); // State to control the drawer
-  const [realtimeChecker, setRealtimeChecker] = useState(false); // Toggle state for real-time checker
-  const [time, setTime] = useState(0); // State for time in seconds
-  const [selectedAnswers, setSelectedAnswers] = useState({}); // State to store selected answers
+  const [drawerOpen, setDrawerOpen] = useState(true);
+  const [realtimeChecker, setRealtimeChecker] = useState(false);
+  const [time, setTime] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [testStarted, setTestStarted] = useState(false);
+
+  const handleSubmit = () => {
+    alert("Submitted");
+  };
 
   // Timer function
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prevTime) => prevTime + 1);
-    }, 1000);
+    if (testStarted && !realtimeChecker) {
+      const timer = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [testStarted, realtimeChecker]);
 
-    return () => clearInterval(timer); // Clean up interval on unmount
-  }, []);
+  // Restart timer when realtimeChecker toggles
+  useEffect(() => {
+    if (realtimeChecker) {
+      setTime(0); // Reset timer when realtimeChecker is enabled
+    }
+  }, [realtimeChecker]);
 
   // Format time (min:sec)
   const formatTime = (seconds) => {
@@ -32,25 +45,27 @@ const McqTest = () => {
     }));
   };
 
+  // Handle test start
+  const handleStartTest = () => {
+    setTestStarted(true);
+  };
+
   return (
     <div className="flex h-screen">
-      {/* Dummy Page Content */}
       <div className={`p-8 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
-        {/* Embed PDF using iframe */}
         <div className="mt-0">
           <iframe
-            src={dummyPdf} // Ensure this path is correct
+            src={dummyPdf}
             width="100%"
             height="900px"
             title="Dummy PDF"
-            style={{ border: 'none' }} // Optional: Remove border
+            style={{ border: 'none' }}
           >
             This browser does not support PDFs. Please download the PDF to view it: <a href={dummyPdf}>Download PDF</a>
           </iframe>
         </div>
       </div>
 
-      {/* Drawer Toggle Button (Three Dots with Animation) */}
       <button
         onClick={() => setDrawerOpen(!drawerOpen)}
         className="absolute top-4 right-4 p-2 rounded-full bg-orange-400 text-white"
@@ -62,15 +77,22 @@ const McqTest = () => {
         />
       </button>
 
-      {/* Drawer */}
       {drawerOpen && (
         <div className="w-1/4 h-screen bg-neutral-950 shadow-lg p-7 flex flex-col items-center ">
-          {/* Timer at the Top Center */}
-          <div className="text-4xl font-bold text-orange-400 mb-8">
-            Time: {formatTime(time)}
-          </div>
+          {!realtimeChecker && !testStarted ? (
+            <button
+              onClick={handleStartTest}
+              className="mb-8 px-4 py-2 bg-orange-500 text-white rounded-lg"
+            >
+              Take a Test
+            </button>
+          ) : !realtimeChecker && testStarted ? (
+            <div className="text-4xl font-bold text-orange-400 mb-8">
+              Time: {formatTime(time)}
+            </div>
+          ) : null}
 
-          {/* Top Bar (Real-time Checker Toggle) */}
+          {/* Real-time Checker Toggle */}
           <div className="flex justify-center items-center mb-6">
             <label className="mr-5 text-2xl font-bold text-white">Real-time Checker:</label>
             <div className="relative">
@@ -101,12 +123,9 @@ const McqTest = () => {
             {Array.from({ length: 20 }).map((_, questionIndex) => (
               <div key={questionIndex} className="mb-4">
                 <div className="flex items-center">
-                  {/* Question Number */}
                   <h3 className="mr-4 font-thin text-2xl">
                     {questionIndex + 1}.
                   </h3>
-
-                  {/* Options */}
                   <div className="flex space-x-2">
                     {["A", "B", "C", "D"].map((option) => (
                       <button
@@ -126,6 +145,12 @@ const McqTest = () => {
               </div>
             ))}
           </div>
+
+          {!realtimeChecker && testStarted && (
+            <button className="mt-6 px-4 py-2 bg-orange-500 text-white rounded-lg" onClick={handleSubmit}> 
+              Submit
+            </button>
+          )}
         </div>
       )}
     </div>
