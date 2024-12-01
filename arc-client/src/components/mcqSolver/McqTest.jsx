@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FiMoreVertical } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import dummyPdf from "../../assets/dummy.pdf";
 
 const McqTest = () => {
@@ -9,11 +9,42 @@ const McqTest = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [testStarted, setTestStarted] = useState(false);
 
-  const handleSubmit = () => {
-    alert("Submitted");
+  const correctAnswers = {
+    1: "A",
+    2: "C",
+    3: "B",
+    4: "D",
+    5: "A",
+    6: "C",
+    7: "B",
+    8: "D",
+    9: "A",
+    10: "C",
+    11: "B",
+    12: "D",
+    13: "A",
+    14: "C",
+    15: "B",
+    16: "D",
+    17: "A",
+    18: "C",
+    19: "B",
+    20: "D",
   };
 
-  // Timer function
+  const handleSubmit = () => {
+    const totalQuestions = 20;
+    let correctAnswersCount = 0;
+    for (let i = 1; i <= totalQuestions; i++) {
+      if (selectedAnswers[i] === correctAnswers[i]) {
+        correctAnswersCount++;
+      }
+    }
+    alert(
+      `You answered ${correctAnswersCount} out of ${totalQuestions} questions correctly.`
+    );
+  };
+
   useEffect(() => {
     if (testStarted && !realtimeChecker) {
       const timer = setInterval(() => {
@@ -23,68 +54,71 @@ const McqTest = () => {
     }
   }, [testStarted, realtimeChecker]);
 
-  // Restart timer when realtimeChecker toggles
   useEffect(() => {
     if (realtimeChecker) {
-      setTime(0); // Reset timer when realtimeChecker is enabled
+      setTime(0); // Reset timer when real-time checker is enabled
     }
   }, [realtimeChecker]);
 
-  // Format time (min:sec)
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  // Handle answer selection
   const handleAnswerSelect = (questionIndex, option) => {
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [questionIndex]: option,
+      [questionIndex + 1]: option, // Use questionIndex + 1 since question indices start from 1
     }));
   };
 
-  // Handle test start
   const handleStartTest = () => {
     setTestStarted(true);
   };
 
   return (
-    <div className="flex h-screen">
-      <div className={`p-8 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
-        <div className="mt-0">
+    <div className="flex h-screen relative">
+      <div className={`p-0 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
+        <div className="flex flex-col w-full mt-0 h-screen bg-gray-100">
           <iframe
             src={dummyPdf}
-            width="100%"
-            height="900px"
             title="Dummy PDF"
-            style={{ border: 'none' }}
+            className="flex-grow w-full border-none"
           >
-            This browser does not support PDFs. Please download the PDF to view it: <a href={dummyPdf}>Download PDF</a>
+            This browser does not support PDFs. Please download the PDF to view
+            it: <a href={dummyPdf}>Download PDF</a>
           </iframe>
         </div>
       </div>
 
-      <button
+      <div
         onClick={() => setDrawerOpen(!drawerOpen)}
-        className="absolute top-4 right-4 p-2 rounded-full bg-orange-400 text-white"
+        className={`absolute top-1/2 transform -translate-y-1/2 cursor-pointer bg-orange-400 text-white p-2 rounded-full shadow-lg transition-all duration-500 ${
+          drawerOpen
+            ? "left-[72%]"
+            : "left-[97%] lg:left-[92%] bottom-[2%] lg:bottom-auto"
+        }`}
       >
-        <FiMoreVertical
-          className={`text-2xl transform transition-transform duration-500 ${
-            drawerOpen ? "rotate-90" : "rotate-0"
-          }`}
-        />
-      </button>
+        {drawerOpen ? (
+          <FiChevronRight className="text-xl" />
+        ) : (
+          <FiChevronLeft className="text-xl" />
+        )}
+      </div>
 
       {drawerOpen && (
-        <div className="w-1/4 h-screen bg-neutral-950 shadow-lg p-7 flex flex-col items-center ">
+        <div
+          className={`w-full lg:w-1/4 h-screen lg:h-auto bg-neutral-950 shadow-lg p-7 flex flex-col items-center transition-all duration-500 ${
+            drawerOpen ? "bottom-0" : "bottom-[100%]"
+          }`}
+        >
           {!realtimeChecker && !testStarted ? (
             <button
               onClick={handleStartTest}
               className="mb-8 px-4 py-2 bg-orange-500 text-white rounded-lg"
             >
-              Take a Test
+              Start Test
             </button>
           ) : !realtimeChecker && testStarted ? (
             <div className="text-4xl font-bold text-orange-400 mb-8">
@@ -92,9 +126,10 @@ const McqTest = () => {
             </div>
           ) : null}
 
-          {/* Real-time Checker Toggle */}
           <div className="flex justify-center items-center mb-6">
-            <label className="mr-5 text-2xl font-bold text-white">Real-time Checker:</label>
+            <label className="mr-5 text-2xl font-bold text-white">
+              Real-time Checker:
+            </label>
             <div className="relative">
               <input
                 type="checkbox"
@@ -118,28 +153,39 @@ const McqTest = () => {
             </div>
           </div>
 
-          {/* MCQ Options */}
           <div className="overflow-y-auto w-full">
             {Array.from({ length: 20 }).map((_, questionIndex) => (
               <div key={questionIndex} className="mb-4">
                 <div className="flex items-center">
-                  <h3 className="mr-4 font-thin text-2xl">
+                  <h3 className="mr-4 font-thin text-2xl w-6 text-right">
                     {questionIndex + 1}.
                   </h3>
                   <div className="flex space-x-2">
-                    {["A", "B", "C", "D"].map((option) => (
-                      <button
-                        key={option}
-                        onClick={() => handleAnswerSelect(questionIndex, option)}
-                        className={`rounded-full p-2 w-10 h-10 border border-orange-400 flex items-center justify-center ${
-                          selectedAnswers[questionIndex] === option
-                            ? "bg-orange-500 text-white"
-                            : "bg-white text-black"
-                        }`}
-                      >
-                        {option}
-                      </button>
-                    ))}
+                    {["A", "B", "C", "D"].map((option) => {
+                      const isSelected =
+                        selectedAnswers[questionIndex + 1] === option;
+                      const isCorrect =
+                        correctAnswers[questionIndex + 1] === option;
+                      return (
+                        <button
+                          key={option}
+                          onClick={() =>
+                            handleAnswerSelect(questionIndex, option)
+                          }
+                          className={`rounded-full p-2 w-10 h-10 border flex items-center justify-center ${
+                            isSelected
+                              ? realtimeChecker
+                                ? isCorrect
+                                  ? "bg-green-400 text-white"
+                                  : "bg-red-400 text-white"
+                                : "bg-orange-500 text-white"
+                              : "bg-white text-black border-orange-400"
+                          }`}
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -147,7 +193,10 @@ const McqTest = () => {
           </div>
 
           {!realtimeChecker && testStarted && (
-            <button className="mt-6 px-4 py-2 bg-orange-500 text-white rounded-lg" onClick={handleSubmit}> 
+            <button
+              className="mt-6 px-4 py-2 bg-orange-500 text-white rounded-lg"
+              onClick={handleSubmit}
+            >
               Submit
             </button>
           )}
