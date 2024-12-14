@@ -374,37 +374,37 @@ const auth = new google.auth.GoogleAuth({
 });
   
   
-app.post("/api/upload", upload.any(), async (req, res) => {
-  try {
-      console.log(req.body);
-      console.log(req.files);
-      const { subject, chapter } = req.body;
-      const { files } = req;
+// app.post("/api/upload", upload.any(), async (req, res) => {
+//   try {
+//       console.log(req.body);
+//       console.log(req.files);
+//       const { subject, chapter } = req.body;
+//       const { files } = req;
 
-      for (let f = 0; f < files.length; f += 1) {
-          const uploadedFile = await uploadFile(files[f]);
+//       for (let f = 0; f < files.length; f += 1) {
+//           const uploadedFile = await uploadFile(files[f]);
           
-          const fileMetadata = {
-              curriculum: req.body.curriculum,
-              level: req.body.level,
-              subject: subject,
-              chapter: chapter,
-              fileName: uploadedFile.name,
-              fileId: uploadedFile.id,
-              filePath: `https://drive.google.com/file/d/${uploadedFile.id}/view?usp=sharing`,
-              uploadedAt: new Date()
-          };
-          await saveFileMetadata(fileMetadata);
-      }
+//           const fileMetadata = {
+//               curriculum: req.body.curriculum,
+//               level: req.body.level,
+//               subject: subject,
+//               chapter: chapter,
+//               fileName: uploadedFile.name,
+//               fileId: uploadedFile.id,
+//               filePath: `https://drive.google.com/file/d/${uploadedFile.id}/view?usp=sharing`,
+//               uploadedAt: new Date()
+//           };
+//           await saveFileMetadata(fileMetadata);
+//       }
 
-      // Send a JSON response
-      res.status(200).json({ message: "Form Submitted" });
-      console.log("Form Submitted");
-  } catch (f) {
-      console.error(f);
-      res.status(500).send(f.message);
-  }
-});
+//       // Send a JSON response
+//       res.status(200).json({ message: "Form Submitted" });
+//       console.log("Form Submitted");
+//   } catch (f) {
+//       console.error(f);
+//       res.status(500).send(f.message);
+//   }
+// });
 
 
 app.post("/api/paper/upload", upload.any(), async (req, res) => {
@@ -465,6 +465,8 @@ const uploadFile = async (fileObject) => {
     console.log(`Uploaded file ${data.name} ${data.id}`);
     return data;  
 };
+
+
 
 const savePaperMetadata = async (fileMetadata) => {
   try {
@@ -695,6 +697,168 @@ const updateFile = async (fileObject, fileId) => {
     /*
      * Recored Videos API END
      */
+
+    /**
+     * Upload Past Papers on S3 Bucket
+     */
+
+    //upload file to aws s3 bucket
+//   const uploadFileToS3 = (fileObject) => {
+//   const AWS = require("aws-sdk");
+//   const s3 = new AWS.S3({
+//     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+//   });
+
+//   const params = {
+//     Bucket: process.env.AWS_BUCKET_NAME,
+//     Key: fileObject.originalname, // Use the original filename
+//     Body: fileObject.buffer, // Use the buffer from multer
+//   };
+
+//   return new Promise((resolve, reject) => {
+//     s3.upload(params, (err, data) => {
+//       if (err) {
+//         reject(err); // Reject the Promise on error
+//       } else {
+//         console.log(`File uploaded successfully. ${data.Location}`);
+//         resolve(data); // Resolve the Promise with the data
+//       }
+//     });
+//   });
+// };
+
+// Configure AWS S3
+const multerS3 = require("multer-s3");
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
+
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
+
+// Multer configuration for memory storage
+const storage = multer.memoryStorage(); // Store files in memory
+const uploadPastPaper = multer({ storage: storage });
+
+// Helper function to upload a single file to S3
+const uploadFileToS3 = async (file, folderPath) => {
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `${folderPath}/${Date.now()}_${file.originalname}`, // Unique key for the file
+    Body: file.buffer,
+    ContentType: file.mimetype,
+  };
+
+  try {
+    const data = await s3Client.send(new PutObjectCommand(params));
+    return {
+      success: true,
+      fileLocation: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`,
+    };
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    return { success: false, error };
+  }
+};
+
+// API route for uploading multiple files
+app.post(
+  "/api/paper/aws/upload",
+  uploadPastPaper.array("files", 70), // Accept up to 70 files at a time
+  async (req, res) => {
+    try {
+      const { curriculum, level, subject, folderName } = req.body;
+
+      // Validate required fields
+      if (!curriculum || !level || !subject || !folderName || !req.files || req.files.length === 0) {
+        return res.status(400).json({ error: "Missing required fields or no files uploaded." });
+      }
+
+      // Build the S3 folder path
+      const folderPath = `${curriculum}/${level}/${subject}/${folderName}`;
+      const uploadResults = [];
+
+      // Upload each file to the S3 bucket
+      for (const file of req.files) {
+        const result = await uploadFileToS3(file, folderPath);
+        uploadResults.push(result);
+      }
+
+      // Check for any errors during file uploads
+      const failedUploads = uploadResults.filter((result) => !result.success);
+      if (failedUploads.length > 0) {
+        return res.status(500).json({
+          message: "Some files failed to upload.",
+          failed: failedUploads,
+        });
+      }
+
+      // Save metadata to the database for each file
+      for (let i = 0; i < req.files.length; i++) {
+        const uploadedFile = req.files[i];
+        const fileLocation = uploadResults[i].fileLocation;
+
+        const fileMetadata = {
+          curriculum,
+          level,
+          subject,
+          folderName,
+          fileName: uploadedFile.originalname,
+          filePath: fileLocation,
+          uploadedAt: new Date(),
+        };
+
+        // Save to the database
+        await savePaperMetadata(fileMetadata);
+      }
+
+      // Return success response
+      res.status(200).json({
+        message: "Files uploaded successfully!",
+        uploadedFiles: uploadResults.map((result) => result.fileLocation),
+      });
+    } catch (error) {
+      console.error("File upload error:", error);
+      res.status(500).json({ error: "Internal server error." });
+    }
+  }
+);
+
+
+// API endpoint to fetch past paper metadata
+app.get("/api/papers", async (req, res) => {
+  try {
+    const { curriculum, level, subject, year } = req.query;
+
+    // Build the query based on filters
+    const query = {};
+    if (curriculum) query.curriculum = curriculum;
+    if (level) query.level = level;
+    if (subject) query.subject = subject;
+    if (year) query.year = parseInt(year);
+
+    // Fetch papers from the database
+    const papers = await PastPaper.find(query);
+    res.status(200).json(papers);
+  } catch (error) {
+    console.error("Error fetching past papers:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
+
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
