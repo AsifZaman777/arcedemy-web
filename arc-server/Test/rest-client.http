@@ -1,0 +1,6 @@
+
+### Check if the server is running
+GET http://localhost:5000/
+
+### Get all papers
+GET  http://localhost:5000/api/papers
