@@ -2,6 +2,7 @@
 ### Check if the server is running
 GET http://localhost:5000/
 
+<<<<<<< HEAD
 ### ALL GET REQUESTS
 
 ### Get all students
@@ -18,3 +19,7 @@ GET  http://localhost:5000/api/notes
 
 ### get all videos
 GET  http://localhost:5000/api/videos
+=======
+### Get all papers
+GET  http://localhost:5000/api/papers
+>>>>>>> e960588 (Rest-client-http added)

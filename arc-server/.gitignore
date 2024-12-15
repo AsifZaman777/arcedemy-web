@@ -11,7 +11,10 @@ dist
 dist-ssr
 cred.json
 *.local
+<<<<<<< HEAD
 .env
+=======
+>>>>>>> e960588 (Rest-client-http added)
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
