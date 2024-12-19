@@ -8,8 +8,6 @@ const McqTest = () => {
   const [time, setTime] = useState(0); // State for time in seconds
   const [selectedAnswers, setSelectedAnswers] = useState({}); // State to store selected answers
 
-  const pdfUrlS3 = "https://your-bucket.s3.amazonaws.com/your-pdf.pdf";
-
   // Timer function
   useEffect(() => {
     const timer = setInterval(() => {
