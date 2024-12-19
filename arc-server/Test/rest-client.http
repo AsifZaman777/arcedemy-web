@@ -2,5 +2,19 @@
 ### Check if the server is running
 GET http://localhost:5000/
 
+### ALL GET REQUESTS
+
+### Get all students
+GET  http://localhost:5000/api/students
+
 ### Get all papers
 GET  http://localhost:5000/api/papers
+
+### Get all curriculums
+GET  http://localhost:5000/api/curriculum
+
+### Get all notes
+GET  http://localhost:5000/api/notes
+
+### get all videos
+GET  http://localhost:5000/api/videos

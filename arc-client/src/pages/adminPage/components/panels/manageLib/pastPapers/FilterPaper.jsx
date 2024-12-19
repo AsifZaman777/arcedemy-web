@@ -31,7 +31,7 @@ const FilterPapers = ({ isDarkMode }) => {
             } rounded-lg text-lg font-medium`}
           >
             <FaPlus className="mr-2" />
-            Add new paper
+            Upload Past Papers
           </button>
         </div>
 

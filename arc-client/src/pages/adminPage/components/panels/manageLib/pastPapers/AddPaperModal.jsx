@@ -9,6 +9,9 @@ const AddPaperModal = ({ onClose, isDarkMode }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Loader state
+  const [uploadMessage, setUploadMessage] = useState("");
+   const [currentFileIndex, setCurrentFileIndex] = useState(0);
 
   const curriculumOptions = ["Cambridge", "Edexcel"];
   const levelOptions = ["AS-Level", "A2-Level", "O-Level", "IGCSE", "IAL", "IAS"];
@@ -50,38 +53,47 @@ const AddPaperModal = ({ onClose, isDarkMode }) => {
       });
 
       setIsUploading(true);
+      setIsLoading(true); // Start loader
       setUploadProgress(0);
+      setCurrentFileIndex(0);
 
       const xhr = new XMLHttpRequest();
-
       xhr.upload.onprogress = (event) => {
         if (event.lengthComputable) {
           const percentCompleted = Math.round((event.loaded / event.total) * 100);
           setUploadProgress(percentCompleted);
+          setCurrentFileIndex(Math.floor((percentCompleted / 100) * selectedFiles.length));
         }
       };
+      
 
       xhr.onload = () => {
         setIsUploading(false);
+        setIsLoading(false); // Stop loader
         if (xhr.status === 200) {
-          alert("Files uploaded successfully!");
-          onClose();
+          setUploadMessage("Files uploaded successfully!");
+          setTimeout(() => setUploadMessage(""), 3000); // Clear message after 3 seconds
         } else {
-          alert("Failed to upload files. Please try again.");
+          setUploadMessage("Failed to upload files. Please try again.");
+          setTimeout(() => setUploadMessage(""), 3000);
         }
       };
 
       xhr.onerror = () => {
         setIsUploading(false);
-        alert("An unexpected error occurred. Please try again.");
+        setIsLoading(false); // Stop loader
+        setUploadMessage("An unexpected error occurred. Please try again.");
+        setTimeout(() => setUploadMessage(""), 3000);
       };
 
       xhr.open("POST", "http://localhost:5000/api/paper/aws/upload", true);
       xhr.send(formData);
     } catch (err) {
       setIsUploading(false);
+      setIsLoading(false); // Stop loader
       console.error("Error uploading files:", err);
-      alert("An unexpected error occurred. Please try again.");
+      setUploadMessage("An unexpected error occurred. Please try again.");
+      setTimeout(() => setUploadMessage(""), 3000);
     }
   };
 
@@ -99,70 +111,75 @@ const AddPaperModal = ({ onClose, isDarkMode }) => {
             : "bg-white border-gray-700 border-2"
         }`}
       >
-        <h3 className="font-bold text-2xl mb-4">Add New Chapter</h3>
+        <h3 className="font-bold text-2xl mb-4">Upload Past Papers</h3>
         <form onSubmit={handleSubmit}>
           <div className="py-4">
-            <label className="block text-lg mb-2">Select Curriculum:</label>
-            <select
-              value={selectedCurriculum}
-              onChange={handleInputChange(setSelectedCurriculum)}
-              className="input input-bordered w-full text-lg p-2"
-            >
-              <option value="">Select a curriculum</option>
-              {curriculumOptions.map((cur, index) => (
-                <option key={index} value={cur}>
-                  {cur}
-                </option>
-              ))}
-            </select>
-          </div>
+  <label className="block text-lg mb-2">Select Curriculum:</label>
+  <input
+    list="curriculum-options"
+    value={selectedCurriculum}
+    onChange={handleInputChange(setSelectedCurriculum)}
+    className="input input-bordered w-full text-lg p-2"
+    placeholder="Type or select a curriculum"
+  />
+  <datalist id="curriculum-options">
+    {curriculumOptions.map((cur, index) => (
+      <option key={index} value={cur}>
+        {cur}
+      </option>
+    ))}
+  </datalist>
+</div>
 
           <div className="py-4">
             <label className="block text-lg mb-2">Select Level:</label>
-            <select
-              value={selectedLevel}
-              onChange={handleInputChange(setSelectedLevel)}
-              className="input input-bordered w-full text-lg p-2"
-            >
-              <option value="">Select a level</option>
+           {/* type or select a level */}
+           <input list="level-options" value={selectedLevel} onChange={handleInputChange(setSelectedLevel)} className="input input-bordered w-full text-lg p-2" 
+           placeholder="Type or select a level" />
+            <datalist id="level-options">
               {levelOptions.map((level, index) => (
                 <option key={index} value={level}>
                   {level}
                 </option>
               ))}
-            </select>
+              </datalist>
+            
           </div>
 
           <div className="py-4">
             <label className="block text-lg mb-2">Select Subject:</label>
-            <select
+            <input
+              list="subject-options"
               value={selectedSubject}
               onChange={handleInputChange(setSelectedSubject)}
               className="input input-bordered w-full text-lg p-2"
-            >
-              <option value="">Select a subject</option>
-              {subjectOptions.map((subject, index) => (
-                <option key={index} value={subject}>
-                  {subject}
-                </option>
-              ))}
-            </select>
+              placeholder="Type or select a subject"
+              />
+              <datalist id="subject-options">
+                {subjectOptions.map((subject, index) => (
+                  <option key={index} value={subject}>
+                    {subject}
+                  </option>
+                ))}
+              </datalist>
           </div>
 
           <div className="py-4">
-            <label className="block text-lg mb-2">Select Chapter:</label>
-            <select
+            <label className="block text-lg mb-2">Year:</label>
+            <input
+              list="chapter-options"
               value={selectedChapter}
               onChange={handleInputChange(setSelectedChapter)}
               className="input input-bordered w-full text-lg p-2"
-            >
-              <option value="">Select a chapter</option>
-              {chapterOptions.map((chapter, index) => (
-                <option key={index} value={chapter}>
-                  {chapter}
-                </option>
-              ))}
-            </select>
+              placeholder="Type or select a year"
+              />
+              <datalist id="chapter-options">
+                {chapterOptions.map((chapter, index) => (
+                  <option key={index} value={chapter}>
+                    {chapter}
+                  </option>
+                ))}
+              </datalist>
           </div>
 
           <div className="py-4">
@@ -187,6 +204,24 @@ const AddPaperModal = ({ onClose, isDarkMode }) => {
                   {uploadProgress}%
                 </div>
               </div>
+              <p className="text-lg mt-2 text-center">
+                Uploading file {currentFileIndex}/{selectedFiles.length}
+              </p>
+            </div>
+          )}
+
+          {isLoading && (
+            <div className="py-4 text-center">
+              <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full border-blue-500"></div>
+              <p className="text-lg mt-2">Uploading...</p>
+            </div>
+          )}
+
+          {uploadMessage && (
+            <div className="py-4">
+              <p className="text-center text-lg font-medium text-green-500">
+                {uploadMessage}
+              </p>
             </div>
           )}
 
