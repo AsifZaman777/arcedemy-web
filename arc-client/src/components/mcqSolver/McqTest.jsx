@@ -155,32 +155,39 @@ const McqTest = () => {
 
           <div className="overflow-y-auto w-full">
             {Array.from({ length: 20 }).map((_, questionIndex) => (
-              <div key={questionIndex} className="mb-4">
+              <div key={questionIndex} className="mb-4 mt-2">
                 <div className="flex items-center">
-                  <h3 className="mr-4 font-thin text-2xl w-6 text-right">
+                  {/* Question Number */}
+                  <h3 className="mr-4 font-mono text-white text-md w-6 text-right">
                     {questionIndex + 1}.
                   </h3>
+
+                  {/* Options Group */}
                   <div className="flex space-x-2">
                     {["A", "B", "C", "D"].map((option) => {
                       const isSelected =
                         selectedAnswers[questionIndex + 1] === option;
                       const isCorrect =
                         correctAnswers[questionIndex + 1] === option;
+
                       return (
                         <button
                           key={option}
                           onClick={() =>
                             handleAnswerSelect(questionIndex, option)
                           }
-                          className={`rounded-full p-2 w-10 h-10 border flex items-center justify-center ${
-                            isSelected
+                          className={`rounded-xl p-4 w-12 h-8 flex items-center bg-neutral-950 justify-center text-lg font-bold transition-all duration-500 ease-in-out ${
+                            isSelected ? "text-white" : ""
+                          }`}
+                          style={{
+                            backgroundColor: isSelected
                               ? realtimeChecker
                                 ? isCorrect
-                                  ? "bg-green-400 text-white"
-                                  : "bg-red-400 text-white"
-                                : "bg-orange-500 text-white"
-                              : "bg-white text-black border-orange-400"
-                          }`}
+                                  ? "#10B981"
+                                  : "#EF4444"
+                                : "#F97316"
+                              : "black",
+                          }}
                         >
                           {option}
                         </button>
