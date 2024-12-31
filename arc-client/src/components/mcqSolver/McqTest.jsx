@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import dummyPdf from "../../assets/dummy.pdf";
 
+//components
+import Navbar from "../Navbar";
+
 const McqTest = () => {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [realtimeChecker, setRealtimeChecker] = useState(false);
@@ -78,8 +81,10 @@ const McqTest = () => {
   };
 
   return (
+    
     <div className="flex h-screen relative">
-      <div className={`p-0 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
+    <Navbar />
+      <div className={`p-0 mt-20 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
         <div className="flex flex-col w-full mt-0 h-screen bg-gray-100">
           <iframe
             src={dummyPdf}
@@ -94,7 +99,7 @@ const McqTest = () => {
 
       <div
         onClick={() => setDrawerOpen(!drawerOpen)}
-        className={`absolute top-1/2 transform -translate-y-1/2 cursor-pointer bg-orange-400 text-white p-2 rounded-full shadow-lg transition-all duration-500 ${
+        className={`absolute top-1/2 transform -translate-y-1/2 cursor-pointer bg-orange-400 text-white p-2 mt-20 rounded-full shadow-lg transition-all duration-500 ${
           drawerOpen
             ? "left-[72%]"
             : "left-[97%] lg:left-[92%] bottom-[2%] lg:bottom-auto"
@@ -109,7 +114,7 @@ const McqTest = () => {
 
       {drawerOpen && (
         <div
-          className={`w-full lg:w-1/4 h-screen lg:h-auto bg-neutral-950 shadow-lg p-7 flex flex-col items-center transition-all duration-500 ${
+          className={`w-full lg:w-1/4 h-screen mt-20 lg:h-auto bg-neutral-950 shadow-lg p-7 flex flex-col items-center transition-all duration-500 ${
             drawerOpen ? "bottom-0" : "bottom-[100%]"
           }`}
         >

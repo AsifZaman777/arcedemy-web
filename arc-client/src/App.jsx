@@ -25,6 +25,7 @@ function App() {
     <Route path="/mcqsolver" element={<McqSolver/>} />
     <Route path="/mcqtest" element={<McqTest/>} />
 
+
    
   </Routes>
   )
