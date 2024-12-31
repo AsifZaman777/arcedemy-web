@@ -106,14 +106,14 @@ const Home = () => {
                   Service
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="#course"
                   className="text-lg hover:bg-orange-400 hover:text-gray-200"
                 >
                   Courses
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a
                   href="#features"
@@ -184,14 +184,14 @@ const Home = () => {
                 Service
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#course"
                 className=" hover:text-white bg-transparent hover:bg-orange-600 transition-colors duration-300 px-4 py-2 rounded"
               >
                 Courses
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="#features"
