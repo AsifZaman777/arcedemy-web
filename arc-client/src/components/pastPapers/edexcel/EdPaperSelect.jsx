@@ -38,7 +38,7 @@ const EdPaperSelect = () => {
   useEffect(() => {
     const fetchPapers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/papers"); // Replace with your API endpoint
+        const response = await axios.get("http://localhost:5000/api/papers"); 
         const data = response.data;
 
         setPapers(data);

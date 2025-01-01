@@ -3,7 +3,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import TopPanel from "./components/shared/TopPanel";
 import Dashboard from "./components/panels/dashboard/Dashboard";
-
+import PropTypes from 'prop-types'; // Import PropTypes
 // users/studentList components
 import CurrentStudents from "./components/panels/dashboard/CurrentStudents";
 import FilterStudent from "./components/panels/users/FilterStudent";
@@ -29,7 +29,9 @@ import VideoList from "./components/panels/manageLib/recVideos/VideoList";
 import FilterNote from "./components/panels/manageLib/notes/FilterNote";
 import NoteList from "./components/panels/manageLib/notes/NoteList";
 import FilterPapers from "./components/panels/manageLib/pastPapers/FilterPaper";
+import FilterMcqSolver from "./components/panels/manageLib/mcqSolver/FilterMcqSolver";
 import PaperList from "./components/panels/manageLib/pastPapers/PaperList";
+import McqSolverList from "./components/panels/manageLib/mcqSolver/McqSolverList";
 
 const Layout = ({ isDarkMode, toggleTheme }) => {
   return (
@@ -183,9 +185,27 @@ const Admin = () => {
             </div>
           }
         />
+
+        <Route
+          path="mcqsolver"
+          element={
+            <div className="space-y-4">
+              <h2 className="text-3xl font-semibold text-center underline mb-10">
+                Mcq solver panel
+              </h2>
+              <FilterMcqSolver isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <McqSolverList isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            </div>
+          }
+        />
       </Route>
     </Routes>
   );
+};
+
+Layout.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
+  toggleTheme: PropTypes.func.isRequired,
 };
 
 export default Admin;

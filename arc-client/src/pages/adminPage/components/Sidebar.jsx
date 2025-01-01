@@ -19,6 +19,7 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import logo from "../../../assets/images/arc-logo.png";
+import { Quiz } from "@mui/icons-material";
 
 const menuItems = [
   {
@@ -101,6 +102,14 @@ const menuItems = [
         title: "Past Papers",
         path: "pastpaper",
         icon: <FaQuestion className="w-5 h-5" />,
+        bgColor: "bg-orange-600",
+        hoverColor: "hover:bg-orange-700",
+      },
+
+      {
+        title: "Mcq Solver",
+        path: "mcqsolver",
+        icon: <Quiz className="w-5 h-5" />,
         bgColor: "bg-orange-600",
         hoverColor: "hover:bg-orange-700",
       },

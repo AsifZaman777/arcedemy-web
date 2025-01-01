@@ -39,6 +39,7 @@ async function run() {
     const users = database.collection("students");
     const notes = database.collection("notes");
     const papers = database.collection("papers");
+    const mcqs = database.collection("mcqs");
     const videos = database.collection("videos");
     const academicsCurriculum = database.collection("academics");
     
@@ -353,26 +354,9 @@ app.post('/api/chapters', (req, res) => {
 
   //google drive api
  // Google service account configuration using environment variables
-const serviceAccount = {
-  type: "service_account",
-  project_id: process.env.GOOGLE_PROJECT_ID,
-  private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-  private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'), // Replacing \\n with actual newline character
-  client_email: process.env.GOOGLE_CLIENT_EMAIL,
-  client_id: process.env.GOOGLE_CLIENT_ID,
-  auth_uri: process.env.GOOGLE_AUTH_URI,
-  token_uri: process.env.GOOGLE_TOKEN_URI,
-  auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_CERT_URL,
-  client_x509_cert_url: process.env.GOOGLE_CLIENT_CERT_URL,
-};
 
-const SCOPES = ["https://www.googleapis.com/auth/drive"];
 
-const auth = new google.auth.GoogleAuth({
-  credentials: serviceAccount,  // Use the service account object instead of keyFile
-  scopes: SCOPES,
-});
-  
+
   
 // app.post("/api/upload", upload.any(), async (req, res) => {
 //   try {
@@ -471,6 +455,16 @@ const uploadFile = async (fileObject) => {
 const savePaperMetadata = async (fileMetadata) => {
   try {
       const result = await papers.insertOne(fileMetadata);
+      console.log("File metadata saved to MongoDB:", result.insertedId);
+  } catch (error) {
+      console.error("Error saving file metadata to MongoDB:", error);
+  }
+};
+
+//save mcqs metadata
+const saveMcqsMetadata = async (fileMetadata) => {
+  try {
+      const result = await mcqs.insertOne(fileMetadata);
       console.log("File metadata saved to MongoDB:", result.insertedId);
   } catch (error) {
       console.error("Error saving file metadata to MongoDB:", error);
@@ -751,6 +745,7 @@ const s3Client = new S3Client({
 // Multer configuration for memory storage
 const storage = multer.memoryStorage(); // Store files in memory
 const uploadPastPaper = multer({ storage: storage });
+const uploadMcqs = multer({ storage: storage });
 
 // Helper function to upload a single file to S3
 const uploadFileToS3 = async (file, folderPath) => {
@@ -836,6 +831,90 @@ app.post(
   }
 );
 
+//get all mcqs
+app.get('/api/mcqs', async (req, res) => {
+  const cursor = mcqs.find({});
+  const result = await cursor.toArray();
+  res.send(result);
+})
+
+const fs = require('fs');
+const axios = require('axios');
+const path = require('path');
+const XLSX = require('xlsx');
+const downloadFile = require('download'); // Or use a similar package to download the file.
+
+
+
+const saveFileLocally = async (fileUrl, fileName) => {
+  try {
+    const localFilePath = path.join(__dirname, 'uploads', fileName);
+
+    const writer = fs.createWriteStream(localFilePath);
+    const response = await axios.get(fileUrl, { responseType: 'stream' });
+    response.data.pipe(writer);
+
+    return new Promise((resolve, reject) => {
+      writer.on('finish', () => resolve(localFilePath));
+      writer.on('error', (error) => {
+        console.error('File download error:', error.message);
+        reject(error);
+      });
+    });
+  } catch (error) {
+    console.error('Failed to download file:', error.message);
+    throw new Error('File download failed');
+  }
+};
+
+
+const extractAnswersFromExcel = (filePath) => {
+  const workbook = XLSX.readFile(filePath);
+  const sheet = workbook.Sheets[workbook.SheetNames[0]];
+  const data = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+  const answers = {};
+  data.forEach((row) => {
+    if (row[5] && row[6] && row[5] !== 'Question No.') {
+      answers[row[5]] = row[6];
+    }
+  });
+
+  return answers;
+};
+
+app.get('/fetch-answers', async (req, res) => {
+  const { fileUrl } = req.query;
+  console.log('Received fileUrl:', fileUrl);
+
+  if (!fileUrl) {
+    console.error('Missing fileUrl parameter');
+    return res.status(400).json({ error: 'Missing fileUrl parameter' });
+  }
+
+  try {
+    const fileName = path.basename(fileUrl);
+    console.log('Extracted fileName:', fileName);
+
+    const localFilePath = await saveFileLocally(fileUrl, fileName);
+    console.log('File saved locally at:', localFilePath);
+
+    const answers = extractAnswersFromExcel(localFilePath);
+    console.log('Extracted answers:', answers);
+
+    // Optionally clean up
+    fs.unlinkSync(localFilePath);
+
+    res.json(answers);
+  } catch (error) {
+    console.error('Error while processing file:', error.message);
+    res.status(500).json({ error: 'Failed to fetch answers' });
+  }
+});
+
+
+
+
 
 // API endpoint to fetch past paper metadata
 app.get("/api/papers", async (req, res) => {
@@ -857,6 +936,74 @@ app.get("/api/papers", async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 });
+
+//API endpoint to upload multiple files mcqs
+app.post("/api/mcqs/aws/upload", uploadMcqs.array("files", 70), async (req, res) => {
+  
+    try {
+      const { curriculum, level, subject, year,session } = req.body;
+
+      // Validate required fields
+      if (!curriculum || !level || !subject || !year || !session || !req.files || req.files.length === 0) {
+        return res.status(400).json({ error: "Missing required fields or no files uploaded." });
+      }
+
+      console.log("uploading");
+
+      // Build the S3 folder path
+      const folderPath = `McqSolver/${curriculum}/${level}/${subject}/${year}/${session}`;
+      const uploadResults = [];
+      console.log("path : " + folderPath);
+
+      // Upload each file to the S3 bucket
+      for (const file of req.files) {
+        console.log(file + "uploading");
+        const result = await uploadFileToS3(file, folderPath);
+        uploadResults.push(result);
+      }
+
+      // Check for any errors during file uploads
+      const failedUploads = uploadResults.filter((result) => !result.success);
+      if (failedUploads.length > 0) {
+        return res.status(500).json({
+          message: "Some files failed to upload.",
+          failed: failedUploads,
+        });
+      }
+
+      // Save metadata to the database for each file
+      for (let i = 0; i < req.files.length; i++) {
+        const uploadedFile = req.files[i];
+        const fileLocation = uploadResults[i].fileLocation;
+
+        const fileMetadata = {
+          curriculum,
+          level,
+          subject,
+          year,
+          session,
+          fileName: uploadedFile.originalname,
+          filePath: fileLocation,
+          uploadedAt: new Date(),
+        };
+
+        // Save to the database
+        await saveMcqsMetadata(fileMetadata);
+      }
+
+      // Return success response
+      res.status(200).json({
+        message: "Files uploaded successfully!",
+        uploadedFiles: uploadResults.map((result) => result.fileLocation),
+      });
+    } catch (error) {
+      console.error("File upload error:", error);
+      res.status(500).json({ error: "Internal server error." });
+    }
+  
+})
+
+
 
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");

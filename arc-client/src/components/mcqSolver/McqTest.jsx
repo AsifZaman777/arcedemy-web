@@ -1,45 +1,42 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import dummyPdf from "../../assets/dummy.pdf";
 
 const McqTest = () => {
+  const location = useLocation();
+  const pdfUrl = location.state?.filePath || ""; // PDF URL from navigation state
+  const correctAnswers = location.state?.answers || {}; // Ensure correctAnswers is an object
+
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [realtimeChecker, setRealtimeChecker] = useState(false);
   const [time, setTime] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [testStarted, setTestStarted] = useState(false);
 
-  const correctAnswers = {
-    1: "A",
-    2: "C",
-    3: "B",
-    4: "D",
-    5: "A",
-    6: "C",
-    7: "B",
-    8: "D",
-    9: "A",
-    10: "C",
-    11: "B",
-    12: "D",
-    13: "A",
-    14: "C",
-    15: "B",
-    16: "D",
-    17: "A",
-    18: "C",
-    19: "B",
-    20: "D",
+  console.log("PDF URL:", pdfUrl);
+  console.log("Correct Answers on mcq test:", correctAnswers); // Use these correct answers now
+
+  useEffect(() => {
+    console.log("Location state in McqTest:", location.state);
+  }, [location.state]);
+
+  const handleAnswerSelect = (questionIndex, option) => {
+    setSelectedAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionIndex]: option,
+    }));
   };
 
   const handleSubmit = () => {
-    const totalQuestions = 20;
+    const totalQuestions = Object.keys(correctAnswers).length;
     let correctAnswersCount = 0;
-    for (let i = 1; i <= totalQuestions; i++) {
-      if (selectedAnswers[i] === correctAnswers[i]) {
+
+    for (let question in correctAnswers) {
+      if (selectedAnswers[question] === correctAnswers[question]) {
         correctAnswersCount++;
       }
     }
+
     alert(
       `You answered ${correctAnswersCount} out of ${totalQuestions} questions correctly.`
     );
@@ -66,32 +63,27 @@ const McqTest = () => {
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  const handleAnswerSelect = (questionIndex, option) => {
-    setSelectedAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [questionIndex + 1]: option, // Use questionIndex + 1 since question indices start from 1
-    }));
-  };
-
   const handleStartTest = () => {
     setTestStarted(true);
   };
 
   return (
     <div className="flex h-screen relative">
+      {/* PDF Viewer */}
       <div className={`p-0 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
         <div className="flex flex-col w-full mt-0 h-screen bg-gray-100">
           <iframe
-            src={dummyPdf}
-            title="Dummy PDF"
+            src={pdfUrl}
+            title="PDF Viewer"
             className="flex-grow w-full border-none"
           >
             This browser does not support PDFs. Please download the PDF to view
-            it: <a href={dummyPdf}>Download PDF</a>
+            it: <a href={pdfUrl}>Download PDF</a>
           </iframe>
         </div>
       </div>
 
+      {/* Drawer Toggle Button */}
       <div
         onClick={() => setDrawerOpen(!drawerOpen)}
         className={`absolute top-1/2 transform -translate-y-1/2 cursor-pointer bg-orange-400 text-white p-2 rounded-full shadow-lg transition-all duration-500 ${
@@ -107,6 +99,7 @@ const McqTest = () => {
         )}
       </div>
 
+      {/* Question Sidebar */}
       {drawerOpen && (
         <div
           className={`w-full lg:w-1/4 h-screen lg:h-auto bg-neutral-950 shadow-lg p-7 flex flex-col items-center transition-all duration-500 ${
@@ -153,25 +146,23 @@ const McqTest = () => {
             </div>
           </div>
 
+          {/* Question List */}
           <div className="overflow-y-auto w-full">
-            {Array.from({ length: 20 }).map((_, questionIndex) => (
-              <div key={questionIndex} className="mb-4">
+            {Object.keys(correctAnswers).map((question, index) => (
+              <div key={index} className="mb-4">
                 <div className="flex items-center">
                   <h3 className="mr-4 font-thin text-2xl w-6 text-right">
-                    {questionIndex + 1}.
+                    {question}.
                   </h3>
                   <div className="flex space-x-2">
                     {["A", "B", "C", "D"].map((option) => {
-                      const isSelected =
-                        selectedAnswers[questionIndex + 1] === option;
+                      const isSelected = selectedAnswers[question] === option;
                       const isCorrect =
-                        correctAnswers[questionIndex + 1] === option;
+                        correctAnswers[question] === option && isSelected;
                       return (
                         <button
                           key={option}
-                          onClick={() =>
-                            handleAnswerSelect(questionIndex, option)
-                          }
+                          onClick={() => handleAnswerSelect(question, option)}
                           className={`rounded-full p-2 w-10 h-10 border flex items-center justify-center ${
                             isSelected
                               ? realtimeChecker

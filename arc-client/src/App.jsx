@@ -24,6 +24,7 @@ function App() {
     <Route path="/edexcelpapers" element={<EdexcelPapers/>} />
     <Route path="/mcqsolver" element={<McqSolver/>} />
     <Route path="/mcqtest" element={<McqTest/>} />
+     <Route path="/mcq-test" element={<McqTest />} />
 
    
   </Routes>
