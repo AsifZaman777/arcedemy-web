@@ -6,10 +6,16 @@ const McqSolver = () => {
   const navigate = useNavigate();
   const [mcqs, setMcqs] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [curriculum, setCurriculum] = useState([]);
+  const [level, setLevel] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState(null);
+  const [selectedCurriculum, setSelectedCurriculum] = useState(null);
   const [filteredMcqs, setFilteredMcqs] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState({});
   const [loadingAnswers, setLoadingAnswers] = useState(false);
+  const [searchPaper, setSearchPaper] = useState("");
+  //const [searchSubject, setSearchSubject] = useState("");
 
   // Fetch MCQs from the API
   useEffect(() => {
@@ -24,11 +30,53 @@ const McqSolver = () => {
     fetchMcqs();
   }, []);
 
+  //extract curriculum
+  useEffect(() => {
+    const curriculumList = [...new Set(mcqs.map((mcq) => mcq.curriculum))];
+    setCurriculum(curriculumList);
+  }, [mcqs]);
+
+  // Extract levels
+  useEffect(() => {
+    const levelsList = [...new Set(mcqs.map((mcq) => mcq.level))];
+    setLevel(levelsList);
+  },[mcqs]);
+
   // Extract subjects
   useEffect(() => {
     const subjectsList = [...new Set(mcqs.map((mcq) => mcq.subject))];
     setSubjects(subjectsList);
   }, [mcqs]);
+
+  //handleCurrilumSelect
+  const handleCurriculumSelect = (curriculum) => {
+    setSelectedCurriculum(curriculum);
+    const filtered = mcqs.filter((mcq) => mcq.curriculum === curriculum);
+    setFilteredMcqs(filtered);
+  };
+
+  //searchPaper
+  useEffect(() => {
+    const filtered = mcqs.filter((mcq) =>
+      mcq.fileName.toLowerCase().includes(searchPaper.toLowerCase())
+    );
+    setFilteredMcqs(filtered);
+  }, [searchPaper, mcqs]);
+
+  // //searchSubject
+  // useEffect(() => {
+  //   const filtered = mcqs.filter((mcq) =>
+  //     mcq.subject.toLowerCase().includes(searchSubject.toLowerCase())
+  //   );
+  //   setFilteredMcqs(filtered);
+  // }, [searchSubject, subjects]);
+
+  //handleLevelSelect
+  const handleLevelSelect = (level) => {
+    setSelectedLevel(level);
+    const filtered = mcqs.filter((mcq) => mcq.level === level);
+    setFilteredMcqs(filtered);
+  };
 
   const handleSubjectSelect = (subject) => {
     setSelectedSubject(subject);
@@ -76,6 +124,9 @@ const handleFileClick = (pdfFile) => {
   // Save the PDF file details for navigation once data is ready
   setSelectedFile({
     pdfPath: pdfFile.filePath,
+    name: pdfFile.fileName,
+    session: pdfFile.session,
+    year: pdfFile.year,
     excelFilePath,
   });
 };
@@ -120,7 +171,49 @@ useEffect(() => {
       <div className="flex">
         {/* Sidebar */}
         <div className="w-1/4 p-4 bg-orange-100 h-screen overflow-y-auto">
+          <h2 className="text-xl font-bold mb-4">Curriculum</h2>
+          <ul>
+            {curriculum.map((curriculum) => (
+              <li
+                key={curriculum}
+                className={`cursor-pointer mb-2 p-2 rounded ${
+                  selectedCurriculum === curriculum ? "bg-orange-200 text-orange-600" : ""
+                }`}
+                onClick={() => handleCurriculumSelect(curriculum)}
+              >
+                {curriculum}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="w-1/4 p-4 bg-orange-100 h-screen overflow-y-auto">
+          <h2 className="text-xl font-bold mb-4">Courses</h2>
+          <ul>
+            {level.map((level) => (
+              <li
+                key={level}
+                className={`cursor-pointer mb-2 p-2 rounded ${
+                  selectedLevel === level ? "bg-orange-200 text-orange-600" : ""
+                }`}
+                onClick={() => handleLevelSelect(level)}
+              >
+                {level}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="w-1/4 p-4 bg-orange-100 h-screen overflow-y-auto">
           <h2 className="text-xl font-bold mb-4">Subjects</h2>
+          {/* search */}
+           {/* <input
+                type="text"
+                placeholder="Search subjects..."
+                value={searchSubject}
+                onChange={(e) => setSearchSubject(e.target.value)}
+                className="mb-4 p-2 border bg-orange-100 rounded w-full"
+              /> */}
           <ul>
             {subjects.map((subject) => (
               <li
@@ -141,8 +234,15 @@ useEffect(() => {
           {selectedSubject && (
             <>
               <h2 className="text-2xl font-bold mb-4">Papers for {selectedSubject}</h2>
-              <ul>
-                {filteredMcqs
+              <input
+                type="text"
+                placeholder="Search papers..."
+                value={searchPaper}
+                onChange={(e) => setSearchPaper(e.target.value)}
+                className="mb-4 p-2 border bg-white rounded w-full"
+              />
+              {/* <ul>
+                {filte</div>redMcqs
                   .filter((mcq) => mcq.fileName.endsWith(".pdf"))
                   .map((pdfFile) => (
                     <li
@@ -150,10 +250,31 @@ useEffect(() => {
                       className="p-2 border rounded cursor-pointer hover:bg-orange-100"
                       onClick={() => handleFileClick(pdfFile)}
                     >
-                      {pdfFile.fileName}
+                      {pdfFile.fileName} || {pdfFile.session} || {pdfFile.year}
+                      
                     </li>
+                    
+                    
                   ))}
-              </ul>
+              </ul> */}
+              {/* card */}
+              <div className="flex flex-wrap">
+                {filteredMcqs
+                  .filter((mcq) => mcq.fileName.endsWith(".pdf"))
+                  .map((pdfFile) => (
+                    <div
+                      key={pdfFile._id}
+                      className="p-4 border rounded-lg m-4 cursor-pointer hover:shadow-lg"
+                      onClick={() => handleFileClick(pdfFile)}
+                    >
+                      <h3 className="text-xl font-bold">{pdfFile.fileName.replace(".pdf","")}</h3>
+                  
+                      <p className="text-lg">{pdfFile.session}</p>
+                      <p className="text-lg">{pdfFile.year}</p>
+                    </div>
+                  ))}
+              </div>
+              
             </>
           )}
         </div>
