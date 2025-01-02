@@ -5,7 +5,12 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 const McqTest = () => {
   const location = useLocation();
   const pdfUrl = location.state?.filePath || ""; // PDF URL from navigation state
+  const session = location.state?.session || ""; // Session from navigation state
+  const year = location.state?.year || ""; // Year from navigation state
+  const subject = location.state?.subject || ""; // Subject from navigation state
   const correctAnswers = location.state?.answers || {}; // Ensure correctAnswers is an object
+
+ 
 
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [realtimeChecker, setRealtimeChecker] = useState(false);
@@ -69,6 +74,7 @@ const McqTest = () => {
 
   return (
     <div className="flex h-screen relative">
+      
       {/* PDF Viewer */}
       <div className={`p-0 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
         <div className="flex flex-col w-full mt-0 h-screen bg-gray-100">
@@ -106,6 +112,8 @@ const McqTest = () => {
             drawerOpen ? "bottom-0" : "bottom-[100%]"
           }`}
         >
+         
+           <small className="text-xl font-bold text-white mb-4">{subject} | Question Paper - {session} {year}</small>
           {!realtimeChecker && !testStarted ? (
             <button
               onClick={handleStartTest}

@@ -124,7 +124,8 @@ const handleFileClick = (pdfFile) => {
   // Save the PDF file details for navigation once data is ready
   setSelectedFile({
     pdfPath: pdfFile.filePath,
-    name: pdfFile.fileName,
+    subject: pdfFile.subject,
+    fileName: pdfFile.fileName,
     session: pdfFile.session,
     year: pdfFile.year,
     excelFilePath,
@@ -154,6 +155,10 @@ useEffect(() => {
       state: {
         filePath: selectedFile.pdfPath,
         excelFilePath: selectedFile.excelFilePath,
+        name: selectedFile.fileName,
+        session: selectedFile.session,
+        year: selectedFile.year,
+        subject: selectedFile.subject,
         answers: correctAnswers,
       },
     });
