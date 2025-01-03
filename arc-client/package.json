@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@glidejs/glide": "^3.7.1",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@react-pdf-viewer/core": "^3.12.0",
