@@ -4,22 +4,19 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const McqTest = () => {
   const location = useLocation();
-  const pdfUrl = location.state?.filePath || ""; // PDF URL from navigation state
-  const session = location.state?.session || ""; // Session from navigation state
-  const year = location.state?.year || ""; // Year from navigation state
-  const subject = location.state?.subject || ""; // Subject from navigation state
-  const correctAnswers = location.state?.answers || {}; // Ensure correctAnswers is an object
-
- 
+  const pdfUrl = location.state?.filePath || "";
+  const session = location.state?.session || "";
+  const year = location.state?.year || "";
+  const subject = location.state?.subject || "";
+  const correctAnswers = location.state?.answers || {};
 
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [realtimeChecker, setRealtimeChecker] = useState(false);
   const [time, setTime] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [testStarted, setTestStarted] = useState(false);
-
-  console.log("PDF URL:", pdfUrl);
-  console.log("Correct Answers on mcq test:", correctAnswers); // Use these correct answers now
+  const [modalOpen, setModalOpen] = useState(false);
+  const [resultMessage, setResultMessage] = useState("");
 
   useEffect(() => {
     console.log("Location state in McqTest:", location.state);
@@ -42,9 +39,9 @@ const McqTest = () => {
       }
     }
 
-    alert(
-      `You answered ${correctAnswersCount} out of ${totalQuestions} questions correctly.`
-    );
+    const message = `You answered ${correctAnswersCount} out of ${totalQuestions} questions correctly.`;
+    setResultMessage(message);
+    setModalOpen(true); // Open the modal
   };
 
   useEffect(() => {
@@ -58,7 +55,7 @@ const McqTest = () => {
 
   useEffect(() => {
     if (realtimeChecker) {
-      setTime(0); // Reset timer when real-time checker is enabled
+      setTime(0);
     }
   }, [realtimeChecker]);
 
@@ -74,7 +71,6 @@ const McqTest = () => {
 
   return (
     <div className="flex h-screen relative">
-      
       {/* PDF Viewer */}
       <div className={`p-0 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
         <div className="flex flex-col w-full mt-0 h-screen bg-gray-100">
@@ -112,8 +108,9 @@ const McqTest = () => {
             drawerOpen ? "bottom-0" : "bottom-[100%]"
           }`}
         >
-         
-           <small className="text-xl font-bold text-white mb-4">{subject} | Question Paper - {session} {year}</small>
+          <small className="text-xl font-bold text-white mb-4">
+            {subject} | Question Paper - {session} {year}
+          </small>
           {!realtimeChecker && !testStarted ? (
             <button
               onClick={handleStartTest}
@@ -199,6 +196,22 @@ const McqTest = () => {
               Submit
             </button>
           )}
+        </div>
+      )}
+
+      {/* Modal */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 lg:w-1/3">
+            <h2 className="text-2xl font-bold mb-4">Test Results</h2>
+            <p className="text-lg mb-6">{resultMessage}</p>
+            <button
+              onClick={() => setModalOpen(false)}
+              className="px-4 py-2 bg-orange-500 text-white rounded-lg"
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
     </div>
