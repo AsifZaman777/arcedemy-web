@@ -12,10 +12,11 @@ const McqSolver = () => {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [selectedCurriculum, setSelectedCurriculum] = useState(null);
   const [filteredMcqs, setFilteredMcqs] = useState([]);
+  //const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState({});
   const [loadingAnswers, setLoadingAnswers] = useState(false);
   const [searchPaper, setSearchPaper] = useState("");
-  //const [searchSubject, setSearchSubject] = useState("");
+  const [searchSubject, setSearchSubject] = useState("");
 
   // Fetch MCQs from the API
   useEffect(() => {
@@ -68,8 +69,9 @@ const McqSolver = () => {
   //   const filtered = mcqs.filter((mcq) =>
   //     mcq.subject.toLowerCase().includes(searchSubject.toLowerCase())
   //   );
-  //   setFilteredMcqs(filtered);
-  // }, [searchSubject, subjects]);
+  //   console.log("Filtered:", filtered);
+  //   setFilteredSubjects(filtered);
+  // }, [searchSubject, mcqs]);
 
   //handleLevelSelect
   const handleLevelSelect = (level) => {
@@ -210,29 +212,34 @@ useEffect(() => {
         </div>
 
         <div className="w-1/4 p-4 bg-orange-100 h-screen overflow-y-auto">
-          <h2 className="text-xl font-bold mb-4">Subjects</h2>
-          {/* search */}
-           {/* <input
-                type="text"
-                placeholder="Search subjects..."
-                value={searchSubject}
-                onChange={(e) => setSearchSubject(e.target.value)}
-                className="mb-4 p-2 border bg-orange-100 rounded w-full"
-              /> */}
-          <ul>
-            {subjects.map((subject) => (
-              <li
-                key={subject}
-                className={`cursor-pointer mb-2 p-2 rounded ${
-                  selectedSubject === subject ? "bg-orange-200 text-orange-600" : ""
-                }`}
-                onClick={() => handleSubjectSelect(subject)}
-              >
-                {subject}
-              </li>
-            ))}
-          </ul>
-        </div>
+  <h2 className="text-xl font-bold mb-4">Subjects</h2>
+  {/* Search input */}
+  <input
+    type="text"
+    placeholder="Search subjects..."
+    value={searchSubject}
+    onChange={(e) => setSearchSubject(e.target.value)}
+    className="mb-4 p-2 border bg-orange-100 rounded w-full"
+  />
+  <ul>
+    {subjects
+      .filter((subject) =>
+        subject.toLowerCase().includes(searchSubject.toLowerCase())
+      )
+      .map((subject) => (
+        <li
+          key={subject}
+          className={`cursor-pointer mb-2 p-2 rounded ${
+            selectedSubject === subject ? "bg-orange-200 text-orange-600" : ""
+          }`}
+          onClick={() => handleSubjectSelect(subject)}
+        >
+          {subject}
+        </li>
+      ))}
+  </ul>
+</div>
+
 
         {/* Main Content */}
         <div className="w-3/4 p-8">
