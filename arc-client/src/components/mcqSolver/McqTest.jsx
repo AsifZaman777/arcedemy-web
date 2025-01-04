@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { Rnd } from "react-rnd";
+//start, stop, reset icons
+import { FaPlay, FaStop, FaRedo } from "react-icons/fa";
+
+//assets
 import dummyPdf from "../../assets/dummy.pdf";
 
 //components
@@ -11,6 +16,7 @@ const McqTest = () => {
   const [time, setTime] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [testStarted, setTestStarted] = useState(false);
+  const [isRunning, setIsRunning] = useState(false); // Added state to track timer running
 
   const correctAnswers = {
     1: "A",
@@ -35,27 +41,14 @@ const McqTest = () => {
     20: "D",
   };
 
-  const handleSubmit = () => {
-    const totalQuestions = 20;
-    let correctAnswersCount = 0;
-    for (let i = 1; i <= totalQuestions; i++) {
-      if (selectedAnswers[i] === correctAnswers[i]) {
-        correctAnswersCount++;
-      }
-    }
-    alert(
-      `You answered ${correctAnswersCount} out of ${totalQuestions} questions correctly.`
-    );
-  };
-
   useEffect(() => {
-    if (testStarted && !realtimeChecker) {
+    if (isRunning) {
       const timer = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, 1000);
-      return () => clearInterval(timer);
+      return () => clearInterval(timer); // Cleanup on stop or component unmount
     }
-  }, [testStarted, realtimeChecker]);
+  }, [isRunning]);
 
   useEffect(() => {
     if (realtimeChecker) {
@@ -76,16 +69,42 @@ const McqTest = () => {
     }));
   };
 
-  const handleStartTest = () => {
+  const handleStart = () => {
     setTestStarted(true);
+    setIsRunning(true); 
+  };
+
+  const handleStop = () => {
+    setIsRunning(false); 
+  };
+
+  const handleReset = () => {
+    setIsRunning(false); 
+    setTime(0);
+  };
+
+  const handleSubmit = () => {
+    const totalQuestions = 20;
+    let correctAnswersCount = 0;
+    for (let i = 1; i <= totalQuestions; i++) {
+      if (selectedAnswers[i] === correctAnswers[i]) {
+        correctAnswersCount++;
+      }
+    }
+    alert(
+      `You answered ${correctAnswersCount} out of ${totalQuestions} questions correctly.`
+    );
   };
 
   return (
-    
     <div className="flex h-screen relative">
-    <Navbar />
-      <div className={`p-0 mt-20 bg-white ${drawerOpen ? "w-4/5" : "w-full"}`}>
-        <div className="flex flex-col w-full mt-0 h-screen bg-gray-100">
+      <Navbar />
+      <div
+        className={`pdf-viewer p-0 mt-20 bg-white ${
+          drawerOpen ? "w-4/5" : "w-full"
+        }`}
+      >
+        <div className="flex flex-col w-full mt-0 h-screen">
           <iframe
             src={dummyPdf}
             title="Dummy PDF"
@@ -114,22 +133,71 @@ const McqTest = () => {
 
       {drawerOpen && (
         <div
-          className={`w-full lg:w-1/4 h-screen mt-20 lg:h-auto bg-neutral-950 shadow-lg p-7 flex flex-col items-center transition-all duration-500 ${
+          className={` right-drawer w-full lg:w-1/4 h-full mt-20 lg:h-auto bg-neutral-950 shadow-lg p-7 flex flex-col items-center transition-all duration-500 ${
             drawerOpen ? "bottom-0" : "bottom-[100%]"
           }`}
         >
           {!realtimeChecker && !testStarted ? (
             <button
-              onClick={handleStartTest}
+              onClick={handleStart}
               className="mb-8 px-4 py-2 bg-orange-500 text-white rounded-lg"
             >
               Start Test
             </button>
-          ) : !realtimeChecker && testStarted ? (
-            <div className="text-4xl font-bold text-orange-400 mb-8">
-              Time: {formatTime(time)}
-            </div>
           ) : null}
+
+          {!realtimeChecker && testStarted && (
+            <Rnd
+              default={{ x: -200, y: 50, width: 200, height: 100 }}
+              bounds=".pdf-viewer"
+              enableResizing={false}
+            >
+              <div className="flex flex-col items-center bg-orange-400 rounded-md w-70 h-50 shadow-2xl border-4 border-gray-400 p-4">
+                {/* Screen */}
+                <div className="flex-grow bg-gray-800 rounded-lg w-full flex items-center justify-center mb-4">
+                  <span
+                    className="neon-text"
+                    style={{
+                      fontSize: "28px",
+                      color: "#0ff",
+                      textShadow: "0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff",
+                    }}
+                  >
+                    {formatTime(time)}
+                  </span>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-evenly w-full">
+                  <button onClick={handleStart} className="bg-gray-700 text-white font-bold py-4 px-4 rounded-full  shadow-md transition-transform transform duration-500 hover:scale-105 hover:bg-neutral-950 hover:rotate-[360deg]">
+                    <FaPlay color="orange" />
+                  </button>
+                  <button onClick={handleStop} className="bg-gray-700 text-white font-bold py-4 px-4 rounded-full  shadow-md transition-transform transform duration-500 hover:scale-105 hover:bg-neutral-950 hover:rotate-[360deg]">
+                    <FaStop color="orange" />
+                  </button>
+                  <button onClick={handleReset} className="bg-gray-700 text-white font-bold py-4 px-4 rounded-full  shadow-md transition-transform transform duration-500 hover:scale-105 hover:bg-neutral-950 hover:rotate-[360deg]">
+                    <FaRedo color="orange"/>
+                  </button>
+                </div>
+              </div>
+            </Rnd>
+          )}
+
+          <div className="w-full flex justify-start mb-4">
+            <nav className="text-white text-lg font-bold">
+              <ol className="list-reset flex">
+                <li>
+                  <a href="#" className="text-orange-500 hover:text-orange-700">
+                    Subject Name
+                  </a>
+                </li>
+                <li>
+                  <span className="mx-2">/</span>
+                </li>
+                <li className="text-gray-400">MCQ Test</li>
+              </ol>
+            </nav>
+          </div>
 
           <div className="flex justify-center items-center mb-6">
             <label className="mr-5 text-2xl font-bold text-white">
