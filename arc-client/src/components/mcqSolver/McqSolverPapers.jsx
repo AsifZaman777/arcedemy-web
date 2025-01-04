@@ -11,8 +11,8 @@ const McqSolver = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [selectedCurriculum, setSelectedCurriculum] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(null);
   const [filteredMcqs, setFilteredMcqs] = useState([]);
-  //const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState({});
   const [loadingAnswers, setLoadingAnswers] = useState(false);
   const [searchPaper, setSearchPaper] = useState("");
@@ -85,6 +85,13 @@ const McqSolver = () => {
     const filtered = mcqs.filter((mcq) => mcq.subject === subject);
     setFilteredMcqs(filtered);
   };
+
+  //handleYearSelect
+  const handleYearSelect = (year) => {
+    setSelectedYear(year);
+    const filtered = mcqs.filter((mcq) => mcq.year === year);
+    setFilteredMcqs(filtered);
+  }
 
   const fetchCorrectAnswers = async (excelUrl) => {
   console.log("Fetching correct answers for:", excelUrl);
@@ -192,9 +199,8 @@ useEffect(() => {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="w-1/4 p-4 bg-orange-100 h-screen overflow-y-auto">
+          {/* space vertically */}
+          <div className="h-4"></div>
           <h2 className="text-xl font-bold mb-4">Courses</h2>
           <ul>
             {level.map((level) => (
@@ -211,9 +217,26 @@ useEffect(() => {
           </ul>
         </div>
 
-        <div className="w-1/4 p-4 bg-orange-100 h-screen overflow-y-auto">
+        {/* <div className="w-1/4 p-4 bg-orange-100 h-screen overflow-y-auto">
+          <h2 className="text-xl font-bold mb-4">Courses</h2>
+          <ul>
+            {level.map((level) => (
+              <li
+                key={level}
+                className={`cursor-pointer mb-2 p-2 rounded ${
+                  selectedLevel === level ? "bg-orange-200 text-orange-600" : ""
+                }`}
+                onClick={() => handleLevelSelect(level)}
+              >
+                {level}
+              </li>
+            ))}
+          </ul>
+        </div> */}
+
+  <div className="w-1/5 p-4 bg-orange-100 h-screen overflow-y-auto">
   <h2 className="text-xl font-bold mb-4">Subjects</h2>
-  {/* Search input */}
+
   <input
     type="text"
     placeholder="Search subjects..."
@@ -238,10 +261,26 @@ useEffect(() => {
         </li>
       ))}
   </ul>
-</div>
+  {/* space vertically */}
+  <div className="h-4"></div>
+  <h2 className="text-xl font-bold mb-4">Years</h2>
+  <ul>
+    {[...new Set(mcqs.map((mcq) => mcq.year))].map((year) => (
+      <li
+        key={year}
+        className={`cursor-pointer mb-2 p-2 rounded ${
+          selectedYear === year ? "bg-orange-200 text-orange-600" : ""
+        }`}
+        onClick={() => handleYearSelect(year)}
+      >
+        {year}
+      </li>
+    ))}
+  </ul>
 
+  </div>
 
-        {/* Main Content */}
+  {/* Main Content */}
         <div className="w-3/4 p-8">
           {selectedSubject && (
             <>
@@ -281,11 +320,13 @@ useEffect(() => {
                     >
                       <h3 className="text-xl font-bold">{pdfFile.fileName.replace(".pdf","")}</h3>
                   
-                      <p className="text-lg">{pdfFile.session}</p>
+                      <p className="text-lg">{pdfFile.session} | Varient {pdfFile.fileName.split("-")[1]} </p>
                       <p className="text-lg">{pdfFile.year}</p>
                     </div>
                   ))}
               </div>
+
+              
               
             </>
           )}
