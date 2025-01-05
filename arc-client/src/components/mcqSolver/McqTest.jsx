@@ -97,7 +97,7 @@ const McqTest = () => {
   };
 
   return (
-    <div className="flex h-screen relative">
+    <div className="mcq-container flex h-screen relative">
       <Navbar />
       <div
         className={`pdf-viewer p-0 mt-20 bg-white ${
@@ -133,10 +133,11 @@ const McqTest = () => {
 
       {drawerOpen && (
         <div
-          className={` right-drawer w-full lg:w-1/4 h-full mt-20 lg:h-auto bg-neutral-950 shadow-lg p-7 flex flex-col items-center transition-all duration-500 ${
+          className={`right-drawer w-full lg:w-1/4 h-full mt-20 lg:h-auto bg-neutral-950 shadow-lg p-7 flex flex-col items-center transition-all duration-500 ${
             drawerOpen ? "bottom-0" : "bottom-[100%]"
           }`}
         >
+
           {!realtimeChecker && !testStarted ? (
             <button
               onClick={handleStart}
@@ -149,10 +150,15 @@ const McqTest = () => {
           {!realtimeChecker && testStarted && (
             <Rnd
               default={{ x: -200, y: 50, width: 200, height: 100 }}
-              bounds=".pdf-viewer"
+              bounds=".mcq-container"
               enableResizing={false}
+              className="z-40"
             >
-              <div className="flex flex-col items-center bg-orange-400 rounded-md w-70 h-50 shadow-2xl border-4 border-gray-400 p-4">
+              <div className="flex flex-col items-center bg-orange-400 rounded-md w-70 h-50 shadow-2xl border-4 border-gray-800 p-2">
+                {/* Timer */}
+
+                  <p className="text-white text-xl ">🕰️ Timer 🕰️</p>
+
                 {/* Screen */}
                 <div className="flex-grow bg-gray-800 rounded-lg w-full flex items-center justify-center mb-4">
                   <span
