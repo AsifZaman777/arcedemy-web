@@ -25,7 +25,7 @@ const Navbar = ({ toggleModal, userLoggedIn }) => {
       className={`navbar py-3 shadow-lg fixed w-full top-0 left-0 z-20 transition-colors duration-300 md:px-20 ${
         navbarScrolled
           ? "bg-slate-100 bg-opacity-80 backdrop-blur-xl text-black font-medium"
-          : "bg-slate-100 bg-opacity-80 backdrop-blur-lg text-black font-medium"
+          : "bg-transparent bg-opacity-80 backdrop-blur-lg text-white font-medium"
       }`}
     >
       {/* Navbar Start */}

@@ -3,6 +3,14 @@ import Glide from "@glidejs/glide";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 
+//images
+import image1 from "../assets/images/serviceSection/image1.png";
+import image2 from "../assets/images/serviceSection/image2.png";
+import image3 from "../assets/images/serviceSection/image3.png";
+import image4 from "../assets/images/serviceSection/image4.png";
+import image5 from "../assets/images/serviceSection/image5.png";
+import image6 from "../assets/images/serviceSection/image6.png";
+
 export default function CarouselIndicatorsInside() {
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -19,29 +27,34 @@ export default function CarouselIndicatorsInside() {
 
   const cardContents = [
     {
-      image: "https://Tailwindmix.b-cdn.net/carousel/carousel-image-03.jpg",
-      title: "Service One",
-      desc: "Description for Service One. Highlighting key benefits and features.",
+      image: image1,
+      title: "Ranking",
+      desc: "Know your ranking worldwide and in your country.",
     },
     {
-      image: "https://Tailwindmix.b-cdn.net/carousel/carousel-image-04.jpg",
-      title: "Service Two",
-      desc: "Description for Service Two. Explaining the value it offers.",
+      image: image2,
+      title: "Instant doubt solving",
+      desc: "Get your doubts solved instantly by our experts.",
     },
     {
-      image: "https://Tailwindmix.b-cdn.net/carousel/carousel-image-05.jpg",
-      title: "Service Three",
-      desc: "Description for Service Three. Showcasing its unique aspects.",
+      image: image3,
+      title: "Personalized paper generation",
+      desc: "Get personalized question papers for practice.",
     },
     {
-      image: "https://Tailwindmix.b-cdn.net/carousel/carousel-image-01.jpg",
-      title: "Service Four",
-      desc: "Description for Service Four. Elaborating on the experience provided.",
+      image: image4,
+      title: "Chapter wise quiz",
+      desc: "Practice chapter wise quiz for better understanding.",
     },
     {
-      image: "https://Tailwindmix.b-cdn.net/carousel/carousel-image-02.jpg",
-      title: "Service Five",
-      desc: "Description for Service Five. Emphasizing customer satisfaction.",
+      image: image5,
+      title: "Realtime MCQ solver",
+      desc: "Get your MCQs solved in real time.",
+    },
+    {
+      image: image6,
+      title: "Ineractive lecture notes",
+      desc: "Get interactive lecture notes for better understanding.",
     },
   ];
 
@@ -74,7 +87,7 @@ export default function CarouselIndicatorsInside() {
   }, []);
 
   return (
-    <div ref={ref} id="service" className="py-10 bg-gray-100">
+    <div ref={ref} id="service" className="py-10 bg-gray-100 select-none">
       <div className="container mx-auto px-6">
         <motion.h2
           className="text-4xl font-bold text-center text-orange-500 mb-12"

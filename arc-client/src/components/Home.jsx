@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react";
-import goody1 from "../assets/images/image1.jpg";
-import goody2 from "../assets/images/image2.jpg";
+import goody1 from "../assets/images/hero/image1.png";
+import goody2 from "../assets/images/hero/image2.png";
 import Navbar from "./Navbar"; // Adjust the path as needed
 import Typewriter from "typewriter-effect";
 import SignUpModal from "./signup/SignUpModal";
