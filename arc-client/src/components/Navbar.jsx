@@ -30,85 +30,93 @@ const Navbar = ({ toggleModal, userLoggedIn }) => {
     >
       {/* Navbar Start */}
       <div className="navbar-start flex items-center">
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost xl:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
-          </div>
-          <ul
-            tabIndex={0}
-            className={`menu menu-lg backdrop-blur-lg font-semibold dropdown-content rounded-box z-[1] mt-3 w-52 p-2 shadow text-lg ${
-              navbarScrolled
-                ? "bg-slate-200 bg-opacity-95 text-orange-500 font-medium shadow-lg"
-                : "bg-slate-100 bg-opacity-95 text-orange-500 font-medium shadow-lg"
-            }`}
-          >
+  {/* Mobile Menu Toggle Button */}
+  <div className="dropdown">
+    <div tabIndex={0} role="button" className="btn btn-ghost xl:hidden">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M4 6h16M4 12h8m-8 6h16"
+        />
+      </svg>
+    </div>
+    
+    {/* Mobile Navigation Menu */}
+    <ul
+      tabIndex={0}
+      className={`menu menu-lg backdrop-blur-lg font-semibold dropdown-content rounded-lg z-[10] mt-3 w-[90vw] max-w-xs p-3 shadow-lg text-lg transition-all ${
+        navbarScrolled
+          ? "bg-slate-200 bg-opacity-95 text-orange-500"
+          : "bg-slate-100 bg-opacity-95 text-orange-500"
+      }`}
+    >
+      <li>
+        <a href="#home" className="text-lg hover:bg-orange-400 hover:text-white">
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="#about" className="text-lg hover:bg-orange-400 hover:text-white">
+          About
+        </a>
+      </li>
+      <li>
+        <a href="#service" className="text-lg hover:bg-orange-400 hover:text-white">
+          Service
+        </a>
+      </li>
+      <li>
+        <a href="#features" className="text-lg hover:bg-orange-400 hover:text-white">
+          FAQ
+        </a>
+      </li>
+      <li>
+        <a href="#contact" className="text-lg hover:bg-orange-400 hover:text-white">
+          Contact
+        </a>
+      </li>
+      <li>
+        <Link to="/mcqsolver" className="text-lg hover:bg-orange-400 hover:text-white">
+          Mcq Solver
+        </Link>
+      </li>
+
+      {/* Past Papers Dropdown */}
+      <li className="relative">
+        <details>
+          <summary className="text-lg cursor-pointer hover:bg-orange-400 hover:text-white">
+            Past Papers
+          </summary>
+          <ul className="absolute -left-5 w-full bg-orange-200 rounded-lg shadow-md bg-opacity-95 mt-2">
             <li>
-              <a
-                href="#home"
-                className="text-lg hover:bg-orange-400 hover:text-gray-200"
-              >
-                Home
-              </a>
+              <Link to="/cambridge" className="block px-4 py-2 hover:bg-orange-500 hover:text-white">
+                Cambridge
+              </Link>
             </li>
             <li>
-              <a
-                href="#about"
-                className="text-lg hover:bg-orange-400 hover:text-gray-200"
-              >
-                About
-              </a>
-            </li>
-            <li>
-              <a
-                href="#service"
-                className="text-lg hover:bg-orange-400 hover:text-gray-200"
-              >
-                Service
-              </a>
-            </li>
-            <li>
-              <a
-                href="#features"
-                className="text-lg hover:bg-orange-400 hover:text-gray-200"
-              >
-                FAQ
-              </a>
-            </li>
-            <li>
-              <a
-                href="#contact"
-                className="text-lg hover:bg-orange-400 hover:text-gray-200"
-              >
-                Contact
-              </a>
+              <Link to="/edexcel" className="block px-4 py-2 hover:bg-orange-500 hover:text-white">
+                Edexcel
+              </Link>
             </li>
           </ul>
-        </div>
-        <a
-          href="#home"
-          className="flex items-center transform transition-transform duration-500 ease-in-out hover:scale-95"
-        >
-          <img
-            className="ml-0 md:ml-20"
-            src={arcLogo}
-            width={70}
-            alt="Arcedemy"
-          />
-        </a>
-      </div>
+        </details>
+      </li>
+    </ul>
+  </div>
+
+  {/* Logo */}
+  <a href="#home" className="flex items-center transition-transform duration-500 ease-in-out hover:scale-95">
+    <img className="ml-0 md:ml-20" src={arcLogo} width={70} alt="Arcedemy" />
+  </a>
+</div>
 
       {/* Navbar Center */}
       <div className="navbar-center ml-0 hidden xl:flex flex-grow justify-center">
