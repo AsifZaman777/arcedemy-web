@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FiChevronLeft, FiChevronRight, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Rnd } from "react-rnd";
 //start, stop, reset icons
 import { FaPlay, FaStop, FaRedo } from "react-icons/fa";
@@ -97,11 +97,11 @@ const McqTest = () => {
   };
 
   return (
-    <div className="mcq-container bg-neutral-950 flex h-screen relative overflow-hidden"> 
+    <div className="mcq-container flex h-screen relative">
       <Navbar />
       <div
         className={`pdf-viewer p-0 mt-20 bg-white ${
-          drawerOpen ? "w-full lg:w-4/5" : "w-full"
+          drawerOpen ? "w-4/5" : "w-full"
         }`}
       >
         <div className="flex flex-col w-full mt-0 h-full">
@@ -118,29 +118,24 @@ const McqTest = () => {
 
       <div
         onClick={() => setDrawerOpen(!drawerOpen)}
-        className={`absolute left-[45%] lg:top-1/2 lg:transform lg:-translate-y-1/2 cursor-pointer bg-orange-400 text-white p-2 rounded-full shadow-lg transition-all duration-500 ${
+        className={`absolute top-1/2 transform -translate-y-1/2 cursor-pointer bg-orange-400 text-white p-2 mt-20 rounded-full shadow-lg transition-all duration-500 ${
           drawerOpen
-            ? "bottom-[50%] lg:left-[72%] lg:bottom-auto"
-            : "bottom-[2%] lg:left-[97%] lg:bottom-auto"
+            ? "left-[72%]"
+            : "left-[97%] lg:left-[92%] bottom-[2%] lg:bottom-auto"
         }`}
       >
         {drawerOpen ? (
-          <FiChevronDown className="text-xl lg:hidden" />
+          <FiChevronRight className="text-xl" />
         ) : (
-          <FiChevronUp className="text-xl lg:hidden" />
-        )}
-        {drawerOpen ? (
-          <FiChevronRight className="text-xl hidden lg:block" />
-        ) : (
-          <FiChevronLeft className="text-xl hidden lg:block" />
+          <FiChevronLeft className="text-xl" />
         )}
       </div>
 
       {drawerOpen && (
         <div
-          className={`w-full lg:w-1/4 h-1/2 lg:h-full bg-neutral-950 lg:mt-20 shadow-lg p-7 flex flex-col items-center transition-all duration-300 ${
-            drawerOpen ? "bottom-0 lg:bottom-auto lg:right-0" : "bottom-[100%] lg:right-[-100%]"
-          } absolute lg:relative`}
+          className={`w-full  lg:w-1/4 h-full mt-20 lg:h-auto bg-neutral-950 shadow-lg p-7 flex flex-col items-center transition-all duration-500 ${
+            drawerOpen ? "bottom-0" : "bottom-[100%]"
+          }`}
         >
 
           {!realtimeChecker && !testStarted ? (
