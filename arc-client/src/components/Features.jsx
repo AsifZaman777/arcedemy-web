@@ -3,7 +3,7 @@ import image1 from '../assets/images/features/image1.png';
 import image2 from '../assets/images/features/image2.png';
 import image3 from '../assets/images/features/image3.png';
 import image4 from '../assets/images/features/image4.png';
-
+import { GoPaperAirplane } from "react-icons/go";
 
 const Features = () => {
   // State to track which feature is selected
@@ -35,11 +35,10 @@ const Features = () => {
       icon: '📚',
       image: image4,
     },
-   
   ];
 
   return (
-    <div id="features" className="bg-neutral-900 py-20">
+    <div id="features" className="bg-neutral-800 py-20">
       <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center text-orange-500 mb-8 md:mb-12">
         Arcedemy Features
       </h2>
@@ -55,11 +54,11 @@ const Features = () => {
 
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-0 py-0">
         {/* Left: Feature Tabs */}
-        <div className="flex flex-col space-y-5 w-full p-10 md:w-1/3 mt-32">
+        <div className="flex flex-col space-y-5 w-full p-10 md:w-1/3 mt-32 relative">
           {features.map((feature) => (
             <button
               key={feature.id}
-              className={`flex items-center p-4 border-2 rounded-lg cursor-pointer hover:scale-105 transition-all duration-300 ${
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer hover:scale-105 transition-all duration-300 ${
                 activeFeature === feature.id
                   ? 'border-orange-200 bg-orange-500 text-white' // Change background and text color when active
                   : 'border-neutral-600 bg-white text-orange-500' // Default state
@@ -68,6 +67,12 @@ const Features = () => {
             >
               <span className="text-3xl mr-3">{feature.icon}</span>
               <span className="text-2xl">{feature.title}</span>
+              {activeFeature === feature.id && (
+                <span className="absolute right-[-50px] text-3xl animate-pulse transition-all duration-300"
+                  >
+                  <GoPaperAirplane color='orange'/>
+                </span>
+              )}
             </button>
           ))}
         </div>
