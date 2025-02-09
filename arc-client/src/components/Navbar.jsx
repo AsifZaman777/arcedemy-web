@@ -67,6 +67,11 @@ const Navbar = ({ toggleModal, userLoggedIn }) => {
               </ScrollLink>
             </li>
             <li>
+            <ScrollLink to="stats" smooth={true} duration={500} className="text-lg hover:bg-orange-400 hover:text-white">
+              Stats
+            </ScrollLink>
+          </li>
+            <li>
               <ScrollLink to="service" smooth={true} duration={500} className="text-lg hover:bg-orange-400 hover:text-white">
                 Service
               </ScrollLink>
