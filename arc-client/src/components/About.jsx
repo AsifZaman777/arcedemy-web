@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import ReactPlayer from "react-player"; // Import ReactPlayer
 import {
   FaRegLightbulb,
   FaUsers,
@@ -67,7 +68,12 @@ const About = () => {
             variants={cardVariants}
             className="relative"
           >
-            <img src={study} alt="study" className="rounded-lg shadow-lg" />
+            <ReactPlayer
+              url="https://youtu.be/SMKPKGW083c?si=ZJqWTG6cZuKMpZyQ"
+              loop
+              controls={false}
+              className="rounded-lg shadow-lg"
+            />
           </motion.div>
 
           <motion.div
