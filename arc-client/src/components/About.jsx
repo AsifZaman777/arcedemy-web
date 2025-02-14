@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import ReactPlayer from "react-player"; // Import ReactPlayer
@@ -8,6 +9,9 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 import study from "../assets/images/study.jpg";
+
+
+
 
 const textVariants = {
   hidden: { opacity: 1, y: 20 },
@@ -46,6 +50,20 @@ const About = () => {
     threshold: 0.1,
   });
 
+  const [isMobile, setIsMobile] = useState(false);
+
+
+//useEffect to check width of window
+
+useEffect(() => {
+  if (window.innerWidth < 768) {
+    setIsMobile(true);
+  } else {
+    setIsMobile(false);
+  }
+}, []);
+
+
   return (
     <div id="about" className="py-20 bg-gray-100 mt-0">
       <div className="container mx-auto px-6">
@@ -72,7 +90,9 @@ const About = () => {
               url="https://youtu.be/SMKPKGW083c?si=ZJqWTG6cZuKMpZyQ"
               loop
               controls={false}
-              className="rounded-lg shadow-lg"
+              className={`rounded-lg shadow-lg `}
+              width={isMobile ? "100%" : "100%"}
+              height={isMobile ? "200px" : "400px"}
             />
           </motion.div>
 
