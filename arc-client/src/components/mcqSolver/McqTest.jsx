@@ -97,7 +97,7 @@ const McqTest = () => {
   };
 
   return (
-    <div className="mcq-container bg-neutral-950 flex h-screen relative overflow-hidden"> 
+    <div className="mcq-container bg-neutral-950 flex h-screen relative"> 
       <Navbar />
       <div
         className={`pdf-viewer p-0 mt-20 bg-white ${
@@ -122,7 +122,7 @@ const McqTest = () => {
           drawerOpen
             ? "bottom-[50%] lg:left-[72%] lg:bottom-auto"
             : "bottom-[2%] lg:left-[97%] lg:bottom-auto"
-        }`}
+        }`  }
       >
         {drawerOpen ? (
           <FiChevronDown className="text-xl lg:hidden" />
@@ -138,7 +138,7 @@ const McqTest = () => {
 
       {drawerOpen && (
         <div
-          className={`w-full lg:w-1/4 h-1/2 lg:h-full bg-neutral-950 lg:mt-20 shadow-lg p-7 flex flex-col items-center transition-all duration-300 ${
+          className={`w-full lg:w-1/4 h-1/2 lg:h-full bg-neutral-950 lg:mt-20  shadow-lg p-7 flex flex-col items-center transition-all duration-300 ${
             drawerOpen ? "bottom-0 lg:bottom-auto lg:right-0" : "bottom-[100%] lg:right-[-100%]"
           } absolute lg:relative`}
         >
