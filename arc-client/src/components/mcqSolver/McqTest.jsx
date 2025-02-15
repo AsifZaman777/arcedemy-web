@@ -3,6 +3,7 @@ import { FiChevronLeft, FiChevronRight, FiChevronDown, FiChevronUp } from "react
 import { Rnd } from "react-rnd";
 //start, stop, reset icons
 import { FaPlay, FaStop, FaRedo } from "react-icons/fa";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 //assets
 import dummyPdf from "../../assets/dummy.pdf";
@@ -91,9 +92,12 @@ const McqTest = () => {
         correctAnswersCount++;
       }
     }
-    alert(
-      `You answered ${correctAnswersCount} out of ${totalQuestions} questions correctly.`
-    );
+    Swal.fire({
+      title: 'Test Results',
+      text: `You answered ${correctAnswersCount} out of ${totalQuestions} questions correctly.`,
+      icon: 'success',
+      confirmButtonText: 'OK'
+    });
   };
 
   return (
