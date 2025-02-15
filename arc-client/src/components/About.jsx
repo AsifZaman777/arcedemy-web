@@ -87,11 +87,11 @@ useEffect(() => {
             className="relative"
           >
             <ReactPlayer
-              url="https://youtu.be/SMKPKGW083c?si=ZJqWTG6cZuKMpZyQ"
+              url="https://www.youtube.com/watch?v=oxGC5_cUBY4"
               loop
               controls={false}
               className={`rounded-lg shadow-lg `}
-              width={isMobile ? "100%" : "100%"}
+              width={isMobile ? "100%" : "80%"}
               height={isMobile ? "200px" : "400px"}
             />
           </motion.div>
