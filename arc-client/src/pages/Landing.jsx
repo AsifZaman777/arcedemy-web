@@ -7,6 +7,7 @@ import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import LeaderboardIcon from "../components/leaderboard/LeaderboardIcon";
 import Features from "../components/Features";
+import Stats from "../components/Stats";
 
 const Landing = () => {
     return (
@@ -14,6 +15,7 @@ const Landing = () => {
             <LeaderboardIcon/>
             <Home />
             <About />
+            <Stats />
             <Service />
             <Course />
             {/* <FAQSection /> */}

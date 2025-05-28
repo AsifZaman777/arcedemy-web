@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaBars, FaCalendarAlt, FaBook } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 // Sample data for subjects, their associated topics, and years
@@ -121,17 +121,17 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-orange-50 shadow-md py-4 px-8 flex justify-between items-center">
+    <header className="bg-orange-50 shadow-md py-4 px-4 sm:px-8 flex justify-between items-center">
       {/* Logo */}
-      <div className="text-3xl font-bold text-orange-500">Edexcel</div>
+      <div className="text-xl sm:text-3xl font-bold text-orange-500">Cambridge</div>
 
       {/* Home Button */}
       <button
-        className="btn btn-ghost rounded-md bg-orange-600 text-white text-md sm:text-md hover:bg-orange-700 hover:text-white"
+        className="btn btn-ghost rounded-md bg-orange-600 text-white text-sm sm:text-md hover:bg-orange-700 hover:text-white"
         onClick={homeNavigate}
       >
         <FaHome className="inline mr-2 text-lg sm:text-2xl" />
-        Home
+        <span className="hidden sm:inline">Home</span>
       </button>
     </header>
   );
@@ -143,6 +143,9 @@ const EdPaperSelect = () => {
   const [selectedCourse, setSelectedCourse] = useState("Alevels");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [showYears, setShowYears] = useState(false);
+  const [showTopics, setShowTopics] = useState(false);
 
   // Filter subjects based on search term
   const filteredSubjects = subjects.filter((subject) =>
@@ -152,6 +155,8 @@ const EdPaperSelect = () => {
   // Handle subject selection
   const handleSubjectSelect = (subject) => {
     setSelectedSubject(subject);
+    setShowYears(true); // Show years column on mobile
+    setShowTopics(true); // Show topics column on mobile
   };
 
   return (
@@ -160,46 +165,55 @@ const EdPaperSelect = () => {
       <Header />
 
       {/* Main content area */}
-      <div className="flex">
+      <div className="flex flex-col lg:flex-row">
+        {/* Toggle buttons for mobile */}
+        <div className="lg:hidden flex justify-between p-2 border-b border-gray-300">
+          <button
+            onClick={() => setShowSidebar(!showSidebar)}
+            className="p-2 bg-orange-200 rounded-lg"
+          >
+            <FaBars className="text-orange-600" />
+          </button>
+          <button
+            onClick={() => setShowYears(!showYears)}
+            className="p-2 bg-orange-200 rounded-lg"
+          >
+            <FaCalendarAlt className="text-orange-600" />
+          </button>
+          <button
+            onClick={() => setShowTopics(!showTopics)}
+            className="p-2 bg-orange-200 rounded-lg"
+          >
+            <FaBook className="text-orange-600" />
+          </button>
+        </div>
+
         {/* Sidebar for course selection */}
-        <div className="w-1/4 p-4 bg-orange-100 h-screen overflow-y-auto">
+        <div
+          className={`${
+            showSidebar ? "block" : "hidden"
+          } lg:block w-full lg:w-1/4 p-4 bg-orange-100 lg:h-screen lg:overflow-y-auto`}
+        >
           <h2 className="text-xl font-bold mb-4">Courses</h2>
           <ul>
-            <li
-              onClick={() => setSelectedCourse("Alevels")}
-              className={`cursor-pointer mb-2 p-2 rounded ${
-                selectedCourse === "Alevels"
-                  ? "bg-orange-200 text-orange-600"
-                  : ""
-              }`}
-            >
-              A levels
-            </li>
-            <li
-              onClick={() => setSelectedCourse("Olevels")}
-              className={`cursor-pointer mb-2 p-2 rounded ${
-                selectedCourse === "Olevels"
-                  ? "bg-orange-200 text-orange-600"
-                  : ""
-              }`}
-            >
-              O levels
-            </li>
-            <li
-              onClick={() => setSelectedCourse("IGCSE")}
-              className={`cursor-pointer mb-2 p-2 rounded ${
-                selectedCourse === "IGCSE"
-                  ? "bg-orange-200 text-orange-600"
-                  : ""
-              }`}
-            >
-              IGCSE
-            </li>
+            {["Alevels", "Olevels", "IGCSE"].map((course) => (
+              <li
+                key={course}
+                onClick={() => setSelectedCourse(course)}
+                className={`cursor-pointer mb-2 p-2 rounded ${
+                  selectedCourse === course
+                    ? "bg-orange-200 text-orange-600"
+                    : ""
+                }`}
+              >
+                {course}
+              </li>
+            ))}
           </ul>
         </div>
 
         {/* Main content area */}
-        <div className="w-2/4 p-8 flex flex-col h-screen overflow-y-auto">
+        <div className="w-full lg:w-2/4 p-4 flex flex-col h-screen overflow-y-auto">
           {/* Header */}
           <h2 className="text-2xl font-bold mb-4">{selectedCourse}</h2>
 
@@ -231,7 +245,11 @@ const EdPaperSelect = () => {
         </div>
 
         {/* Years Column */}
-        <div className="w-1/4 p-4 border-l border-gray-300 h-screen overflow-y-auto">
+        <div
+          className={`${
+            showYears ? "block" : "hidden"
+          } lg:block w-full lg:w-1/4 p-4 border-l border-gray-300 lg:h-screen lg:overflow-y-auto`}
+        >
           {/* Display selected subject's years */}
           {selectedSubject && (
             <div className="mt-4">
@@ -254,7 +272,11 @@ const EdPaperSelect = () => {
         </div>
 
         {/* Topics Column */}
-        <div className="w-1/4 p-4 border-l border-gray-300 h-screen overflow-y-auto">
+        <div
+          className={`${
+            showTopics ? "block" : "hidden"
+          } lg:block w-full lg:w-1/4 p-4 border-l border-gray-300 lg:h-screen lg:overflow-y-auto`}
+        >
           {/* Display selected subject's topics */}
           {selectedSubject && (
             <div className="mt-4">
