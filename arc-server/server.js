@@ -911,11 +911,6 @@ app.get('/fetch-answers', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch answers' });
   }
 });
-
-
-
-
-
 // API endpoint to fetch past paper metadata
 app.get("/api/papers", async (req, res) => {
   try {
@@ -1002,9 +997,6 @@ app.post("/api/mcqs/aws/upload", uploadMcqs.array("files", 70), async (req, res)
     }
   
 })
-
-
-
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
