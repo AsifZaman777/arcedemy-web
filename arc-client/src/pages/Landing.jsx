@@ -1,7 +1,7 @@
 import Home from "../components/Home";
 import About from "../components/About";
 import Service from "../components/Service";
-import Course from "../components/Course";
+import ContentCarosel from "../components/contents/ContentCarosel";
 
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
@@ -17,7 +17,7 @@ const Landing = () => {
             <About />
             <Stats />
             <Service />
-            <Course />
+            <ContentCarosel />
             {/* <FAQSection /> */}
             {/* <OurTeam /> */}
              <Features />
